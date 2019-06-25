@@ -1,0 +1,13 @@
+{
+    "app" : {
+        "ip": "localhost",
+        "port": 4000
+    },
+    "database" : {
+        "name" : "v-car",
+        "ip": "localhost",
+        "port": 27017,
+        "username" : "",
+        "password" : ""
+    }
+}
