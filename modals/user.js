@@ -24,8 +24,8 @@ UserSchame.statics._login = async function(account) {
 }
 
 
-UserSchame.statics._password_recorery = async function(account, newPassWord) {
-    return await _user.findOneAndUpdate(account, {password : newPassWord});
+UserSchame.statics._updatePassword = async function(email, newPassword) {
+    return await _user.findOneAndUpdate({email : email}, {password : newPassword});
 }
 
 

@@ -9,7 +9,7 @@ var eventPage = function($) {
             $(document).on('submit', '#form_password_recovery', function (e) {
                 e.preventDefault();
 
-                _DialogQuestion('Bạn có chắc chắn', 'Bạn sẽ nhận được mật khẩu mới trong hòm thư của mình. Kiểm tra hòm thư và thực hiện đăng nhập lại', function name() {
+                _DialogQuestion('Bạn có chắc chắn ?', 'Bạn sẽ nhận được mật khẩu mới trong hòm thư của mình. Kiểm tra hòm thư và thực hiện đăng nhập lại', function() {
                     var obj = $('#form_password_recovery').serializeArray();
 
                     _AjaxObject('/login', 'PUT', obj, function(resp) {

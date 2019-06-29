@@ -15,6 +15,13 @@ fsx.readdirSync('./controllers').forEach(filename => {
     }
 });
 
+global._output = function(code, data, message) {
+    return {
+        code : code, 
+        message : message ? message : setValueOutput(code), 
+        data : data ? data : null};    
+}
+
 
 app.get('/', function (req, res, next) {
     res.render('login', {
@@ -73,3 +80,37 @@ function setRouter(namefile, key, fn) {
     }
 }
 
+
+function setValueOutput(code) {
+    switch (code) {
+        case 200:
+            return 'Thành công';
+        case 201:
+            return 'Tạo mới thành công';
+        case 202:
+            return 'Cập nhật thành công';
+        case 203:
+            return 'Xóa bỏ thành công';     
+        case 204:
+            return 'Tải file thành công';
+
+
+                
+            
+            
+        case 500:
+            return 'Có lỗi xảy ra';   
+        case 501:
+            return 'Tạo mới thất bại. Thử lại sau';
+        case 502:
+            return 'Cập nhật thất bại. Thử lại sau';
+        case 503:
+            return 'Xóa bỏ thất bại. Thử lại sau';     
+        case 504:
+            return 'Tải file thất bại. Thử lại sau';      
+            
+            
+        default:
+            return '';
+    }
+}

@@ -40,27 +40,35 @@ exports.create = async function (req, res) {
     }
 }
 
+
+//password_recovery
 exports.update = async function (req, res) {
     if(_.has(req.body, 'email')){
-        var newPass = randomPass(8);
-        console.log(newPass);
-        var hashPass = await bcrypt.hash(newPass, config.bcrypt.salt);
-        console.log(hashPass);
+        let newPass = randomPass(8);
+        let hashPass = await bcrypt.hash(newPass, config.bcrypt.salt);
+
+        var resultUpdatePassword = await _user._updatePassword(req.body.email, hashPass);
+        if(!resultUpdatePassword){//Email khong ton tai trong he thong. Update that bai
+            res.send(_output(500, [{a : 1},{b : 2}], 'gdf'));
+            return;
+        }
+
+
+        // let mailOptions = {
+        //     from: config.mail.user,
+        //     to: req.body.email,
+        //     subject: 'P-Car | KHÔI PHỤC MẬT KHẨU',
+        //     text: 'Xin chào quý khách. Bạn vừa yêu cầu khôi phục mật khẩu. Mật khẩu mới của bạn là [' + newPass + ']. Hãy dùng mật khẩu này để đăng nhập hệ thống'
+        // };
+
+        // transporterEmail.sendMail(mailOptions, function(error, result) {
+        //     if(erro)
+        // });
+        // console.log(b);
         
 
-        var mailOptions = {
-            from: config.mail.user,
-            to: req.body.email,
-            subject: 'P-Car | KHÔI PHỤC MẬT KHẨU',
-            text: 'Xin chào quý khách. Bạn vừa yêu cầu khôi phục mật khẩu. Mật khẩu mới của bạn là [' + newPass + ']. Hãy dùng mật khẩu này để đăng nhập hệ thống'
-        };
+        // var a = 
 
-        transporterEmail.sendMail(mailOptions);
-
-        var a = await _user._password_recorery(req.body, hashPass);
-        console.log(a);
-        
-        
     }
         
 

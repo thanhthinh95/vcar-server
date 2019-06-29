@@ -18,24 +18,23 @@ window._AjaxObject = function (url, method, object, success) {
 }
 
 
-window._DialogError = function(content, fn_again, fn_close) {
+window._DialogError = function(content, fn_OK) {
     $.confirm({
         title: 'Đã có lỗi xảy ra!',
         content: content,
         type: 'red',
         typeAnimated: true,
         buttons: {
-            tryAgain: {
-                text: 'Thử lại',
-                btnClass: 'btn-red',
-                action: fn_again
+            OK: {
+                text: 'OK',
+                btnClass: 'btn-blue',
+                action: fn_OK
             },
-            close: fn_close
         }
     });
 }
 
-window._DialogSuccess = function(content, fn_success) {
+window._DialogSuccess = function(content, fn_OK) {
     $.confirm({
         title : 'Thành Công',
         content: content,
@@ -45,7 +44,7 @@ window._DialogSuccess = function(content, fn_success) {
             OK: {
                 text: 'OK',
                 btnClass: 'btn-blue',
-                action: fn_success
+                action: fn_OK
             },
         }
     });
@@ -54,11 +53,14 @@ window._DialogSuccess = function(content, fn_success) {
 window._DialogQuestion = function(title, content, fn_success) {
     $.confirm({
         title: title,
+        icon: 'fa fa-question-circle',
+        type: 'blue',
         content: content,
         autoClose: 'cancelAction|8000',
         buttons: {
             OK: {
-                text: 'OK',
+                text: 'Đồng ý',
+                btnClass: 'btn-blue',
                 action: fn_success
             },
             cancelAction: {
