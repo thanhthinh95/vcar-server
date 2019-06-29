@@ -9,5 +9,13 @@
         "port": 27017,
         "username" : "",
         "password" : ""
+    },
+    "bcrypt" : {
+        "salt" : 10
+    },
+    "mail":{
+        "service" : "gmail",
+        "user" : "service.vcar@gmail.com",
+        "pass" : "thinh95UTT"
     }
 }

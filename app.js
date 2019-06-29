@@ -1,9 +1,23 @@
-global.app = require('express')();
+var express = require('express');
+var bodyParser = require('body-parser');
+
 global.fsx = require('fs-extra');
-global.mongoose = require('mongoose');
-
-
 global.config = fsx.readJsonSync('./config/config.json');
+global.app = express();
+global.mongoose = require('mongoose');
+global._ = require('lodash');
+global.bcrypt = require('bcrypt');
+
+
+
+global.transporterEmail =  require("nodemailer").createTransport({
+    service: config.mail.service,
+    auth: {
+      user: config.mail.user,
+      pass: config.mail.pass
+    }
+});
+
 let _stringConnect = 'mongodb://' 
     + config.database.username + ':' 
     + config.database.password + '@' 
@@ -30,18 +44,17 @@ function buildApp() {
     app.set('view engine', 'ejs');
     app.set('view cache', false);
 
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({extended: true}));
+
+    app.use('/js', express.static('public/js'));
+    app.use('/img', express.static('public/img'));
+    app.use('/css', express.static('public/css'));
+    app.use('/pages', express.static('public/pages'));
+    app.use('/fonts', express.static('public/fonts'));
 
     app.use(require('./library/auth.js'));
-
-
-
     require('./library/setup.js');
-
-
-
-    
-
-
 
     app.use(function (req, res, next) {
         res.render('404', {});
