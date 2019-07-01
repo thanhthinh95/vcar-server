@@ -13,7 +13,7 @@
 
     <title> <%- title ? title : 'V-Car'%> </title>
     <% if(page) {%>
-      <!-- <link rel="stylesheet" href = '<%- "pages/" + page + "/style.css"%>'> -->
+      <link rel="stylesheet" href = '<%- "pages/" + page + "/style.css"%>'>
     <%}%>
 
     <script>
@@ -27,16 +27,14 @@
 
 
 
+
   <body class="container">
     <%- include('header') %>
     
-    <div class="mt-5" id='pageChild'>
+    <div class="" id='pageChild'>
     </div>
 
-
-
-
-  <%- include('loader') %>
+    <%- include('loader') %>
 </body>
 
 

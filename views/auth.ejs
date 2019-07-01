@@ -1,16 +1,22 @@
+<link rel="stylesheet" href = 'pages/auth/style.css'>
 
-<div class='row justify-content-center pt-3'>
-    <div class='col-lg-6 col-md-6 col-sm-6 pt-5'>
-        <strong>CHỌN QUYỀN TRUY CẬP HỆ THỐNG</strong>
 
-        <% _.forEach(roles, function(item){%>
-            <button type="button" class="btn btn-info mt-3 col-lg-12 col-md-12 col-sm-12"><%- item.name%></button>
-        <%})%>
+<div class='card'>
+    <div class="card-header col-lg-12 col-md-12 col-sm-12">
+        <b class=""> <i class="fa fa-map-signs" aria-hidden="true"></i> CHỌN QUYỀN TRUY CẬP HỆ THỐNG</b>
     </div>
+    <div class='card-body d-flex justify-content-center '>
+        <div class="col-lg-6 col-md-12 col-sm-12">
+            <% _.forEach(dataRoles, function(item){%>
+                <button type="button" class="btn btn-info mt-3 col-lg-12 col-md-12 col-sm-12"
+                    data_role_id = '<%- item._id%>' 
+                    name='btn_role'
+                    ><%- item.name ? item.name : "Chưa xác định"%></button>
+            <%})%>
+        </div>
 
-
+    </div>
 </div>
 
-<div>
-            
-</div>
+
+<script src='pages/auth/script.js'></script>

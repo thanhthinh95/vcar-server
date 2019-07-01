@@ -29,33 +29,14 @@ var eventPage = function($) {
     }  
 
     function initRole(roles, roleIndex) {
-        console.log(roles, roleIndex);
-
         if(!roleIndex){//Neu user truoc do chua chon quyen
-            console.log('this is here');
-            
-            readEjsFile("/views/auth.ejs", null);
-
+            readEjsFile("/views/auth.ejs", {dataRoles : roles});
         }
-        
-        
     }
 
 
 
-    function readEjsFile(filename, dataViewChile) {
-        var rawFile = new XMLHttpRequest();
-        rawFile.open("GET", filename);
-        rawFile.onreadystatechange = function() {
-            if (rawFile.readyState === 4) {
-                var html =  ejs.render(rawFile.responseText, dataViewChile);
-                console.log('html ', html);
-                
-                $('#pageChild').html(html);
-            }
-        }
-        rawFile.send();
-    }
+
 
     return {
         init : function () {

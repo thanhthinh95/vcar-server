@@ -81,3 +81,14 @@ window._DialogQuestion = function(title, content, fn_success) {
 }
 
 
+window.readEjsFile = function(filename, data) {
+    var rawFile = new XMLHttpRequest();
+    rawFile.open("GET", filename);
+    rawFile.onreadystatechange = function() {
+        if (rawFile.readyState === 4) {
+            var html =  ejs.render(rawFile.responseText, data);
+            $('#pageChild').html(html);
+        }
+    }
+    rawFile.send();
+}
