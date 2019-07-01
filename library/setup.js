@@ -22,9 +22,20 @@ global._output = function(code, message, data) {
         data : data ? data : null};    
 }
 
-
 app.get('/', function (req, res, next) {
+    if(req.session.user){
+        res.redirect('/home')
+    }else{
+        res.render('login', {
+            title : 'Đăng nhập',
+            page : 'login'
+        });
+    }
+})
+
+app.get('/logout', function (req, res, next) {
     req.session.user = null;
+    req.session.roleIndex = null;
 
     res.render('login', {
         title : 'Đăng nhập',

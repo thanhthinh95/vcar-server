@@ -60,9 +60,11 @@ function buildApp() {
     app.use('/pages', express.static('public/pages'));
     app.use('/fonts', express.static('public/fonts'));
     app.use('/plugins', express.static('public/plugins'));
+    app.use('/views', express.static('views'));
 
     app.use(require('./library/auth.js'));
     require('./library/setup.js');
+
 
     app.use(function (req, res, next) {
         res.render('404', {});
