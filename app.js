@@ -4,6 +4,8 @@ var bodyParser = require('body-parser');
 global.fsx = require('fs-extra');
 global.config = fsx.readJsonSync('./config/config.json');
 global.app = express();
+global.server = require('http').createServer(app);
+global.io = require('socket.io')(server);
 global.mongoose = require('mongoose');
 global._ = require('lodash');
 global.bcrypt = require('bcrypt');
@@ -27,7 +29,7 @@ let _stringConnect = 'mongodb://'
 
 
 
-mongoose.connect(_stringConnect, {useNewUrlParser : true, connectTimeoutMS : 3000}, function (error) {
+mongoose.connect(_stringConnect, {useCreateIndex : true, useNewUrlParser : true, connectTimeoutMS : 3000}, function (error) {
     if(error){
         console.log('connect database fail: ' + _stringConnect);
         return;
@@ -46,12 +48,18 @@ function buildApp() {
 
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended: true}));
+    app.use(require('express-session')({
+        secret: 'pcar_secret',
+        resave: false,
+        saveUninitialized: true,
+    }))
 
     app.use('/js', express.static('public/js'));
     app.use('/img', express.static('public/img'));
     app.use('/css', express.static('public/css'));
     app.use('/pages', express.static('public/pages'));
     app.use('/fonts', express.static('public/fonts'));
+    app.use('/plugins', express.static('public/plugins'));
 
     app.use(require('./library/auth.js'));
     require('./library/setup.js');
@@ -60,8 +68,15 @@ function buildApp() {
         res.render('404', {});
     })
 
-    app.listen(config.app.port);
-    console.log('app runing on port: ' + config.app.port);
+    server.listen(config.app.port);
+
+    io.on('connection',  require('./library/io.js'));
+
+    // _role._create({name : 'Kỹ thuật hệ thống', description : 'Nhân viên kỹ thuật hệ thống'});
+    // _role._create({name : 'Nhân viên hệ thống', description : 'Nhân viên hệ thống'});
+    // _role._create({name : 'Nhà xe', description : 'Kỹ thuật viên của nhà xe'});
+    // _role._create({name : 'Nhân viên', description : 'Nhân viên của nhà xe'});
+    
 }
 
 

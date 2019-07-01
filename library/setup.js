@@ -15,7 +15,7 @@ fsx.readdirSync('./controllers').forEach(filename => {
     }
 });
 
-global._output = function(code, data, message) {
+global._output = function(code, message, data) {
     return {
         code : code, 
         message : message ? message : setValueOutput(code), 
@@ -24,6 +24,8 @@ global._output = function(code, data, message) {
 
 
 app.get('/', function (req, res, next) {
+    req.session.user = null;
+
     res.render('login', {
         title : 'Đăng nhập',
         page : 'login'
@@ -32,6 +34,9 @@ app.get('/', function (req, res, next) {
 
 
 app.get('/password-recovery', function (req, res, next) {
+    req.session.user = null;
+
+
     res.render('password-recovery', {
         title : 'Khôi phục mật khẩu',
         page : 'password-recovery'
@@ -85,31 +90,16 @@ function setValueOutput(code) {
     switch (code) {
         case 200:
             return 'Thành công';
-        case 201:
-            return 'Tạo mới thành công';
-        case 202:
-            return 'Cập nhật thành công';
-        case 203:
-            return 'Xóa bỏ thành công';     
-        case 204:
-            return 'Tải file thành công';
-
-
-                
-            
-            
+        case 300:
+            return 'Kết nối socket thành công';
+        case 301:
+            return 'Đã ngắt kết nối socket';             
+        case 302:
+            return 'Bạn đã bị chiếm quyền đăng nhập bởi một người khác.';            
         case 500:
-            return 'Có lỗi xảy ra';   
+            return 'Có lỗi xảy ra. Thử lại sau';   
         case 501:
-            return 'Tạo mới thất bại. Thử lại sau';
-        case 502:
-            return 'Cập nhật thất bại. Thử lại sau';
-        case 503:
-            return 'Xóa bỏ thất bại. Thử lại sau';     
-        case 504:
-            return 'Tải file thất bại. Thử lại sau';      
-            
-            
+            return 'Dữ liệu đầu vào không hợp lệ';   
         default:
             return '';
     }

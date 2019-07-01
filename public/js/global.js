@@ -1,20 +1,30 @@
+
+
 $(document).ready(function(){
     eventPage.init();
 });
 
 window._AjaxObject = function (url, method, object, success) {
     $('#loader').modal('toggle');
+
     $.ajax({
         url : url,
         type : method,
         dataType : "json",
         data : object,
-        success : success,
+        success : function(resp) {
+            setTimeout(function() {
+                $('#loader').modal('toggle');
+                setTimeout(function() {
+                    success(resp)
+                }, 100);
+            }, 500);
+        },
     })
 
-    setTimeout(function() {
-        $('#loader').modal('toggle');
-    }, 500);   
+
+
+   
 }
 
 

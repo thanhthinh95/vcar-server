@@ -1,17 +1,16 @@
-exports.getAll = function (req, res) {
-    // _user.find({}, function (error, result) {
-    //     console.log(error);
-    //     console.log(result);
-        
-        
-        
-    // })
-    _user._new()
+//get all role user
+exports.getAll = async function(req, res) {
+    console.log('dang thuc hien get role cua user');
     
+    var roles = await _user._getRoles(req.session.user._id);
     
-    res.send('day la html')
-    _.render(req, res, {});
-    
+
+    res.render('home', {
+        title : 'Trang Chủ',
+        page : 'home',
+        roles : roles,
+        userId : req.session.user._id
+    });
 }
 
 exports.getId = function (req, res) {
