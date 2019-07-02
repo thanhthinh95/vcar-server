@@ -15,6 +15,30 @@ fsx.readdirSync('./controllers').forEach(filename => {
     }
 });
 
+
+global._render = function(req, res, page, title, data, plugins) {
+    if(req.xhr){// co request tu phia browser gui len =>> nguoi dung thuc hien click de yeu cau thong tin
+        console.log('one');
+        
+        res.render('home', {
+            title : title ? title : 'V-Car',
+            page : page ? page : null,
+            data : data ? data : null,
+            plugins : plugins ? plugins : null
+        })
+    }else{// khong co request tu phia browser gui len ==>> nguoi dung thuc hien enter link de yeu cau thong tin
+        console.log('two');
+
+        res.render(page, {
+            title : title ? title : 'V-Car',
+            page : page ? page : null,
+            data : data ? data : null,
+            plugins : plugins ? plugins : null
+        })
+    }
+    
+}
+
 global._output = function(code, message, data) {
     return {
         code : code, 

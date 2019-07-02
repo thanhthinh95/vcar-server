@@ -82,13 +82,20 @@ window._DialogQuestion = function(title, content, fn_success) {
 
 
 window.readEjsFile = function(filename, data) {
+    
     var rawFile = new XMLHttpRequest();
-    rawFile.open("GET", filename);
-    rawFile.onreadystatechange = function() {
-        if (rawFile.readyState === 4) {
+    rawFile.open("GET", filename, true);
+
+    rawFile.onreadystatechange = function(error) {
+        console.log('hello', );
+        
+        
+        if (rawFile.readyState === 4 && rawFile.status == 200) {
             var html =  ejs.render(rawFile.responseText, data);
             $('#pageChild').html(html);
         }
     }
+
     rawFile.send();
+
 }

@@ -30,11 +30,11 @@ var eventPage = function($) {
 
     function initRole(roles, roleIndex) {
         if(!roleIndex){//Neu user truoc do chua chon quyen
+            console.log('one');
+            
             readEjsFile("/views/auth.ejs", {dataRoles : roles});
         }
     }
-
-
 
 
 
@@ -42,6 +42,28 @@ var eventPage = function($) {
         init : function () {
             initSocket();
             initRole(roles, roleIndex);
+
+
+            $('#button_sidebar').on('click', function (e) {
+                $("#myNav").width('260px')
+                
+
+            })
+
+
+            $('#close_sidebar').on('click', function (e) {
+                $("#myNav").width("0px");
+                
+
+            })
+
+ 
+
+ 
+
+
+
+    
 
         },
         uncut : function (){

@@ -1,6 +1,6 @@
 
 module.exports = function auth(req, res, next) {
-    console.log('dang check auth', req.method, req.path);
+    console.log('dang check auth', req.method, req.path, req.xhr);
 
     
     
