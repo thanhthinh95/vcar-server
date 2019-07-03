@@ -1,13 +1,8 @@
 //get all role user
 exports.getAll = async function(req, res) {
-    console.log('dang thuc hien get role cua user');
+    var roles = await _user._getRoles(req.session.user._id);
 
-    res.render('home', {
-        title : 'Trang Chủ',
-        page : 'home',
-        roleIndex : null, 
-        user : req.session.user,
-    });
+    _render(req, res, 'auth', 'Chọn quyền truy cập hệ thống', {roles : roles}, null)
 }
 
 exports.getId = function (req, res) {

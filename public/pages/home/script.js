@@ -1,6 +1,5 @@
 
-
-var eventPage = function($) {
+var eventHomePage = function($) {
     function initSocket() {
         var socket = io(window.location.host);
 
@@ -16,7 +15,7 @@ var eventPage = function($) {
             console.log('this is data server', data);
 
             if(data.code == 302){// Ban vua bi chiem quyen dang nhap
-                _DialogError(data.message, function name(params) {
+                _DialogError(data.message, function name() {
                     window.location.href = '/';
                 })
             }
@@ -30,9 +29,7 @@ var eventPage = function($) {
 
     function initRole(roles, roleIndex) {
         if(!roleIndex){//Neu user truoc do chua chon quyen
-            console.log('one');
-            
-            readEjsFile("/views/auth.ejs", {dataRoles : roles});
+
         }
     }
 
@@ -41,28 +38,22 @@ var eventPage = function($) {
     return {
         init : function () {
             initSocket();
-            initRole(roles, roleIndex);
+            // initRole(roles, roleIndex);
 
 
             $('#button_sidebar').on('click', function (e) {
                 $("#myNav").width('260px')
-                
-
             })
-
 
             $('#close_sidebar').on('click', function (e) {
                 $("#myNav").width("0px");
-                
-
             })
 
+            $(document).on('click', 'a', function (e) {
+                e.preventDefault();
+                loadPageChild('auth');
+            })
  
-
- 
-
-
-
     
 
         },

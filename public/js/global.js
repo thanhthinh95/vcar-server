@@ -1,16 +1,16 @@
 
 
 $(document).ready(function(){
-    eventPage.init();
+    eventHomePage.init();
 });
 
-window._AjaxObject = function (url, method, object, success) {
+window._AjaxObject = function (url, method, object, success, dataType) {
     $('#loader').modal('toggle');
 
     $.ajax({
         url : url,
         type : method,
-        dataType : "json",
+        dataType : dataType ? dataType : "json",
         data : object,
         success : function(resp) {
             setTimeout(function() {
@@ -21,10 +21,6 @@ window._AjaxObject = function (url, method, object, success) {
             }, 500);
         },
     })
-
-
-
-   
 }
 
 
@@ -81,21 +77,11 @@ window._DialogQuestion = function(title, content, fn_success) {
 }
 
 
-window.readEjsFile = function(filename, data) {
-    
-    var rawFile = new XMLHttpRequest();
-    rawFile.open("GET", filename, true);
+window.loadPageChild = function(url) {
+    var path = window.location.origin + '/' + url;
 
-    rawFile.onreadystatechange = function(error) {
-        console.log('hello', );
-        
-        
-        if (rawFile.readyState === 4 && rawFile.status == 200) {
-            var html =  ejs.render(rawFile.responseText, data);
-            $('#pageChild').html(html);
-        }
-    }
-
-    rawFile.send();
-
+    _AjaxObject(path, 'GET', null, function(html) {
+        $('#pageChild').html(html);
+        eventPage.init();
+    }, 'html')
 }

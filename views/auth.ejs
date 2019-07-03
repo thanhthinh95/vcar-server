@@ -1,4 +1,6 @@
-<link rel="stylesheet" href = 'pages/auth/style.css'>
+<% if(page) {%>
+    <link rel="stylesheet" href = '<%- "pages/" + page + "/style.css"%>'>
+<%}%>
 
 
 <div class='card'>
@@ -7,7 +9,7 @@
     </div>
     <div class='card-body d-flex justify-content-center '>
         <div class="col-lg-6 col-md-12 col-sm-12">
-            <% _.forEach(dataRoles, function(item){%>
+            <% _.forEach(data.roles, function(item){%>
                 <button type="button" class="btn btn-info mt-3 col-lg-12 col-md-12 col-sm-12"
                     data_role_id = '<%- item._id%>' 
                     name='btn_role'
@@ -19,4 +21,6 @@
 </div>
 
 
-<script src='pages/auth/script.js'></script>
+<% if(page) {%>
+    <script src='<%- "pages/" + page + "/script.js"%>'></script>
+<%}%>

@@ -62,7 +62,7 @@ function buildApp() {
     app.use('/plugins', express.static('public/plugins'));
     app.use('/views', express.static('views'));
 
-    app.use(require('./library/auth.js'));
+    app.use(require('./library/auth-access.js'));
     require('./library/setup.js');
 
 

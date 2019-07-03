@@ -20,7 +20,7 @@ global._render = function(req, res, page, title, data, plugins) {
     if(req.xhr){// co request tu phia browser gui len =>> nguoi dung thuc hien click de yeu cau thong tin
         console.log('one');
         
-        res.render('home', {
+        res.render(page, {
             title : title ? title : 'V-Car',
             page : page ? page : null,
             data : data ? data : null,
@@ -29,7 +29,7 @@ global._render = function(req, res, page, title, data, plugins) {
     }else{// khong co request tu phia browser gui len ==>> nguoi dung thuc hien enter link de yeu cau thong tin
         console.log('two');
 
-        res.render(page, {
+        res.render('home', {
             title : title ? title : 'V-Car',
             page : page ? page : null,
             data : data ? data : null,
