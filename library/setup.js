@@ -134,7 +134,9 @@ function setValueOutput(code) {
         case 500:
             return 'Có lỗi xảy ra. Thử lại sau';   
         case 501:
-            return 'Dữ liệu đầu vào không hợp lệ';   
+            return 'Dữ liệu đầu vào không hợp lệ';
+        case 502:
+            return 'Kết quả trả về không xác định'; //Truy van DB bi null
         default:
             return '';
     }

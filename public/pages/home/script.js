@@ -1,5 +1,5 @@
 
-var eventHomePage = function($) {
+var eventPage = function($) {
     function initSocket() {
         var socket = io(window.location.host);
 
@@ -27,9 +27,9 @@ var eventHomePage = function($) {
         });
     }  
 
-    function initRole(roles, roleIndex) {
+    function initRole(roleIndex) {
         if(!roleIndex){//Neu user truoc do chua chon quyen
-
+            loadPageChild('auth');
         }
     }
 
@@ -38,7 +38,7 @@ var eventHomePage = function($) {
     return {
         init : function () {
             initSocket();
-            // initRole(roles, roleIndex);
+            initRole(roleIndex);
 
 
             $('#button_sidebar').on('click', function (e) {

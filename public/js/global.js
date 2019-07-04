@@ -1,13 +1,14 @@
 
 
 $(document).ready(function(){
-    eventHomePage.init();
+    eventPage.init();
 });
 
 window._AjaxObject = function (url, method, object, success, dataType) {
     $('#loader').modal('toggle');
 
     $.ajax({
+        async: true,
         url : url,
         type : method,
         dataType : dataType ? dataType : "json",

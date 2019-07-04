@@ -19,8 +19,17 @@ exports.edit = function (req, res) {
     res.send('dang thuc hien sua')
 }
 
-exports.create = function (req, res) {
-    res.send('dang thuc hien sua', req.body)
+//Khi user thuc hien chon quyen truy cap du an
+exports.create = async function (req, res) {
+
+    if(!_.has(req.body, '_id') || !mongoose.Types.ObjectId.isValid(req.body._id)){
+        return res.send(_output(501));
+    }else{
+        var role = await _role._getId(req.body);
+        req.session.roleIndex = role;
+        res.send(_output(role ? 200 : 500, null, role));
+    }
+    
 }
 
 exports.update = function (req, res) {

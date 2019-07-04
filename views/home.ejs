@@ -10,13 +10,14 @@
     <script src="plugins/lodash/lodash.min.js"></script>
 
 
-    <title> <%- title ? title : 'V-Car'%> </title>
+    <title> <%- data.title ? data.title : 'V-Car'%> </title>
     <% if(page) {%>
       <link rel="stylesheet" href = '<%- "pages/" + page + "/style.css"%>'>
     <%}%>
 
     <script>
-       var user= JSON.parse('<%- JSON.stringify(user) %>')
+       var user = JSON.parse('<%- JSON.stringify(data.user) %>')
+       var roleIndex = JSON.parse('<%- JSON.stringify(data.roleIndex) %>')
     </script>
 
 
