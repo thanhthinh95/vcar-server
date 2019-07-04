@@ -50,8 +50,24 @@ var eventPage = function($) {
             })
 
             $(document).on('click', 'a', function (e) {
-                e.preventDefault();
-                loadPageChild('auth');
+
+                var hash = $(this).attr('href');
+                console.log(hash);
+                
+                if(_.split(hash, '#').length == 2){//duong dan co dau #
+                    e.preventDefault();
+                    console.log('duong dan co dau #');
+                    loadPageChild(_.split(hash, '#')[1]);
+
+                    
+                }
+
+
+                
+                // if(window.location.href != 'logout'){
+                //     e.preventDefault();
+                // }
+            
             })
  
     

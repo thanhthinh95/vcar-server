@@ -48,7 +48,10 @@ global._output = function(code, message, data) {
 
 app.get('/', function (req, res, next) {
     if(req.session.user){
-        res.redirect('/home')
+        _render(req, res, 'home', 'Trang Chủ', {
+            roleIndex : req.session.roleIndex, 
+            user : req.session.user}, 
+        null);
     }else{
         res.render('login', {
             title : 'Đăng nhập',
@@ -89,7 +92,7 @@ function setRouter(namefile, key, fn) {
             break;
         case 'getId':
             method = 'get';
-            url = '/' + namefile + '/id';
+            url = '/' + namefile + '/id:id';
             break; 
         case 'new':
             method = 'get';

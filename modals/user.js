@@ -15,6 +15,13 @@ var userSchame = new mongoose.Schema({
 },{id: false, versionKey: 'v'});
 
 
+userSchame.statics._getAll = async function() {
+    return await _user.find({});
+}
+
+userSchame.statics._id = async function(userId) {
+    return await _user.findById(userId);
+}
 
 
 userSchame.statics._login = async function(email, password) {

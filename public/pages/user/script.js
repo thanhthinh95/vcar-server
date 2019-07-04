@@ -1,6 +1,6 @@
 var eventPage = function($) {
     function bindEventClick() {
-        console.log('hello');
+        console.log('hello user');
 
         $(document).on('click', '#btn_role', function (e) {
             var roldeId = $(this).attr('data_id');
@@ -10,8 +10,6 @@ var eventPage = function($) {
                 if(resp.code == 200 && resp.data){
                     roleIndex = resp.data;
                     $('#header_role_index').text(resp.data.name);
-                    loadPageChild('user');
-
                 }else{
                     _DialogError(resp.message);
                 }
@@ -26,7 +24,7 @@ var eventPage = function($) {
 
         },
         uncut : function (){
-            console.log('dang thuc hien uncut su kien auth');
+            console.log('dang thuc hien uncut su kien user');
             
             
         }

@@ -10,7 +10,7 @@ var eventPage = function($) {
                 _AjaxObject('/login', 'POST', obj, function(resp) {
                     console.log(resp);
                     if(resp.code == 200){
-                        window.location.href = '/home';
+                        window.location.href = '/';
                     }else{
                         _DialogError(resp.message, function() {
                             $('#email').val('');

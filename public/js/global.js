@@ -5,7 +5,7 @@ $(document).ready(function(){
 });
 
 window._AjaxObject = function (url, method, object, success, dataType) {
-    $('#loader').modal('toggle');
+    $('#loader').modal('show');
 
     $.ajax({
         async: true,
@@ -15,7 +15,7 @@ window._AjaxObject = function (url, method, object, success, dataType) {
         data : object,
         success : function(resp) {
             setTimeout(function() {
-                $('#loader').modal('toggle');
+                $('#loader').modal('hide');
                 setTimeout(function() {
                     success(resp)
                 }, 100);
@@ -80,7 +80,7 @@ window._DialogQuestion = function(title, content, fn_success) {
 
 window.loadPageChild = function(url) {
     var path = window.location.origin + '/' + url;
-
+    eventPage.uncut();
     _AjaxObject(path, 'GET', null, function(html) {
         $('#pageChild').html(html);
         eventPage.init();
