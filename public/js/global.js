@@ -89,3 +89,21 @@ window.loadPageChild = function(url) {
 
     }, 'html')
 }
+
+
+window._bindModalConfig = function (modalId, fields) {
+    if(fields){
+        var html = '';
+        _.forEach(fields, function (item) {
+            html += '<tr>';
+            html += '<td class="td_modal">';
+            html += '<div class="custom-control custom-checkbox">';
+            html += '<input type="checkbox" class="custom-control-input" id="field_' + item.path + '" '+ (item.statusShow == -1 || item.statusShow == 1   ? 'checked ' : ' ')  + (item.statusShow == -1 ? 'disabled' : '') + '>';
+            html += '<label class="custom-control-label" for="field_' + item.path + '">' + item.textShow + ' (' + item.path + ')</label>';
+            html += '</td>';
+            html += '</tr>';    
+        })    
+
+        $(modalId +' tbody').append(html);
+    }
+}

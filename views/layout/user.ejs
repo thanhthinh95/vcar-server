@@ -9,10 +9,7 @@
 <%}%>
 
 <script>
-    var fields = JSON.parse('<%- JSON.stringify(data.fields) %>')
-    console.log(fields);
-    
-
+    var _fields = JSON.parse('<%- JSON.stringify(data.fields) %>');
 </script>
 
 
@@ -92,22 +89,12 @@
 
                 <div class='row'>
                     <b class='col col-md-7 col-sm-7'>Số cột hiện thị:</b>
-                    <b class='col col-md-4 col-sm-4'>05</b>
+                    <b class='col col-md-4 col-sm-4' id='sum_column'></b>
                 </div>
 
                 <div class="table-responsive">
                     <table class="table table-hover" id='table_modal'>
                         <tbody>
-                            <% _.forEach(data.fields, function(item){%>
-                                <tr  id='<%- "tr_" +item.path%>'>
-                                    <td class="td_modal">
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id='<%- "field_" +item.path%>'>
-                                            <label class="custom-control-label" for='<%- "field_" +item.path%>'><%- item.textShow%> (<%- item.path%>)</label>
-                                        </div>
-                                    </td>
-                                </tr>
-                            <%})%>
                         </tbody>
                     </table>
                 </div>

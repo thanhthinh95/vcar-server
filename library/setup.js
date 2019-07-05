@@ -47,20 +47,6 @@ global._output = function (code, message, data) {
     };
 }
 
-//field - Ten Field trong DB
-//textShow - Ten Hien thi giao dien
-//statusShow - Trang Thai hien thi : null - bat buoc | true - hien thi | false - khong hien thi
-//statusSort - Trang Thai sap xep : true - cho phep sap xep | false - khong sap xep
-//statusSearch - Trang Thai tim kiem : true - cho phep tim kiem | false - khong cho tim kiem
-global._objField = function(field, textShow, statusShow, statusSort, statusSearch) {
-    return {
-        field : field, 
-        textShow : textShow, 
-        statusShow : statusShow ? statusShow : null,
-        statusSort : statusSort ? statusSort : false,
-        statusSearch : statusSearch ? statusSearch : false,
-    }
-}
 
 app.get('/', function (req, res, next) {
     if (req.session.user) {
@@ -101,18 +87,39 @@ global._getFields = function (schema, fieldShows) {
     _.forEach(fieldShows, function (item) {
         if (_.has(schema.schema.paths, item.field)) {
             var field = schema.schema.paths[item.field];
-            field.statusShow = item.statusShow;
-            if(_.has(item, 'textShow')){
+            if(_.has(item, 'textShow') && item.textShow){
                 field.textShow = item.textShow;
             }else {
                 field.textShow = setValueField(field.path);
             }
+
+            field.statusShow = item.statusShow;
+            field.statusSort = item.statusSort;
+            field.statusSearch = item.statusSearch;
+
             fields.push(field);
         }
     })
 
     return fields;
 }
+
+
+//field - Ten Field trong DB
+//textShow - Ten Hien thi giao dien
+//statusShow - Trang Thai hien thi : -1 - bat buoc | 1 - hien thi | 0 - khong hien thi
+//statusSort - Trang Thai sap xep : true - cho phep sap xep | false - khong sap xep
+//statusSearch - Trang Thai tim kiem : true - cho phep tim kiem | false - khong cho tim kiem
+global._objField = function(field, textShow, statusShow, statusSort, statusSearch) {
+    return {
+        field : field, 
+        textShow : textShow, 
+        statusShow : statusShow,
+        statusSort : statusSort ? statusSort : false,
+        statusSearch : statusSearch ? statusSearch : false,
+    }
+}
+
 
 function setRouter(namefile, key, fn) {
     let method = null,
