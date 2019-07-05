@@ -1,61 +1,77 @@
 fsx.readdirSync('./modals').forEach(filename => {
     let _arrayFileName = _.split(filename, '.');
-    if(_arrayFileName[1] == 'js'){
+    if (_arrayFileName[1] == 'js') {
         global['_' + _arrayFileName[0]] = require('../modals/' + _arrayFileName[0]);
     }
 });
 
 fsx.readdirSync('./controllers').forEach(filename => {
     let _arrayFileName = _.split(filename, '.');
-    if(_arrayFileName[1] == 'js'){
+    if (_arrayFileName[1] == 'js') {
         let _arrayFunction = require('../controllers/' + _arrayFileName[0]);
-        _.forIn(_arrayFunction, function(fn, key) {
+        _.forIn(_arrayFunction, function (fn, key) {
             setRouter(_arrayFileName[0], key, fn);
         })
     }
 });
 
 
-global._render = function(req, res, page, title, data, plugins) {
-    if(req.xhr){// co request tu phia browser gui len =>> nguoi dung thuc hien click de yeu cau thong tin
+global._render = function (req, res, page, title, data, plugins) {
+    if (req.xhr) {// co request tu phia browser gui len =>> nguoi dung thuc hien click de yeu cau thong tin
         console.log('one');
-        
+
         res.render('layout/' + page, {
-            title : title ? title : 'V-Car',
-            page : page ? page : null,
-            data : data ? data : null,
-            plugins : plugins ? plugins : null
+            title: title ? title : 'V-Car',
+            page: page ? page : null,
+            data: data ? data : null,
+            plugins: plugins ? plugins : null
         })
-    }else{// khong co request tu phia browser gui len ==>> nguoi dung thuc hien enter link de yeu cau thong tin
+    } else {// khong co request tu phia browser gui len ==>> nguoi dung thuc hien enter link de yeu cau thong tin
         console.log('two');
 
         res.render('home', {
-            title : title ? title : 'V-Car',
-            page : page ? page : null,
-            data : data ? data : null,
-            plugins : plugins ? plugins : null
+            title: title ? title : 'V-Car',
+            page: page ? page : null,
+            data: data ? data : null,
+            plugins: plugins ? plugins : null
         })
     }
-    
+
 }
 
-global._output = function(code, message, data) {
+global._output = function (code, message, data) {
     return {
-        code : code, 
-        message : message ? message : setValueOutput(code), 
-        data : data ? data : null};    
+        code: code,
+        message: message ? message : setValueOutput(code),
+        data: data ? data : null
+    };
+}
+
+//field - Ten Field trong DB
+//textShow - Ten Hien thi giao dien
+//statusShow - Trang Thai hien thi : null - bat buoc | true - hien thi | false - khong hien thi
+//statusSort - Trang Thai sap xep : true - cho phep sap xep | false - khong sap xep
+//statusSearch - Trang Thai tim kiem : true - cho phep tim kiem | false - khong cho tim kiem
+global._objField = function(field, textShow, statusShow, statusSort, statusSearch) {
+    return {
+        field : field, 
+        textShow : textShow, 
+        statusShow : statusShow ? statusShow : null,
+        statusSort : statusSort ? statusSort : false,
+        statusSearch : statusSearch ? statusSearch : false,
+    }
 }
 
 app.get('/', function (req, res, next) {
-    if(req.session.user){
+    if (req.session.user) {
         _render(req, res, 'home', 'Trang Chủ', {
-            roleIndex : req.session.roleIndex, 
-            user : req.session.user}, 
-        null);
-    }else{
+            roleIndex: req.session.roleIndex,
+            user: req.session.user
+        }, ['jquery-ui']);
+    } else {
         res.render('login', {
-            title : 'Đăng nhập',
-            page : 'login'
+            title: 'Đăng nhập',
+            page: 'login'
         });
     }
 })
@@ -65,22 +81,38 @@ app.get('/logout', function (req, res, next) {
     req.session.roleIndex = null;
 
     res.render('login', {
-        title : 'Đăng nhập',
-        page : 'login'
+        title: 'Đăng nhập',
+        page: 'login'
     });
 })
 
 
 app.get('/password-recovery', function (req, res, next) {
     req.session.user = null;
-
-
     res.render('password-recovery', {
-        title : 'Khôi phục mật khẩu',
-        page : 'password-recovery'
+        title: 'Khôi phục mật khẩu',
+        page: 'password-recovery'
     });
 })
 
+
+global._getFields = function (schema, fieldShows) {
+    var fields = [];
+    _.forEach(fieldShows, function (item) {
+        if (_.has(schema.schema.paths, item.field)) {
+            var field = schema.schema.paths[item.field];
+            field.statusShow = item.statusShow;
+            if(_.has(item, 'textShow')){
+                field.textShow = item.textShow;
+            }else {
+                field.textShow = setValueField(field.path);
+            }
+            fields.push(field);
+        }
+    })
+
+    return fields;
+}
 
 function setRouter(namefile, key, fn) {
     let method = null,
@@ -93,32 +125,32 @@ function setRouter(namefile, key, fn) {
         case 'getId':
             method = 'get';
             url = '/' + namefile + '/id/:_id';
-            break; 
+            break;
         case 'new':
             method = 'get';
             url = '/' + namefile + '/new';
-            break;       
+            break;
         case 'edit':
             method = 'get';
             url = '/' + namefile + '/edit';
-            break;   
+            break;
         case 'create':
             method = 'post';
             url = '/' + namefile;
-            break; 
+            break;
         case 'update':
             method = 'put';
             url = '/' + namefile;
-            break;   
+            break;
         case 'delete':
             method = 'delete';
             url = '/' + namefile;
-            break;                       
+            break;
         default:
             break;
     }
 
-    if(method && url){
+    if (method && url) {
         app[method](url, fn);
     }
 }
@@ -131,15 +163,48 @@ function setValueOutput(code) {
         case 300:
             return 'Kết nối socket thành công';
         case 301:
-            return 'Đã ngắt kết nối socket';             
+            return 'Đã ngắt kết nối socket';
         case 302:
-            return 'Bạn đã bị chiếm quyền đăng nhập bởi một người khác.';            
+            return 'Bạn đã bị chiếm quyền đăng nhập bởi một người khác.';
         case 500:
-            return 'Có lỗi xảy ra. Thử lại sau';   
+            return 'Có lỗi xảy ra. Thử lại sau';
         case 501:
             return 'Dữ liệu đầu vào không hợp lệ';
         case 502:
             return 'Kết quả trả về không xác định'; //Truy van DB bi null
+        default:
+            return '';
+    }
+}
+
+function setValueField(nameField) {
+    switch (nameField) {
+        case '_id':
+            return 'Mã';        
+        case 'name':
+            return 'Tên';
+        case 'email':
+            return 'Thư điện tử';
+        case 'numberPhone':
+            return 'Số điện thoại';
+        case 'password':
+            return 'Mật khẩu';
+        case 'brithDay':
+            return 'Ngày sinh';
+        case 'gender':
+            return 'Giới tính';
+        case 'roles':
+            return 'Quyền truy cập';
+        case 'created':
+            return 'Ngày tạo';
+        case 'createBy':
+            return 'Người tạo';
+        case 'updated':
+            return 'Ngày sửa';
+        case 'updateBy':
+            return 'Người sửa';
+        case 'status':
+            return 'Trạng thái';
         default:
             return '';
     }

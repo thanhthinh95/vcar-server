@@ -15,6 +15,13 @@
       <link rel="stylesheet" href = '<%- "pages/" + page + "/style.css"%>'>
     <%}%>
 
+    <% if(plugins) {%>
+      <% _.forEach(plugins, function(item){%>
+          <link rel="stylesheet" href='<%- "plugins/" + item + "/style.css"%>'>
+      <%})%>
+    <%}%>
+  
+
     <script>
        var user = JSON.parse('<%- JSON.stringify(data.user) %>')
        var roleIndex = JSON.parse('<%- JSON.stringify(data.roleIndex) %>')
@@ -47,6 +54,12 @@
 
   <% if(page) {%>
     <script src='<%- "pages/" + page + "/script.js"%>'></script>
+  <%}%>
+
+  <% if(plugins) {%>
+    <% _.forEach(plugins, function(item){%>
+        <script src='<%- "plugins/" + item + "/script.js"%>'></script>
+    <%})%>
   <%}%>
 
   <script src="js/global.js"></script>

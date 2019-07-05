@@ -23,12 +23,12 @@
                 </li>                
 
                 <li class="nav-item active">
-                  <a class="nav-link" href="<%- "/#my_user/id/" + data.user._id %>" data-toggle="tooltip" data-placement="top" title="Thông tin cá nhân"><i class="fa fa-user-circle-o" aria-hidden="true"></i> <span><%- data.user.name%></span></a>
+                  <a class="nav-link" href='<%- "/#my_user/id/" + data.user._id %>' data-toggle="tooltip" title="Thông tin cá nhân"><i class="fa fa-user-circle-o" aria-hidden="true"></i> <span><%- data.user.name%></span></a>
                 </li>
              
                 
                 <li class="nav-item active">
-                  <a class="nav-link"  href="/#auth" data-toggle="tooltip" data-placement="top" title="Thay đổi quyền truy cập hệ thống"><i class="fa fa-map-signs" aria-hidden="true"></i> <span id='header_role_index'><%- data.roleIndex ? data.roleIndex.name : "Quyền truy cập" %></span></a>
+                  <a class="nav-link"  href="/#auth" data-toggle="tooltip" title="Thay đổi quyền truy cập"><i class="fa fa-map-signs" aria-hidden="true"></i> <span id='header_role_index'><%- data.roleIndex ? data.roleIndex.name : "Quyền truy cập" %></span></a>
                 </li>
 
                 <li class="nav-item active">

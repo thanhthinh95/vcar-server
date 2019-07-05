@@ -1,64 +1,135 @@
 <% if(page) {%>
-    <link rel="stylesheet" href = '<%- "pages/" + page + "/style.css"%>'>
+    <link rel="stylesheet" href='<%- "pages/" + page + "/style.css"%>'>
 <%}%>
+
+<% if(plugins) {%>
+    <% _.forEach(plugins, function(item){%>
+        <link rel="stylesheet" href='<%- "plugins/" + item + "/style.css"%>'>
+    <%})%>
+<%}%>
+
+<script>
+    var fields = JSON.parse('<%- JSON.stringify(data.fields) %>')
+    console.log(fields);
+    
+
+</script>
+
 
 
 <div class='card'>
     <div class="card-header col-lg-12 col-md-12 col-sm-12">
         <b class=""> <i class="fa fa-map-signs" aria-hidden="true"></i> <%- title%></b>
+</div>
+<div class='card-body'>
+    <div class='float-right action'>
+        <a href="#user" data-toggle="tooltip" title="Tạo mới">
+            <i class="fa fa-plus" aria-hidden="true"></i></a>
+        <a href="#user" data-toggle="tooltip" title="Xóa bỏ nội dung đã chọn">
+            <i class="fa fa-trash-o" aria-hidden="true"></i></a>
+        <span id='config' data-toggle="tooltip" title="Tùy chỉnh">
+            <i class="fa fa-cog" aria-hidden="true"></i></span>
+        <a href="#user" data-toggle="tooltip" title="Làm mới">
+            <i class="fa fa-refresh" aria-hidden="true"></i></a>
     </div>
-    <div class='card-body'>
-        <div class='float-right action'>
-   
-            <a href="#user" data-toggle="tooltip" title="Tạo mới">
-                <i class="fa fa-plus" aria-hidden="true"></i></a>     
-    
-            <a href="#user" data-toggle="tooltip" title="Xóa bỏ nội dung đã chọn">
-                <i class="fa fa-trash-o" aria-hidden="true"></i></a>  
-            <span id='column_show' data-toggle="tooltip" title="Số cột hiển thị">
-                    <i class="fa fa-columns" aria-hidden="true"></i></span>  
-            <a href="#user" data-toggle="tooltip" title="Làm mới">
-                    <i class="fa fa-refresh" aria-hidden="true"></i></a>                                                  
-        </div>
 
-        <div class="table-responsive">
-            <table class="table table-sm" id="table_data">
-                <thead>
-                    <tr>
-                        <th class=" w-30 text-center">#</th>
-                        <th role="button" class="text-center sort" id="name" data-sort="none"><i class="zmdi zmdi-hc-fw p-r-10 " data-toggle="tooltip" data-placement="top"></i>Tên Đầy Đủ</th>
-                        <th role="button" class="text-center sort" id="sortName" data-sort="none"><i class="zmdi zmdi-hc-fw p-r-10 " data-toggle="tooltip" data-placement="top"></i>Thư điện tử</th>
-                        <th role="button" class="text-center sort" id="projectManager" data-sort="none"><i class="zmdi zmdi-hc-fw p-r-10 " data-toggle="tooltip" data-placement="top"></i>Số điện thoại</th>
-                        <th class=" text-center">Ngày Sinh</th>
-                        <th class="  text-center">Giới tính</th>
-                        <th role="button" class="  text-center sort" id="startDate" data-sort="none"><i class="zmdi zmdi-hc-fw p-r-10 " data-toggle="tooltip" data-placement="top"></i>Quyền truy cập</th>
-                        <th class="  text-center">Ngày tạo</th>
-                        <th class="  text-center">Người tạo</th>
-                        <th class="  text-center">Ngày sửa</th>
-                        <th class="  text-center">Người sửa</th>
-                        <th class="  text-center">Trạng thái</th>
-                        <th class="  text-center">Tác vụ</th>
-                    </tr>
+    <div class="table-responsive">
+        <table class="table table-hover" id="table_data">
+            <thead>
+                <tr>
+                    <th class=" w-30 text-center">#</th>
+                    <th role="button" class="text-center sort" id="name" data-sort="none">
+                        <i class="fa fa-sort-alpha-asc" data-toggle="tooltip" data-placement="top" title="fasd"></i>Tên
+                        Đầy Đủ</th>
+                    <th role="button" class="text-center sort" id="sortName" data-sort="none"><i
+                            class="zmdi zmdi-hc-fw p-r-10 " data-toggle="tooltip" data-placement="top"></i>Thư điện tử
+                    </th>
+                    <th role="button" class="text-center sort" id="projectManager" data-sort="none"><i
+                            class="zmdi zmdi-hc-fw p-r-10 " data-toggle="tooltip" data-placement="top"></i>Số điện thoại
+                    </th>
+                    <th class="text-center">Ngày Sinh</th>
+                    <th class="text-center">Giới tính</th>
+                    <th role="button" class="text-center sort" id="startDate" data-sort="none"><i
+                            class="zmdi zmdi-hc-fw p-r-10 " data-toggle="tooltip" data-placement="top"></i>Quyền truy
+                        cập</th>
+                    <th class="text-center">Ngày tạo</th>
+                    <th class="text-center">Người tạo</th>
+                    <th class="text-center">Ngày sửa</th>
+                    <th class="text-center">Người sửa</th>
+                    <th class="text-center">Trạng thái</th>
+                    <th class="text-center">Tác vụ</th>
+                </tr>
 
-                    
-                </thead>
-                <tbody>
-                    
-                </tbody>
-            </table>
-        </div>
-            
 
-            
-        
-        <div class="text-center" ><div id="paging"></div></div>
-        
-        
+            </thead>
+            <tbody>
 
+            </tbody>
+        </table>
     </div>
+    <div class="text-center">
+        <div id="paging"></div>
+    </div>
+</div>
 </div>
 
 
+<!-- ColumnShow -->
+<div class="modal fade" id="modal_config">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <b class="modal-title"><i class="fa fa-cog" aria-hidden="true"></i> TÙY CHỈNH THÔNG TIN HIỂN THỊ</b>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class='row'>
+                    <b class='col col-md-7 col-sm-7'>Số bản ghi trong 1 trang</b>
+                    <input class='col col-md-4 col-sm-4' type="number" value="10" min="1", max="100">
+                </div>
+
+                <div class='row'>
+                    <b class='col col-md-7 col-sm-7'>Số cột hiện thị:</b>
+                    <b class='col col-md-4 col-sm-4'>05</b>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover" id='table_modal'>
+                        <tbody>
+                            <% _.forEach(data.fields, function(item){%>
+                                <tr  id='<%- "tr_" +item.path%>'>
+                                    <td class="td_modal">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id='<%- "field_" +item.path%>'>
+                                            <label class="custom-control-label" for='<%- "field_" +item.path%>'><%- item.textShow%> (<%- item.path%>)</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <%})%>
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-undo" aria-hidden="true"></i> Hủy</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> Hoàn Tất</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <% if(page) {%>
-    <script src='<%- "pages/" + page + "/script.js"%>'></script>
+<script src='<%- "pages/" + page + "/script.js"%>'></script>
+<%}%>
+
+<% if(plugins) {%>
+    <% _.forEach(plugins, function(item){%>
+        <script src='<%- "plugins/" + item + "/script.js"%>'></script>
+    <%})%>
 <%}%>

@@ -1,6 +1,7 @@
 
 
 $(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
     eventPage.init();
 });
 
@@ -84,5 +85,7 @@ window.loadPageChild = function(url) {
     _AjaxObject(path, 'GET', null, function(html) {
         $('#pageChild').html(html);
         eventPage.init();
+        $('[data-toggle="tooltip"]').tooltip();
+
     }, 'html')
 }

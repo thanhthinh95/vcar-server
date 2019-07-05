@@ -1,5 +1,6 @@
 body{
     margin-top: 80px;
+    /* font-family :  sans-serif !important; */
 }
 
 
@@ -59,7 +60,7 @@ body{
   /* cac nut hanh dong trong page */
   
   .action a, .action span{
-    padding-left: 10px;
+    padding-left: 12px;
   }
 
   .action i{
@@ -84,4 +85,20 @@ body{
 thead{
   background: rgb(89, 64, 201);
   color: #fff;
+}
+
+/* modal */
+.modal-title {
+  color: white;
+  margin-bottom: 0;
+  line-height: 1;
+  width: 100%;
+}
+
+.modal-header {
+  background: #1988FF;
+}
+
+.td_modal:hover{
+  cursor:move;
 }
