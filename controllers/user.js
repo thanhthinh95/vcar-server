@@ -8,13 +8,14 @@ exports.getAll = async function(req, res) {
         _objField('roles', null, 0),
         _objField('created', null, 0),
         _objField('createBy', null, 0),
-        _objField('updated', null, 0),
+        _objField('updated', null, 1),
         _objField('updateBy', null, 0),
         _objField('status', null, 0),
     ];
     
     _render(req, res, 'user', 'Quản lý người dùng', {
         users : await _user._getAll(), 
+        sumRow : config.table.sumRow,
         fields : _getFields(_user, fieldShows)
     })
 }

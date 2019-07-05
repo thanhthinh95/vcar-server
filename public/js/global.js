@@ -98,12 +98,39 @@ window._bindModalConfig = function (modalId, fields) {
             html += '<tr>';
             html += '<td class="td_modal">';
             html += '<div class="custom-control custom-checkbox">';
-            html += '<input type="checkbox" class="custom-control-input" id="field_' + item.path + '" '+ (item.statusShow == -1 || item.statusShow == 1   ? 'checked ' : ' ')  + (item.statusShow == -1 ? 'disabled' : '') + '>';
-            html += '<label class="custom-control-label" for="field_' + item.path + '">' + item.textShow + ' (' + item.path + ')</label>';
+            html += '<input type="checkbox" class="custom-control-input" name="field_config_' + item.path + '" id="field_config_' + item.path + '" '+ (item.statusShow == -1 || item.statusShow == 1   ? 'checked ' : ' ')  + (item.statusShow == -1 ? 'disabled' : '') + '>';
+            html += '<label class="custom-control-label" for="field_config_' + item.path + '">' + item.textShow + ' (' + item.path + ')</label>';
             html += '</td>';
             html += '</tr>';    
         })    
 
         $(modalId +' tbody').append(html);
+    }
+}
+
+
+window._bindHeadTable = function (tableId, fields) {
+    if(fields){
+        console.log(fields.length);
+        
+        $(tableId +' thead').empty();
+
+
+        var html = '';
+        html += '<tr>';
+        html += '<th class="w-30 text-center">#</th>';
+
+        _.forEach(fields, function (item) {
+            
+            html += '<th class="text-center">'+ item.textShow +'</th>';
+ 
+            
+        })    
+
+        html += '</tr>';
+
+        console.log(html);
+        
+        $(tableId +' thead').append(html);
     }
 }

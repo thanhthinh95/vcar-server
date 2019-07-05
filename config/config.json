@@ -5,10 +5,13 @@
     },
     "database" : {
         "name" : "v-car",
-        "ip": "localhost",
+        "ip": "172.16.1.195",
         "port": 27017,
         "username" : "",
         "password" : ""
+    },
+    "table" : {
+        "sumRow" : 15
     },
     "bcrypt" : {
         "salt" : 10
