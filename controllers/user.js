@@ -5,15 +5,14 @@ exports.getAll = async function(req, res) {
 }
 
 exports.getId = async function (req, res) {
-    console.log(req.params);
-    console.log(req.query);
-    
-    // if(!_.has(req.body, '_id' || !mongoose.Types.ObjectId.isValid(req.body._id))){
-    //     _render(req, res, 'user', 'Thông tin người dùng', null, null)
-    // }else{
-    //     var users = await _user._getId(req.body._id);
-    //     _render(req, res, 'user', 'Thông tin người dùng', {users : users}, null)
-    // }
+    if(!_.has(req.params, '_id' || !mongoose.Types.ObjectId.isValid(req.params._id))){
+        _render(req, res, 'user_info', 'Thông tin người dùng', null, null)
+    }else{
+        var user = await _user._getId(req.params._id);
+        console.log(user);
+        
+        _render(req, res, 'user_info', 'Thông tin người dùng', {user : user}, null)
+    }
 }
 
 

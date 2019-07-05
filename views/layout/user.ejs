@@ -1,0 +1,64 @@
+<% if(page) {%>
+    <link rel="stylesheet" href = '<%- "pages/" + page + "/style.css"%>'>
+<%}%>
+
+
+<div class='card'>
+    <div class="card-header col-lg-12 col-md-12 col-sm-12">
+        <b class=""> <i class="fa fa-map-signs" aria-hidden="true"></i> <%- title%></b>
+    </div>
+    <div class='card-body'>
+        <div class='float-right action'>
+   
+            <a href="#user" data-toggle="tooltip" title="Tạo mới">
+                <i class="fa fa-plus" aria-hidden="true"></i></a>     
+    
+            <a href="#user" data-toggle="tooltip" title="Xóa bỏ nội dung đã chọn">
+                <i class="fa fa-trash-o" aria-hidden="true"></i></a>  
+            <span id='column_show' data-toggle="tooltip" title="Số cột hiển thị">
+                    <i class="fa fa-columns" aria-hidden="true"></i></span>  
+            <a href="#user" data-toggle="tooltip" title="Làm mới">
+                    <i class="fa fa-refresh" aria-hidden="true"></i></a>                                                  
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-sm" id="table_data">
+                <thead>
+                    <tr>
+                        <th class=" w-30 text-center">#</th>
+                        <th role="button" class="text-center sort" id="name" data-sort="none"><i class="zmdi zmdi-hc-fw p-r-10 " data-toggle="tooltip" data-placement="top"></i>Tên Đầy Đủ</th>
+                        <th role="button" class="text-center sort" id="sortName" data-sort="none"><i class="zmdi zmdi-hc-fw p-r-10 " data-toggle="tooltip" data-placement="top"></i>Thư điện tử</th>
+                        <th role="button" class="text-center sort" id="projectManager" data-sort="none"><i class="zmdi zmdi-hc-fw p-r-10 " data-toggle="tooltip" data-placement="top"></i>Số điện thoại</th>
+                        <th class=" text-center">Ngày Sinh</th>
+                        <th class="  text-center">Giới tính</th>
+                        <th role="button" class="  text-center sort" id="startDate" data-sort="none"><i class="zmdi zmdi-hc-fw p-r-10 " data-toggle="tooltip" data-placement="top"></i>Quyền truy cập</th>
+                        <th class="  text-center">Ngày tạo</th>
+                        <th class="  text-center">Người tạo</th>
+                        <th class="  text-center">Ngày sửa</th>
+                        <th class="  text-center">Người sửa</th>
+                        <th class="  text-center">Trạng thái</th>
+                        <th class="  text-center">Tác vụ</th>
+                    </tr>
+
+                    
+                </thead>
+                <tbody>
+                    
+                </tbody>
+            </table>
+        </div>
+            
+
+            
+        
+        <div class="text-center" ><div id="paging"></div></div>
+        
+        
+
+    </div>
+</div>
+
+
+<% if(page) {%>
+    <script src='<%- "pages/" + page + "/script.js"%>'></script>
+<%}%>

@@ -2,6 +2,8 @@ body{
     margin-top: 80px;
 }
 
+
+/* sidebar */
 .overlay {
     height: 100%;
     width: 0px;
@@ -9,7 +11,7 @@ body{
     z-index: 2000;
     top: 0;
     left: 0;
-    background-color: rgba(33, 54, 54, 0.9);
+    background-color: rgba(39, 36, 61, 0.9);
     overflow-x: hidden;
     transition: 0.5s;
   }
@@ -19,7 +21,6 @@ body{
     width: 100%;
     top: 60px;
     left: 10px;
-
     text-align: left;
   }
   
@@ -27,29 +28,60 @@ body{
     text-decoration: none;
     color: #ffffff;
     display: block;
-    font-size: 13px;
+    font-size: 15px;
     transition: 0.5s;
   }
   
   .overlay a:hover, .overlay a:focus {
-    color: #f1f1f1;
+    color: #f3e300;
   }
-  
+
   .overlay .closebtn {
     position: absolute;
     right: 30px;
     top: 20px;
     font-size: 20px;
     color: #ffffff;
-
   }
   
   @media screen and (max-height: 450px) {
     .overlay a {
-        font-size: 10px;
+        font-size: 13px;
     }
     .overlay .closebtn {
         font-size: 20px;
         right: 30px;
     }
   }
+
+
+
+  /* cac nut hanh dong trong page */
+  
+  .action a, .action span{
+    padding-left: 10px;
+  }
+
+  .action i{
+    font-size: 20px !important;
+    color: rgb(70, 61, 202);
+  }
+  .action i:hover{
+    animation: roll 0.6s infinite;
+    animation-iteration-count: 1;
+  }
+
+  @keyframes roll {
+    0% {
+      transform: rotate(0);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+/* table */
+thead{
+  background: rgb(89, 64, 201);
+  color: #fff;
+}

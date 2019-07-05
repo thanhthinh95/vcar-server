@@ -20,7 +20,7 @@ global._render = function(req, res, page, title, data, plugins) {
     if(req.xhr){// co request tu phia browser gui len =>> nguoi dung thuc hien click de yeu cau thong tin
         console.log('one');
         
-        res.render(page, {
+        res.render('layout/' + page, {
             title : title ? title : 'V-Car',
             page : page ? page : null,
             data : data ? data : null,
@@ -92,7 +92,7 @@ function setRouter(namefile, key, fn) {
             break;
         case 'getId':
             method = 'get';
-            url = '/' + namefile + '/id:id';
+            url = '/' + namefile + '/id/:_id';
             break; 
         case 'new':
             method = 'get';

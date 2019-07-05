@@ -43,6 +43,7 @@ mongoose.connect(_stringConnect, {useCreateIndex : true, useNewUrlParser : true,
 
 function buildApp() {
     app.set('views', './views');
+    
     app.set('view engine', 'ejs');
     app.set('view cache', false);
 
@@ -54,6 +55,7 @@ function buildApp() {
         saveUninitialized: true,
     }))
 
+    
     app.use('/js', express.static('public/js'));
     app.use('/img', express.static('public/img'));
     app.use('/css', express.static('public/css'));
