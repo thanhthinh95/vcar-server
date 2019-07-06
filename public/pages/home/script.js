@@ -29,7 +29,7 @@ var eventPage = function($) {
 
     function initRole(roleIndex) {
         if(!roleIndex){//Neu user truoc do chua chon quyen
-            loadPageChild('auth');
+            _loadPageChild('auth');
         }
     }
 
@@ -53,7 +53,7 @@ var eventPage = function($) {
                 var hash = $(this).attr('href');
                 if(_.split(hash, '#').length == 2){//duong dan co dau #
                     e.preventDefault();
-                    loadPageChild(_.split(hash, '#')[1]);
+                    _loadPageChild(_.split(hash, '#')[1]);
 
                     if($(this).attr('data_type') == 'side'){
                         $("#myNav").width("0px");

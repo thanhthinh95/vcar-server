@@ -65,7 +65,7 @@ body{
 
   .action i{
     font-size: 20px !important;
-    color: rgb(70, 61, 202);
+    color: rgb(99, 91, 207);
   }
   .action i:hover{
     animation: roll 0.6s infinite;
@@ -82,9 +82,14 @@ body{
   }
 
 /* table */
-thead{
+thead #title_head_table{
   background: rgb(89, 64, 201);
   color: #fff;
+}
+
+thead #filter_head_table{
+  background: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
 }
 
 /* modal */

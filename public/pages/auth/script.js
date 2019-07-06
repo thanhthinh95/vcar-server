@@ -10,7 +10,7 @@ var eventPage = function($) {
                 if(resp.code == 200 && resp.data){
                     roleIndex = resp.data;
                     $('#header_role_index').text(resp.data.name);
-                    loadPageChild('user');
+                    _loadPageChild('user');
 
                 }else{
                     _DialogError(resp.message);
