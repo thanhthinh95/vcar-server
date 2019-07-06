@@ -1,7 +1,6 @@
 //get all role user
 exports.getAll = async function(req, res) {
     var roles = await _user._getRoles(req.session.user._id);
-
     _render(req, res, 'auth', 'Chọn quyền truy cập hệ thống', {roles : roles}, null)
 }
 

@@ -4,15 +4,16 @@ var roleSchame = new mongoose.Schema({
     description : {type : String, default : null},
 },{id: false, versionKey: 'v'});
 
-
-
-
 roleSchame.statics._create = async function(role) {
     return await _role.create(role);
 }
 
 roleSchame.statics._getId = async function(_id) {
     return await _role.findById(_id);
+}
+
+roleSchame.statics._getAll = async function() {
+    return await _role.find();
 }
 
 

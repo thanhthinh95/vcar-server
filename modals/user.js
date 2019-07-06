@@ -4,10 +4,10 @@ var userSchame = new mongoose.Schema({
     numberPhone: { type: String, default: null },
     password: { type: String, required: true },
     brithDay: { type: Date, default: Date.now },
-    gender: { type: String, default: null },
+    gender: { type: Number, default: null },
     roles: [{ type: mongoose.Schema.Types.ObjectId, ref: 'role' }],
 
-    created: { type: String, default: Date.now },
+    created: { type: Date, default: Date.now },
     createBy: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
     updated: { type: Date, default: Date.now },
     updateBy: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },

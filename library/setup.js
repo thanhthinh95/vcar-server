@@ -53,7 +53,7 @@ app.get('/', function (req, res, next) {
         _render(req, res, 'home', 'Trang Chủ', {
             roleIndex: req.session.roleIndex,
             user: req.session.user
-        }, ['jquery-ui']);
+        }, ['jquery-ui', 'bootstrap-select', 'tempusdominus-bootstrap']);
     } else {
         res.render('login', {
             title: 'Đăng nhập',
@@ -63,8 +63,7 @@ app.get('/', function (req, res, next) {
 })
 
 app.get('/logout', function (req, res, next) {
-    req.session.user = null;
-    req.session.roleIndex = null;
+    req.session.destroy();
 
     res.render('login', {
         title: 'Đăng nhập',
@@ -96,6 +95,11 @@ global._getFields = function (schema, fieldShows) {
             field.statusShow = item.statusShow;
             field.statusSort = item.statusSort;
             field.statusSearch = item.statusSearch;
+            field.valueSelect = item.valueSelect;
+
+            if(item.valueSelect){
+                field.instance = 'Select';
+            }
 
             fields.push(field);
         }
@@ -110,13 +114,15 @@ global._getFields = function (schema, fieldShows) {
 //statusShow - Trang Thai hien thi : -1 - bat buoc | 1 - hien thi | 0 - khong hien thi
 //statusSort - Trang Thai sap xep : true - cho phep sap xep | false - khong sap xep
 //statusSearch - Trang Thai tim kiem : true - cho phep tim kiem | false - khong cho tim kiem
-global._objField = function(field, textShow, statusShow, statusSort, statusSearch) {
+//valueSelect - Gia tri trong selectpicker : [] or null
+global._objField = function(field, textShow, statusShow, statusSort, statusSearch, valueSelect) {
     return {
         field : field, 
         textShow : textShow, 
         statusShow : statusShow,
         statusSort : statusSort ? statusSort : false,
         statusSearch : statusSearch ? statusSearch : false,
+        valueSelect : valueSelect ? valueSelect : null,
     }
 }
 

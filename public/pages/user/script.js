@@ -43,19 +43,38 @@ var eventPage = function($) {
             
             _fields = _filedTems;
             $('#modal_config').modal('hide');
-            _bindHeadTable('#table_data', _fields);
-            console.log('dang thuc hien submit form');
+            bindHeadTable();
+            bindBodyTable();
+
         })
     }
 
  
+    function bindHeadTable() {
+        _bindHeadTable('#table_data', _fields);
+        $('select').selectpicker({
+            countSelectedText :   '{0} mục đã chọn',
+            width : 'auto'
+        });
+
+        $('.datetimepicker-input').datetimepicker({
+            locale : 'vi'
+        });
+
+    }
     
+
+    function bindBodyTable() {
+        
+        
+    }
 
 
     return {
         init : function () {
             $('#table_modal tbody').sortable();
-            _bindHeadTable('#table_data', _fields);
+            bindHeadTable();
+            bindBodyTable();
             bindEventClick();
         },
         uncut : function (){

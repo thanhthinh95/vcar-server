@@ -1,16 +1,17 @@
 //get all role user
 exports.getAll = async function(req, res) {
+    // _objField(field, textShow, statusShow, statusSort, statusSearch, valueSelect)
     var fieldShows = [
-        _objField('_id', null, -1),
-        _objField('name', 'Tên đầy đủ', 1),
-        _objField('email', null, 1),
-        _objField('gender', null, 1),
-        _objField('roles', null, 0),
-        _objField('created', null, 0),
-        _objField('createBy', null, 0),
-        _objField('updated', null, 1),
-        _objField('updateBy', null, 0),
-        _objField('status', null, 0),
+        _objField('_id', null, -1, false, true),
+        _objField('name', 'Tên đầy đủ', 1, true, true),
+        _objField('email', null, 1, true, true),
+        _objField('gender', null, 1, false, true, [{_id: 0, name : 'Nữ'},{_id : 1, name : "Nam"}]),
+        _objField('roles', null, 1, false, true,  await _role._getAll()),
+        _objField('created', null, 1, true, true),
+        _objField('createBy', null, 1, false, false),
+        _objField('updated', null, 1, false, true),
+        _objField('updateBy', null, 1, true, false),
+        _objField('status', null, 1, false, true, [{_id: 0, name : 'Chưa kích hoạt'},{_id : 1, name : "Kích hoạt"}]),
     ];
     
     _render(req, res, 'user', 'Quản lý người dùng', {
