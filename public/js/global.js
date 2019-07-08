@@ -1,11 +1,30 @@
-
-
 $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
     eventPage.init();
-
-
 });
+
+window._createObjectInForm = function (formId) {
+    let obj = $(formId).serializeArray();
+    return _.chain(obj)
+            .remove(function (item) {//Loai bo nhung obj co value = null
+                return !_.isEqual(item.value, "");
+            })
+            .groupBy('name')//groupBy theo name [{name1 : []}, {name2 : []}]
+            .mapValues(function(item) {//{name1 : "", name2 : ["", ""]}
+                let a = _.map(item, 'value'); 
+                return (a.length > 1 ? a : a[0]);
+            })
+            .value()
+};
+
+window._createObjectSort = function() {
+    let obj = {};
+    let elements = $('.sort').not('[data_sort="0"]');
+    if(elements && elements.length > 0){
+        obj[$(elements[0]).attr('data_path')] = $(elements[0]).attr('data_sort');
+    };
+    return obj;
+}
 
 window._AjaxObject = function (url, method, object, success, dataType) {
     $('#loader').modal('show');
@@ -120,18 +139,26 @@ window._bindHeadTable = function (tableId, fields) {
         $(tableId + ' thead').empty();
         $(tableId + ' thead').append(createTitleHeadTable(fields));
         $(tableId + ' thead').append(createFilterHeadTable(fields));
-
     }
 }
 
 function createTitleHeadTable(fields) {
     if (!fields) return '';
 
-    var html = '<tr id="title_head_table"> class="d-flex"';
+    var html = '<tr id="title_head_table">';
     html += '<th class="text-center align-middle" style="width : 20px">#</th>';
 
     _.forEach(fields, function (item) {
-        html += '<th class="text-center align-middle">' + item.textShow + '</th>';
+        if(item.statusSort){
+            html += '<th role="button" class="text-center align-middle sort" ' +
+                'data_instance="' + item.instance + '" ' +
+                'data_path="' + item.path + '" ' +
+                'data_sort="0" data-toggle="tooltip" data-placement="top" title="Sắp xếp">' +
+                '<i class="fa fa-sort-amount-asc"></i> ' + item.textShow +
+                '</th>';
+        }else{
+            html += '<th class="text-center align-middle">' + item.textShow + '</th>';
+        }
     })
 
     html += '<th class="text-center align-middle" style="width : 105px">Tác vụ</th>';
@@ -142,17 +169,16 @@ function createTitleHeadTable(fields) {
 function createFilterHeadTable(fields) {
     if (!fields) return '';
 
-    var html = '<tr id="filter_head_table"> class="d-flex"';
+    var html = '<tr id="filter_head_table"> ';
     html += '<th class="text-center align-middle">' +
         '<div class="custom-control custom-checkbox">' +
         '<input type="checkbox" class="custom-control-input" name="hi" id="hi"/>' +
         '<label class="custom-control-label" for="hi"></label>' +
         '</th>';
-
     _.forEach(fields, function (item) {
         html += itemFilter(item);
     })
-    html += '<th class="text-center align-middle"><button class="btn-primary form-control"><i class="fa fa-filter"></i> Lọc</button></th>';
+    html += '<th class="text-center align-middle"><button type="submit" class="btn-primary form-control"><i class="fa fa-filter"></i> Lọc</button></th>';
     html += '</tr>';
     return html;
 }
@@ -162,17 +188,17 @@ function itemFilter(item) {
     if(item.statusSearch){
         switch (item.instance) {
             case 'ObjectID':
-                html += '<input class="form-control" type="text" name="'+ item.path +'"></input>';
+                html += '<input class="form-control" type="text" autocomplete="off" name="'+ item.path +'"></input>';
                 break;
             case 'String':
-                html += '<input class="form-control" type="text" name="'+ item.path +'"></input>';
+                html += '<input class="form-control" type="text" autocomplete="off" name="'+ item.path +'"></input>';
                 break;
             case 'Number':
-                html += '<input class="form-control" type="number" name="'+ item.path +'"></input>';
+                html += '<input class="form-control" type="number" autocomplete="off" name="'+ item.path +'"></input>';
                 break;
             case 'Date':
-                html += '<div class="input-group date">'+
-                    '<input type="text" class="form-control datetimepicker-input" id="'+  item.path +'" data-toggle="datetimepicker" data-target="#'+  item.path +'"/>'+
+                html += '<div class="input-group">'+
+                    '<input type="text" autocomplete="off" class="form-control datetimepicker-input" id="date_'+  item.path +'" name="'+  item.path +'" data-toggle="datetimepicker" data-target="#date_'+  item.path +'"/>'+
                     '<div class="input-group-append">' +
                     '<span class="input-group-text"><i class="fa fa-calendar"></i></span>'+
                     '</div>' +
@@ -180,9 +206,9 @@ function itemFilter(item) {
                 break;
             case 'Select':
                 html += 
-                    '<div class="form-group">' +
-                    '<select class="selectpicker form-control" multiple data-selected-text-format="count > 2" ' +
-                    'name="'+ item.path +'[]"' +
+                    '<div class=" input-group">' +
+                    '<select class="selectpicker form-control"  autocomplete="off" multiple data-selected-text-format="count > 2" data-width="auto" ' +
+                    'name="'+ item.path +'"'+
                     (item.valueSelect.length > 4 ? ' data-live-search=true' : '') +
                     (item.valueSelect.length > 6 ? ' data-actions-box=true' : '') +
                     ' title="Chọn ' + _.lowerFirst(item.textShow) +'">' +
@@ -200,4 +226,52 @@ function itemFilter(item) {
 
     html += '</th>';
     return html;
+}
+
+window._changeIconSort = function name(element) {
+    let data_sort_index = element.attr('data_sort');
+    resetIconSort();
+    setValueSort(element, data_sort_index);
+}
+
+function resetIconSort () {
+    $('.sort').children('i').removeClass();
+    $('.sort').children('i').addClass('fa fa-sort-amount-asc');
+    $('.sort').attr('title', 'Sắp xếp');
+    $('.sort').attr('data_sort', '0');
+}
+
+function setValueSort (element, data_sort_index) {
+    var dataArray = [
+        {data : '-1', stringClass : 'fa fa-sort-alpha-desc text-warning', numberClass : 'fa fa-sort-numeric-desc text-warning', title : 'Sắp xếp giảm dần'},
+        {data : '0', stringClass : 'fa fa-sort-amount-asc', numberClass : 'fa fa-sort-amount-asc', title : 'Sắp xếp'},
+        {data : '1', stringClass : 'fa fa-sort-alpha-asc text-warning', numberClass : 'fa fa-sort-numeric-asc text-warning', title : 'Sắp xếp tăng dần'},
+    ]
+
+    element.children('i').removeClass();
+    var dataNextShow = null;
+
+    switch (data_sort_index) {
+        case '1':
+            dataNextShow = dataArray[0];
+            break; 
+        case '-1':
+            dataNextShow = dataArray[1];
+            break;
+        case '0':
+            dataNextShow = dataArray[2];
+            break; 
+        default:
+            break;
+    }
+    if(dataNextShow){
+        element.attr('title', dataNextShow.title);
+        element.attr('data_sort', dataNextShow.data);
+    
+        if(_.includes(['Number', 'Date'], element.attr('data_instance'))){
+            element.children('i').addClass(dataNextShow.numberClass);
+        }else{
+            element.children('i').addClass(dataNextShow.stringClass);
+        }
+    }
 }

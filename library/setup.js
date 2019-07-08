@@ -16,6 +16,7 @@ fsx.readdirSync('./controllers').forEach(filename => {
 });
 
 
+
 global._render = function (req, res, page, title, data, plugins) {
     if (req.xhr) {// co request tu phia browser gui len =>> nguoi dung thuc hien click de yeu cau thong tin
         console.log('one');
@@ -46,6 +47,11 @@ global._output = function (code, message, data) {
         data: data ? data : null
     };
 }
+
+global._stringRegex = function(e) {
+    for (var t = e.toLowerCase().replace(/^(\s*)|(\s*)$/g, "").replace(/\s+/g, " "), n = "àáảãạâầấẩẫậăằắẳẵặa", i = "đd", o = "ùúủũụưừứửữựu", a = "ìíỉĩịi", r = "èéẻẽẹêềếểễệe", c = "òóỏõọôồốổỗộơờớởỡợo", l = "ỳýỷỹỵy", u = "", s = 0; s < t.length; s++) n.indexOf(t[s]) >= 0 ? u = u + "[" + n + "]" : i.indexOf(t[s]) >= 0 ? u = u + "[" + i + "]" : o.indexOf(t[s]) >= 0 ? u = u + "[" + o + "]" : a.indexOf(t[s]) >= 0 ? u = u + "[" + a + "]" : r.indexOf(t[s]) >= 0 ? u = u + "[" + r + "]" : c.indexOf(t[s]) >= 0 ? u = u + "[" + c + "]" : l.indexOf(t[s]) >= 0 ? u = u + "[" + l + "]" : u += t[s];
+    return u
+},
 
 
 app.get('/', function (req, res, next) {
@@ -159,6 +165,10 @@ function setRouter(namefile, key, fn) {
             method = 'delete';
             url = '/' + namefile;
             break;
+        case 'search':
+            method = 'get';
+            url = '/' + namefile + '/search';
+            break;
         default:
             break;
     }
@@ -209,13 +219,13 @@ function setValueField(nameField) {
         case 'roles':
             return 'Quyền truy cập';
         case 'created':
-            return 'Ngày tạo';
+            return 'Ngày tạo mới';
         case 'createBy':
-            return 'Người tạo';
+            return 'Người tạo mới';
         case 'updated':
-            return 'Ngày sửa';
+            return 'Ngày cập nhật';
         case 'updateBy':
-            return 'Người sửa';
+            return 'Người cập nhật';
         case 'status':
             return 'Trạng thái';
         default:

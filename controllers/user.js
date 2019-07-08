@@ -2,15 +2,16 @@
 exports.getAll = async function(req, res) {
     // _objField(field, textShow, statusShow, statusSort, statusSearch, valueSelect)
     var fieldShows = [
-        _objField('_id', null, -1, false, true),
-        _objField('name', 'Tên đầy đủ', 1, true, true),
+        _objField('_id', null, 0, false, true),
+        _objField('name', 'Tên đầy đủ', -1, true, true),
         _objField('email', null, 1, true, true),
+        _objField('brithDay', null, 1, true, true),
+        _objField('created', null, 1, true, true),
+        _objField('createBy', null, 0, false, false),
+        _objField('updated', null, 1, true, true),
+        _objField('updateBy', null, 0, true, false),
         _objField('gender', null, 1, false, true, [{_id: 0, name : 'Nữ'},{_id : 1, name : "Nam"}]),
         _objField('roles', null, 1, false, true,  await _role._getAll()),
-        _objField('created', null, 1, true, true),
-        _objField('createBy', null, 1, false, false),
-        _objField('updated', null, 1, false, true),
-        _objField('updateBy', null, 1, true, false),
         _objField('status', null, 1, false, true, [{_id: 0, name : 'Chưa kích hoạt'},{_id : 1, name : "Kích hoạt"}]),
     ];
     
@@ -30,6 +31,42 @@ exports.getId = async function (req, res) {
         
         _render(req, res, 'user_info', 'Thông tin người dùng', {user : user}, null)
     }
+}
+
+exports.search = async function (req, res) {
+    console.log(req.query);
+
+    
+
+    if(_.has(req.query, 'dataMatch')){
+        if(_.has(req.query.dataMatch, '_id') && mongoose.Types.ObjectId.isValid(req.query.dataMatch._id)) req.query.dataMatch._id = new mongoose.Types.ObjectId(req.query.dataMatch._id)
+        else delete req.query.dataMatch._id; 
+        if(_.has(req.query.dataMatch, 'name')) req.query.dataMatch.name = {'$regex' : new RegExp(_stringRegex(req.query.dataMatch.name), 'i')}
+        if(_.has(req.query.dataMatch, 'email')) req.query.dataMatch.email = {'$regex' : new RegExp(_stringRegex(req.query.dataMatch.email), 'i')}
+    }
+
+
+    console.log(req.query);
+    
+
+    
+    
+    var a = await _user.find(req.query.dataMatch);
+    console.log(a);
+    
+
+
+
+    // let aggs = [
+    //     {$match : ''}
+    // ];
+
+    // let data = await _user.aggregate(aggs);
+    // console.log(data);
+    
+
+
+    res.send(_output(200, null, await _user._getAll()));
 }
 
 

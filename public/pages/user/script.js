@@ -45,8 +45,18 @@ var eventPage = function($) {
             $('#modal_config').modal('hide');
             bindHeadTable();
             bindBodyTable();
-
         })
+
+
+        $(document).on('submit', '#form_table', function name(e) {
+            e.preventDefault();
+            bindBodyTable();
+        })
+
+        $(document).on('click', '.sort' , function(e){
+            _changeIconSort($(this));
+            bindBodyTable();
+        });
     }
 
  
@@ -54,19 +64,24 @@ var eventPage = function($) {
         _bindHeadTable('#table_data', _fields);
         $('select').selectpicker({
             countSelectedText :   '{0} mục đã chọn',
-            width : 'auto'
         });
 
         $('.datetimepicker-input').datetimepicker({
-            locale : 'vi'
+            locale : 'vi',
+            format : 'DD/MM/YYYY'
         });
-
     }
     
 
     function bindBodyTable() {
-        
-        
+        var objFilter = {
+            dataMatch : _createObjectInForm('#form_table'),
+            dataSort : _createObjectSort(), 
+        }
+     
+        _AjaxObject('/user/search', 'GET', objFilter, function(resp) {
+            console.log(resp);
+        })
     }
 
 
