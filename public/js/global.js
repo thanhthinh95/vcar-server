@@ -142,6 +142,40 @@ window._bindHeadTable = function (tableId, fields) {
     }
 }
 
+window._bindBodyTable = function (tableId, fields, data) {
+    fields = _.filter(_fields, function (element) {//Thuc hien loc cac filed co stastusShow = -1 va 1
+        return (element.statusShow == -1 || element.statusShow == 1)
+    });
+
+    console.log(tableId);
+    console.log(fields);
+
+    $(tableId + ' tbody').empty();
+    
+
+    _.forEach(data, function (rowData) {
+
+        var html = '<tr class="">' + 
+                    '<td class="text-center align-middle">' +
+                    '<div class="custom-control custom-checkbox">' +
+                    '<input type="checkbox" class="custom-control-input" name="hi" id="hi"/>' +
+                    '<label class="custom-control-label" for="hi"></label>' +
+                    '</td>';
+                   
+        _.forEach(fields, function (field) {
+            html += itemBody(rowData, field);
+        })
+
+        // html += '<th class="text-center align-middle"><button type="submit" class="btn-primary form-control"><i class="fa fa-filter"></i> Lọc</button></th>';
+        html += '</tr>';
+
+        $(tableId + ' tbody').append(html);
+        
+    })
+    
+    
+}
+
 function createTitleHeadTable(fields) {
     if (!fields) return '';
 
@@ -227,6 +261,39 @@ function itemFilter(item) {
     html += '</th>';
     return html;
 }
+
+function itemBody(data, field) {
+    var html = '<td class="text-center" title="fsd">';
+    if(field.statusSearch){
+        switch (field.instance) {
+            case 'ObjectID':
+                html += '<span style="display:inline-table;">' +data[field.path] + '</span>';
+                break;
+            case 'String':
+                html += '<span style="display:inline-table;">' +data[field.path] + '</span>';
+                break;
+            case 'Number':
+                html += '<span style="display:inline-table;">' +data[field.path] + '</span>';
+                break;
+            case 'Date':
+                html += '<span style="display:inline-table;">' +data[field.path] + '</span>';
+                break;
+            case 'Select':
+                console.log(data[field.path]);
+                console.log(field.valueSelect);
+                
+                
+                html += '<span style="display:inline-table;">' + _.find(field.valueSelect, {_id : data[field.path]}) + '</span>';
+                break;
+            default:
+                return '';
+        }
+    }
+
+    html += '</td>';
+    return html;
+}
+
 
 window._changeIconSort = function name(element) {
     let data_sort_index = element.attr('data_sort');

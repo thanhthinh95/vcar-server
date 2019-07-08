@@ -34,9 +34,6 @@ exports.getId = async function (req, res) {
 }
 
 exports.search = async function (req, res) {
-    console.log(req.query);
-
-    
 
     if(_.has(req.query, 'dataMatch')){
         if(_.has(req.query.dataMatch, '_id') && mongoose.Types.ObjectId.isValid(req.query.dataMatch._id)) req.query.dataMatch._id = new mongoose.Types.ObjectId(req.query.dataMatch._id)
@@ -45,28 +42,10 @@ exports.search = async function (req, res) {
         if(_.has(req.query.dataMatch, 'email')) req.query.dataMatch.email = {'$regex' : new RegExp(_stringRegex(req.query.dataMatch.email), 'i')}
     }
 
-
     console.log(req.query);
-    
 
-    
-    
-    var a = await _user.find(req.query.dataMatch);
-    console.log(a);
-    
-
-
-
-    // let aggs = [
-    //     {$match : ''}
-    // ];
-
-    // let data = await _user.aggregate(aggs);
-    // console.log(data);
-    
-
-
-    res.send(_output(200, null, await _user._getAll()));
+    var data = await _user.find(req.query.dataMatch)
+    res.send(_output(data ? 200 : 500, null, data));
 }
 
 

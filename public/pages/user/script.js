@@ -80,7 +80,11 @@ var eventPage = function($) {
         }
      
         _AjaxObject('/user/search', 'GET', objFilter, function(resp) {
-            console.log(resp);
+            if(resp.code == 200){
+                _bindBodyTable('#form_table', _fields, resp.data);
+            }else{
+                _DialogError(resp.mesage);
+            }
         })
     }
 
