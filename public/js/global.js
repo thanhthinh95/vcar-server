@@ -279,10 +279,6 @@ function itemBody(data, field) {
                 html += '<span style="display:inline-table;">' +data[field.path] + '</span>';
                 break;
             case 'Select':
-                console.log(data[field.path]);
-                console.log(field.valueSelect);
-                
-                
                 html += '<span style="display:inline-table;">' + _.find(field.valueSelect, {_id : data[field.path]}) + '</span>';
                 break;
             default:

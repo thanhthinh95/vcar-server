@@ -57,7 +57,6 @@ var eventPage = function($) {
 
                     if($(this).attr('data_type') == 'side'){
                         $("#myNav").width("0px");
-
                     }
                 }
             })

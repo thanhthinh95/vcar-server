@@ -1,0 +1,90 @@
+<% if(page) {%>
+    <link rel="stylesheet" href='<%- "pages/" + page + "/style.css"%>'>
+<%}%>
+
+<% if(plugins) {%>
+    <% _.forEach(plugins, function(item){%>
+        <link rel="stylesheet" href='<%- "plugins/" + item + "/style.css"%>'>
+    <%})%>
+<%}%>
+
+<script>
+    // var _fields = JSON.parse('<%- JSON.stringify(data.fields) %>');
+    // var _sumRow = '<%- JSON.stringify(data.sumRow) %>';
+    var _menus = JSON.parse('<%- JSON.stringify(data.menus) %>');
+    var _fontawesomes = JSON.parse('<%- JSON.stringify(data.fontawesomes) %>');
+
+    // console.log(_menus);
+    console.log(_fontawesomes);
+</script>
+
+
+
+<div class='card'>
+    <div class="card-header col-lg-12 col-md-12 col-sm-12">
+        <b class=""> <i class="fa fa-map-signs" aria-hidden="true"></i> <%- title%></b>
+</div>
+
+<div class='card-body'>
+    <div class='float-right action'>
+        <a href='<%- "#" + page %>' data-toggle="tooltip" title="Làm mới">
+            <i class="fa fa-refresh" aria-hidden="true"></i></a>
+    </div>
+
+    <div>
+        <form id="form_table">
+            <table class="table" id="table_data">
+                <thead>
+                    <tr id="title_head_table">
+                        <th class="text-center align-middle w-20">Icon</th>
+                        <th class="text-center align-middle w-35">Tên hiển thị</th>
+                        <th class="text-center align-middle w-35">Đường dẫn</th>
+                        <th class="text-center align-middle w-10">Tác vụ</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td class="text-center align-middle w-20"></div>
+                            <div class="input-group">
+                                <select class="selectpicker form-control" data-live-search='true' data-width="60px">
+                                    <% _.forEach(_fontawesomes, function(item){%>
+                                        <option value='fa <%- item%>' data-icon='fa <%- item%>'><%- item%></option>
+                                    <%})%>
+                                </select>
+                            </div>
+                        </td>
+
+                        <td class="text-center align-middle w-35"></div>
+                            <input class="form-control" type="text" autocomplete="off"></input>
+                        </td>
+
+                        <td class="text-center align-middle w-35"></div>
+                            <input class="form-control" type="text" autocomplete="off"></input>
+                        </td>
+
+                        <td class="text-center align-middle w-10"></div>
+                            <button class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Thêm mới</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+
+    </div>
+
+   
+</div>
+</div>
+
+
+
+<% if(page) {%>
+<script src='<%- "pages/" + page + "/script.js"%>'></script>
+<%}%>
+
+<% if(plugins) {%>
+    <% _.forEach(plugins, function(item){%>
+        <script src='<%- "plugins/" + item + "/script.js"%>'></script>
+    <%})%>
+<%}%>

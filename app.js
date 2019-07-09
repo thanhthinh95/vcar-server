@@ -52,7 +52,7 @@ function buildApp() {
     app.use(require('express-session')({
         secret: 'pcar_secret',
         resave: false,
-        saveUninitialized: true,
+        saveUninitialized: true, 
     }))
 
     
@@ -86,9 +86,14 @@ function buildApp() {
     // _menu._create({name : 'Báo cáo', priority : 3});
 
 
-    _menu._create({name : 'Quản lý 01', priority : 1, parent : '5d231d952b31b13560a2e56d'});
-    _menu._create({name : 'Quản lý 02', priority : 2, parent : '5d231d952b31b13560a2e56d'});
-    _menu._create({name : 'Quản lý 03', priority : 3, parent : '5d231d952b31b13560a2e56d'});
+    // _menu._create({name : 'Quản lý 01', priority : 1, parentId : '5d231d952b31b13560a2e56d'});
+    // _menu._create({name : 'Quản lý 02', priority : 2, parentId : '5d231d952b31b13560a2e56d'});
+    // _menu._create({name : 'Quản lý 03', priority : 3, parentId : '5d231d952b31b13560a2e56d'});
+
+
+    // _menu._create({name : 'Quản lý 01 - 1', priority : 1, parentId : '5d2320cf152dfd3638affe65'});
+    // _menu._create({name : 'Quản lý 02 - 2', priority : 2, parentId : '5d2320cf152dfd3638affe65'});
+    // _menu._create({name : 'Quản lý 03 - 3', priority : 3, parentId : '5d2320cf152dfd3638affe65'});
     
 }
 

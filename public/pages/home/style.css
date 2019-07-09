@@ -110,3 +110,31 @@ thead #filter_head_table{
 .td_modal:hover{
   cursor:move;
 }
+
+
+
+/* paging */
+
+.page, .page_more, .page_active{
+  background: none;
+  border: none;
+  border-radius: 50%;
+  box-sizing: border-box;
+  color: rgba(0,0,0,.6);
+  font-size: 16px;
+  height: 40px;
+  line-height: 40px;
+  min-width: 40px;
+  padding: 0;
+  text-align: center;
+}
+.page:hover{
+    background: rgb(252, 197, 197);
+}
+
+
+
+.page_active{
+    background: rgb(148, 106, 187);
+    color: white
+}

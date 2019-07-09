@@ -91,15 +91,16 @@ var eventPage = function($) {
 
     return {
         init : function () {
-            console.log('dang thuc hien init su kien user');
-
-            $('#table_modal tbody').sortable();
-            bindHeadTable();
-            bindBodyTable();
-            bindEventClick();
+            console.log('dang thuc hien init su kien menu');
+            $('select').selectpicker();
+            
+            // $('#table_modal tbody').sortable();
+            // bindHeadTable();
+            // bindBodyTable();
+            // bindEventClick();
         },
         uncut : function (){
-            console.log('dang thuc hien uncut su kien user');
+            console.log('dang thuc hien uncut su kien menu');
             
         }
     }

@@ -1,6 +1,6 @@
 var menuSchame = new mongoose.Schema({
     name : {type : String, default : null},
-    parent : {type : mongoose.Schema.Types.ObjectId, ref: 'menu', default : null},
+    parentId : {type : mongoose.Schema.Types.ObjectId, ref: 'menu', default : null},
     priority : {type : Number, default : 1},
     link : {type: String, default: null},
     icon : {type : String, default : null},
@@ -17,10 +17,22 @@ menuSchame.statics._getId = async function(_id) {
 menuSchame.statics._getAll = async function() {
 
     var aggs = [
-        {$match : {parent : null}},
-        {$sort : {priority : 1}}];
+        {$match : {parentId : null}},
+        {$sort : {priority : 1}},
+        {$lookup : {
+            from : 'menus',
+            localField : '_id',
+            foreignField : 'parentId',
+            as : 'childs'
+        }}
+    
+    ];
 
     return await _menu.aggregate(aggs);
+
+
+    
+    
 }
 
 
