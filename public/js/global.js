@@ -121,6 +121,7 @@ window._appendModalConfig = function (modalId, fields) {
             html += '<div class="custom-control custom-checkbox">';
             html += '<input type="checkbox" class="custom-control-input" name="field_config_' + item.path + '" id="field_config_' + item.path + '" ' + (item.statusShow == -1 || item.statusShow == 1 ? 'checked ' : ' ') + (item.statusShow == -1 ? 'disabled' : '') + ' />';
             html += '<label class="custom-control-label" for="field_config_' + item.path + '">' + item.textShow + ' (' + item.path + ')</label>';
+            html += '</div>';
             html += '</td>';
             html += '</tr>';
         })

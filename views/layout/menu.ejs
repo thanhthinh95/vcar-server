@@ -1,3 +1,16 @@
+
+
+<script>
+    // var _fields = JSON.parse('<%- JSON.stringify(data.fields) %>');
+    // var _sumRow = '<%- JSON.stringify(data.sumRow) %>';
+    var _menus = JSON.parse('<%- JSON.stringify(data.menus) %>');
+    var _fontawesomes = JSON.parse('<%- JSON.stringify(data.fontawesomes) %>');
+
+    console.log('hi', _menus);
+    
+</script>
+
+
 <% if(page) {%>
     <link rel="stylesheet" href='<%- "pages/" + page + "/style.css"%>'>
 <%}%>
@@ -8,14 +21,6 @@
     <%})%>
 <%}%>
 
-<script>
-    // var _fields = JSON.parse('<%- JSON.stringify(data.fields) %>');
-    // var _sumRow = '<%- JSON.stringify(data.sumRow) %>';
-    var _menus = JSON.parse('<%- JSON.stringify(data.menus) %>');
-    var _fontawesomes = JSON.parse('<%- JSON.stringify(data.fontawesomes) %>');
-</script>
-
-
 
 <div class='card'>
     <div class="card-header col-lg-12 col-md-12 col-sm-12">
@@ -23,55 +28,102 @@
 </div>
 
 <div class='card-body'>
-    <div class='float-right action'>
-        <a href='<%- "#" + page %>' data-toggle="tooltip" title="Làm mới">
-            <i class="fa fa-refresh" aria-hidden="true"></i></a>
+    <div class="col-lg-12 col-md-12 col-sm-12 clearfix pr-0">
+        <div class="menu_custom">
+            <button type="button" id="expandAll" class="btn btn-primary"><i class="fa fa-expand" aria-hidden="true"></i> Mở rộng</button>
+            <button type="button" id="collapseAll" class="btn btn-primary"><i class="fa fa-compress" aria-hidden="true"></i> Thu gọn</button>
+        </div>
+
+        <div class='roles'>
+            <span class='role align-middle'>Kỹ thuật hệ thống</span>
+            <span class='role align-middle'>Nhân viên hệ thống</span>
+            <span class='role align-middle'>Nhà xe</span>
+            <span class='role align-middle'>Nhân viên</span>
+            <span class='role align-middle'>Tác vụ</span>
+        </div>
     </div>
 
-    <div>
-        <form id="form_table">
-            <table class="table" id="table_data">
-                <thead>
-                    <tr id="title_head_table">
-                        <th class="text-center align-middle w-20">Icon</th>
-                        <th class="text-center align-middle w-35">Tên hiển thị</th>
-                        <th class="text-center align-middle w-35">Đường dẫn</th>
-                        <th class="text-center align-middle w-10">Tác vụ</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <tr>
-                        <td class="text-center align-middle w-20"></div>
-                            <div class="input-group">
-                                <select class="selectpicker form-control" data-live-search='true' data-width="60px">
-                                    <% _.forEach(_fontawesomes, function(item){%>
-                                        <option value='fa <%- item%>' data-icon='fa <%- item%>'><%- item%></option>
-                                    <%})%>
-                                </select>
-                            </div>
-                        </td>
-
-                        <td class="text-center align-middle w-35"></div>
-                            <input class="form-control" type="text" autocomplete="off"></input>
-                        </td>
-
-                        <td class="text-center align-middle w-35"></div>
-                            <input class="form-control" type="text" autocomplete="off"></input>
-                        </td>
-
-                        <td class="text-center align-middle w-10"></div>
-                            <button class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Thêm mới</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </form>
-
-    </div>
 
    
-</div>
+
+    <div class="col-lg-12 col-md-12 col-sm-12 add_info">
+        <div class="input_custom">
+            <select class="selectpicker form-control" data-live-search='true'>
+                <% _.forEach(data.fontawesomes, function(item){%>
+                    <option value='fa <%- item%>' data-icon='fa <%- item%>'><%- item%></option>
+                <%})%>
+            </select>
+
+            <input class="form-control ml-2" type="text" autocomplete="off" placeholder="Nhập tên hiển thị"></input>
+            <input class="form-control ml-2" type="text" autocomplete="off" placeholder="Nhập đường dẫn"></input>
+        </div>
+
+        <div class='roles_check'>
+            <span class="role align-middle">
+                <input type="checkbox" class="mx-auto" checked />
+            </span>
+
+            <span class="role align-middle">
+                <input type="checkbox" class="mx-auto" checked />
+            </span>
+
+            <span class="role align-middle">
+                <input type="checkbox" class="mx-auto" checked />
+            </span>
+
+            <span class="role align-middle">
+                <input type="checkbox" class="mx-auto" checked />
+
+            </span>
+
+            <span class="role align-middle">
+                <i class="fa fa-plus-circle text-primary mx-auto" aria-hidden="true" data-toggle="tooltip" title="Thêm mới" ></i> 
+            </span>
+        </div>
+
+                    
+    </div> 
+
+    <div class="dd row" id="nestable">
+        <ol class="dd-list">
+            <% _.forEach(data.menus, function(menu){%>
+                <li class="dd-item dd3-item" data-id="13">
+                    <div class="dd-handle dd3-handle"><i class='<%- menu.icon%>' aria-hidden="true"></i> </div>
+                    <div class="dd3-content">
+                        <span><%- menu.name %></span>
+                        <span>/url</span>
+    
+                        <div class='roles_check'>
+                                <span class="role align-middle">
+                                    <input type="checkbox" class="mx-auto" checked />
+                                </span>
+                    
+                                <span class="role align-middle">
+                                    <input type="checkbox" class="mx-auto" checked />
+                                </span>
+                    
+                                <span class="role align-middle">
+                                    <input type="checkbox" class="mx-auto" checked />
+                                </span>
+                    
+                                <span class="role align-middle">
+                                    <input type="checkbox" class="mx-auto" checked />
+                    
+                                </span>
+                    
+                                <span class="role">
+                                    <i class="fa fa-pencil-square-o text-primary mx-auto" aria-hidden="true" data-toggle="tooltip" title="Chỉnh sửa"></i>
+                                    <i class="fa fa-trash-o text-primary mx-auto" aria-hidden="true" data-toggle="tooltip" title="Xóa bỏ"></i>
+                                </span>
+                            </div>
+                    
+                    </div>
+                </li>
+            <%})%>
+        </ol>
+    </div> 
+       
+   
 </div>
 
 

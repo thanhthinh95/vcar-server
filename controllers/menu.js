@@ -3,5 +3,5 @@ exports.getAll = async function(req, res) {
     _render(req, res, 'menu', 'Quản lý menu', {
         menus : data,
         fontawesomes : _fontawesomes,
-    })
+    }, ['nestable'])
 }

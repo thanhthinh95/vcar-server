@@ -27,7 +27,7 @@ exports.update = async function (req, res) {
         let mailOptions = {
             from: config.mail.user,
             to: req.body.email,
-            subject: 'P-Car | KHÔI PHỤC MẬT KHẨU',
+            subject: 'V-Car | KHÔI PHỤC MẬT KHẨU',
             text: 'Xin chào quý khách. Bạn vừa yêu cầu khôi phục mật khẩu. Mật khẩu mới của bạn là [' + newPass + ']. Hãy dùng mật khẩu này để đăng nhập hệ thống'
         };
 

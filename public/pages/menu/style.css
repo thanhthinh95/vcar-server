@@ -1,23 +1,51 @@
-.page, .page_more, .page_active{
-  background: none;
-  border: none;
-  border-radius: 50%;
-  box-sizing: border-box;
-  color: rgba(0,0,0,.6);
-  font-size: 16px;
-  height: 40px;
-  line-height: 40px;
-  min-width: 40px;
-  padding: 0;
+.head{
+  border-bottom: solid 1px rebeccapurple;
+}
+
+.menu_custom{
+  position: absolute;
+  bottom: 5px;
+}
+
+.roles {
+  float: right !important;
+  background: darkslategrey;
+  color: white;
+  font-weight: 600;
+  width: auto;
+}
+
+.roles_check {
+  float: right !important;
+  padding-right: 0px;
+}
+
+
+.role {
+  width: 70px;
+  height: 100%;
   text-align: center;
+  padding: 10px;
+
+  display: inline-flex;
+  align-items: center;
 }
-.page:hover{
-    background: rgb(252, 197, 197);
+
+
+.input_custom{
+  width: calc(100% - 367.63px);
+  display: inline-flex;
 }
 
 
 
-.page_active{
-    background: rgb(148, 106, 187);
-    color: white
+.add_info{
+  border-bottom: solid 1px rebeccapurple;
+  border-top: solid 1px rebeccapurple;
+  padding: 5px;
+}
+
+
+.role > i{
+  font-size: 20px !important;
 }
