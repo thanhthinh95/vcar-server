@@ -4,9 +4,9 @@
     // var _fields = JSON.parse('<%- JSON.stringify(data.fields) %>');
     // var _sumRow = '<%- JSON.stringify(data.sumRow) %>';
     var _menus = JSON.parse('<%- JSON.stringify(data.menus) %>');
+    var _roles = JSON.parse('<%- JSON.stringify(data.roles) %>');
     var _fontawesomes = JSON.parse('<%- JSON.stringify(data.fontawesomes) %>');
 
-    console.log('hi', _menus);
     
 </script>
 
@@ -35,10 +35,9 @@
         </div>
 
         <div class='roles'>
-            <span class='role align-middle'>Kỹ thuật hệ thống</span>
-            <span class='role align-middle'>Nhân viên hệ thống</span>
-            <span class='role align-middle'>Nhà xe</span>
-            <span class='role align-middle'>Nhân viên</span>
+            <% _.forEach(data.roles, function(role){%>
+                <span class='role align-middle'><%- role.name%></span>
+            <%})%>
             <span class='role align-middle'>Tác vụ</span>
         </div>
     </div>
@@ -47,85 +46,106 @@
    
 
     <div class="col-lg-12 col-md-12 col-sm-12 add_info">
-        <div class="input_custom">
-            <select class="selectpicker form-control" data-live-search='true'>
-                <% _.forEach(data.fontawesomes, function(item){%>
-                    <option value='fa <%- item%>' data-icon='fa <%- item%>'><%- item%></option>
+        <form id='form_action' data_action='new'>
+            <div class="input_custom">
+                <select class="selectpicker form-control" name='icon' data-live-search='true'>
+                    <option value='' data-icon=''>Trống</option>
+
+                    <% _.forEach(data.fontawesomes, function(item){%>
+                        <option value='fa <%- item%>' data-icon='fa <%- item%>'><%- item%></option>
+                    <%})%>
+                </select>
+    
+                <input class="form-control ml-2" type="text" autocomplete="off" name='name' placeholder="Nhập tên hiển thị" required></input>
+                <input class="form-control ml-2" type="text" autocomplete="off" name='link' placeholder="Nhập đường dẫn"></input>
+            </div>
+        
+            <div class='roles_check'>
+                <% _.forEach(data.roles, function(role){%>
+                    <span class="role align-middle">
+                        <input type="checkbox" name='roles' value='<%- role._id%>' class="mx-auto" />
+                    </span>
                 <%})%>
-            </select>
-
-            <input class="form-control ml-2" type="text" autocomplete="off" placeholder="Nhập tên hiển thị"></input>
-            <input class="form-control ml-2" type="text" autocomplete="off" placeholder="Nhập đường dẫn"></input>
-        </div>
-
-        <div class='roles_check'>
-            <span class="role align-middle">
-                <input type="checkbox" class="mx-auto" checked />
-            </span>
-
-            <span class="role align-middle">
-                <input type="checkbox" class="mx-auto" checked />
-            </span>
-
-            <span class="role align-middle">
-                <input type="checkbox" class="mx-auto" checked />
-            </span>
-
-            <span class="role align-middle">
-                <input type="checkbox" class="mx-auto" checked />
-
-            </span>
-
-            <span class="role align-middle">
-                <i class="fa fa-plus-circle text-primary mx-auto" aria-hidden="true" data-toggle="tooltip" title="Thêm mới" ></i> 
-            </span>
-        </div>
-
-                    
+    
+                <span class="role align-middle">
+                    <button type='submit' class="btn btn-primary w-100">
+                        <i class="fa fa-plus-circle text-white mx-auto" aria-hidden="true" data-toggle="tooltip" title="Thêm mới" ></i>  
+                    </button>
+                </span>
+            </div>
+        </form>         
     </div> 
 
     <div class="dd row" id="nestable">
-        <ol class="dd-list">
-            <% _.forEach(data.menus, function(menu){%>
-                <li class="dd-item dd3-item" data-id="13">
-                    <div class="dd-handle dd3-handle"><i class='<%- menu.icon%>' aria-hidden="true"></i> </div>
-                    <div class="dd3-content">
-                        <span><%- menu.name %></span>
-                        <span>/url</span>
-    
-                        <div class='roles_check'>
-                                <span class="role align-middle">
-                                    <input type="checkbox" class="mx-auto" checked />
-                                </span>
-                    
-                                <span class="role align-middle">
-                                    <input type="checkbox" class="mx-auto" checked />
-                                </span>
-                    
-                                <span class="role align-middle">
-                                    <input type="checkbox" class="mx-auto" checked />
-                                </span>
-                    
-                                <span class="role align-middle">
-                                    <input type="checkbox" class="mx-auto" checked />
-                    
-                                </span>
-                    
-                                <span class="role">
-                                    <i class="fa fa-pencil-square-o text-primary mx-auto" aria-hidden="true" data-toggle="tooltip" title="Chỉnh sửa"></i>
-                                    <i class="fa fa-trash-o text-primary mx-auto" aria-hidden="true" data-toggle="tooltip" title="Xóa bỏ"></i>
-                                </span>
-                            </div>
-                    
-                    </div>
-                </li>
-            <%})%>
-        </ol>
+
     </div> 
        
    
 </div>
 
+
+
+<!-- ColumnShow -->
+<div class="modal fade" id="modal_update">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <b class="modal-title"><i class="fa fa-cog" aria-hidden="true"></i> CẬP NHẬT THÔNG TIN</b>
+            </div>
+
+            <form id='form_modal_config'>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class='row mb-2'>
+                        <b class='col col-md-4 col-sm-4 align-middle'>Icon</b>
+                        <select class="col col-md-8 col-sm-8 selectpicker form-control pl-3 pr-3" id='icon_update' name='icon' data-live-search='true'>
+                            <option value='' data-icon=''>Trống</option>
+                            <% _.forEach(data.fontawesomes, function(item){%>
+                                <option value='fa <%- item%>' data-icon='fa <%- item%>'><%- item%></option>
+                            <%})%>
+                        </select>
+                    </div>
+
+                    <div class='row mb-2'>
+                        <b class='col col-md-4 col-sm-4 align-middle'>Tên hiển thị</b>
+                        <div class="col col-md-8 col-sm-8">
+                            <input class="form-control" type="text" autocomplete="off" id='name_update' name='name' placeholder="Nhập tên hiển thị" required></input>
+                        </div>
+                    </div>
+
+                    <div class='row mb-2'>
+                        <b class='col col-md-4 col-sm-4 align-middle'>Đường dẫn</b>
+                        <div class="col col-md-8 col-sm-8">
+                            <input class="form-control" type="text" autocomplete="off" id='link_update' name='name' placeholder="Nhập tên hiển thị" required></input>
+                        </div>
+                    </div>                        
+
+                    
+                    <div class='row mb-2'>
+                        <b class='col col-md-12 col-sm-12'>Quyền truy cập</b>
+                        
+                        <% _.forEach(data.roles, function(role){%>
+                            <div class="col col-md-12 col-sm-12 pl-5 custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" name="field_config_" id="field_config_" />
+                                <label class="custom-control-label" for="field_config_"><%- role.name%></label>
+                            </div>
+                        <%})%>
+                    </div>
+            
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-undo" aria-hidden="true"></i> Hủy</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> Hoàn Tất</button>
+                </div>
+            </form>
+
+            
+        </div>
+    </div>
+</div>
 
 
 <% if(page) {%>

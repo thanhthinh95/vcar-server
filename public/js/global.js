@@ -3,6 +3,9 @@ $(document).ready(function () {
     eventPage.init();
 });
 
+
+
+
 window._createObjectInForm = function (formId) {
     let obj = $(formId).serializeArray();
     return _.chain(obj)
@@ -247,7 +250,6 @@ function itemFilter(item) {
                     (item.valueSelect.length > 4 ? ' data-live-search=true' : '') +
                     (item.valueSelect.length > 6 ? ' data-actions-box=true' : '') +
                     ' title="Chọn ' + _.lowerFirst(item.textShow) +'">' +
-                  
                     '</div>' ;
                 _.forEach(item.valueSelect, function(val) {
                     html += '<option value="'+ val._id +'">'+ val.name +'</option>';
