@@ -7,7 +7,6 @@
     var _roles = JSON.parse('<%- JSON.stringify(data.roles) %>');
     var _fontawesomes = JSON.parse('<%- JSON.stringify(data.fontawesomes) %>');
 
-    
 </script>
 
 
@@ -46,7 +45,7 @@
    
 
     <div class="col-lg-12 col-md-12 col-sm-12 add_info">
-        <form id='form_action' data_action='new'>
+        <form id='form_create'>
             <div class="input_custom">
                 <select class="selectpicker form-control" name='icon' data-live-search='true'>
                     <option value='' data-icon=''>Trống</option>
@@ -94,9 +93,11 @@
                 <b class="modal-title"><i class="fa fa-cog" aria-hidden="true"></i> CẬP NHẬT THÔNG TIN</b>
             </div>
 
-            <form id='form_modal_config'>
+            <form id='form_modal_update'>
                 <!-- Modal body -->
                 <div class="modal-body">
+                    <input id='id_update' name='_id' type="hidden"></input>
+
                     <div class='row mb-2'>
                         <b class='col col-md-4 col-sm-4 align-middle'>Icon</b>
                         <select class="col col-md-8 col-sm-8 selectpicker form-control pl-3 pr-3" id='icon_update' name='icon' data-live-search='true'>
@@ -117,7 +118,7 @@
                     <div class='row mb-2'>
                         <b class='col col-md-4 col-sm-4 align-middle'>Đường dẫn</b>
                         <div class="col col-md-8 col-sm-8">
-                            <input class="form-control" type="text" autocomplete="off" id='link_update' name='name' placeholder="Nhập tên hiển thị" required></input>
+                            <input class="form-control" type="text" autocomplete="off" id='link_update' name='link' placeholder="Nhập đường dẫn"></input>
                         </div>
                     </div>                        
 
@@ -125,12 +126,15 @@
                     <div class='row mb-2'>
                         <b class='col col-md-12 col-sm-12'>Quyền truy cập</b>
                         
-                        <% _.forEach(data.roles, function(role){%>
-                            <div class="col col-md-12 col-sm-12 pl-5 custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" name="field_config_" id="field_config_" />
-                                <label class="custom-control-label" for="field_config_"><%- role.name%></label>
-                            </div>
-                        <%})%>
+                        <div class="col col-md-12 col-sm-12 pl-5" id="roles_update">
+                            <% _.forEach(data.roles, function(role){%>
+                                <div class="col col-md-12 col-sm-12 custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" name="field_config_" id="field_config_" />
+                                    <label class="custom-control-label" for="field_config_"><%- role.name%></label>
+                                </div>
+                            <%})%>
+                        </div>
+                        
                     </div>
             
                 </div>

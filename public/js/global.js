@@ -158,13 +158,12 @@ window._bindBodyTable = function (tableId, fields, data) {
     
 
     _.forEach(data, function (rowData) {
-
         var html = '<tr class="">' + 
-                    '<td class="text-center align-middle">' +
-                    '<div class="custom-control custom-checkbox">' +
-                    '<input type="checkbox" class="custom-control-input" name="hi" id="hi"/>' +
-                    '<label class="custom-control-label" for="hi"></label>' +
-                    '</td>';
+                '<td class="text-center align-middle">' +
+                '<div class="custom-control custom-checkbox">' +
+                '<input type="checkbox" class="custom-control-input" name="hi" id="hi"/>' +
+                '<label class="custom-control-label" for="hi"></label>' +
+                '</td>';
                    
         _.forEach(fields, function (field) {
             html += itemBody(rowData, field);

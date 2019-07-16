@@ -32,6 +32,28 @@ activitySchame.statics._create = async function (activity) {
     return await _activity.create(activity);
 }
 
+activitySchame.statics._createManyForMenu = async function (menuId, roleIds) {//for update menu
+    console.log(menuId);
+    console.log(roleIds);
+    
+    //Khi cap nhat roleIds cua menu. thuc hien xoa het activity theo menuId va tao lai
+    let data = await _activity.deleteMany({menuId :  menuId});
+    if(roleIds && data){//Thuc hien tao moi activitys theo tung roleId  cho menu
+        var arrayActivity = [];
+        _.forEach(roleIds, function(roleId) {
+            arrayActivity.push({
+                menuId : menuId,
+                roleId : roleId,
+            })
+        })
+
+        console.log(arrayActivity);
+        
+        data = await _activity._create(arrayActivity);
+    }
+    return data;
+}
+
 
 activitySchame.statics._delete = async function (activityId) {
     //xoa bo tat ca activity va con cua activity

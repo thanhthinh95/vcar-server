@@ -6,7 +6,7 @@ var menuSchame = new mongoose.Schema({
     icon : {type : String, default : null},
 },{id: false, versionKey: 'v'});
 
-menuSchame.statics._create = async function(menu,roleIds) {
+menuSchame.statics._create = async function(menu, roleIds) {
     let data = await _menu.create(menu);
     if(roleIds && data){//Thuc hien tao moi activitys theo tung roleId  cho menu
         var arrayActivity = [];
@@ -36,24 +36,31 @@ menuSchame.statics._getAll = async function() {
         }},
         {$unwind: {path : '$childs', preserveNullAndEmptyArrays : true }},
         {$sort : {'childs.priority' : 1}},
-        {$group : {
-            _id : '$_id',
-            name : {$last : '$name'},
-            parentId : {$last : '$parentId'},
-            priority : {$last : '$priority'},
-            icon : {$last : '$icon'},
-            childs : {$push : '$childs'},
-        }},
-        {$sort : {priority : 1}},
         {$lookup : {
             from : 'activities',
             localField : '_id',
             foreignField : 'menuId',
             as : 'activities'
         }},
-    
-    ];
+        {$lookup : {
+            from : 'activities',
+            localField : 'childs._id',
+            foreignField : 'menuId',
+            as : 'childs.activities'
+        }},
+        {$group : {
+            _id : '$_id',
+            name : {$last : '$name'},
+            parentId : {$last : '$parentId'},
+            priority : {$last : '$priority'},
+            icon : {$last : '$icon'},
+            link : {$last : '$link'},
+            activities : {$last : '$activities'},
+            childs : {$push : '$childs'},
+        }},
+        {$sort : {priority : 1}},
 
+    ];
 
     return await _menu.aggregate(aggs); 
 }
@@ -62,9 +69,12 @@ menuSchame.statics._updateMany = async function(query, dataUpdate) {
     return await _menu.updateMany(query, dataUpdate);
 }
 
+menuSchame.statics._updateOne = async function(query, dataUpdate) {
+    return await _menu.updateOne(query, dataUpdate);
+}
+
 menuSchame.statics._delete = async function (menuId) {
     //xoa bo tat ca menu va con cua menu
-     
     await _menu.deleteMany({$or :  [{parentId : menuId}, {_id : menuId}]});
     return await _activity._deleteManyForMenuId(menuId);
 }

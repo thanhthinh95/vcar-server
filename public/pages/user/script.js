@@ -2,7 +2,6 @@ var eventPage = function($) {
     function bindEventClick() {
         $(document).on('click', '#config', function (e) {
             $('#modal_config').modal('show');
-
             $("#table_modal tbody").empty();
             $('#sumRow').val(_sumRow);
             $('#sum_column').text(_.filter(_fields, {statusShow : -1}))
@@ -92,7 +91,6 @@ var eventPage = function($) {
     return {
         init : function () {
             console.log('dang thuc hien init su kien user');
-
             $('#table_modal tbody').sortable();
             bindHeadTable();
             bindBodyTable();
