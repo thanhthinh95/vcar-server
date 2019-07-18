@@ -19,6 +19,7 @@ var eventPage = function($) {
             _AjaxObject('/menu', 'POST', data, function (resp) {
                 if(resp.code == 200){
                     _loadPageChild('menu');
+                    _bindMenuSideBar(roleIndex._id);
                 }else {
                     _DialogError(resp.message);
                 }
@@ -34,6 +35,8 @@ var eventPage = function($) {
                     if(resp.code == 200){
                         _DialogSuccess('Đã xóa bỏ thành công', function () {
                             _loadPageChild('menu');
+                            _bindMenuSideBar(roleIndex._id);
+
                         })
                     }else {
                         _DialogError(resp.message);
@@ -61,6 +64,8 @@ var eventPage = function($) {
                 })
 
                 $('#roles_update').html(html);
+                _bindMenuSideBar(roleIndex._id);
+
             }
         })
 
@@ -73,6 +78,8 @@ var eventPage = function($) {
                 if(resp.code == 200){
                     _DialogSuccess('Đã cập nhật thành công', function () {
                         _loadPageChild('menu');
+                        _bindMenuSideBar(roleIndex._id);
+
                     })
                 }else {
                     _DialogError(resp.message);
@@ -130,7 +137,9 @@ var eventPage = function($) {
         if (window.JSON) {
             var data = list.nestable('serialize');
             _AjaxObject('/menu', 'PUT', {dataUpdate : data}, function(resp) {
-                console.log(resp);
+                
+                _bindMenuSideBar(roleIndex._id);
+
             })
         } else {
             _DialogError('Thử lại sau', function() {

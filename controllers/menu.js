@@ -65,7 +65,7 @@ exports.delete = async function(req, res) {
 exports.search = async function (req, res) {
     switch(req.query.type){
         case '1':
-            await loadMenusForRole(req.query.data);
+            await loadMenusForRole(req.query.data.roleId, res);
             break;
         case '2':
 
@@ -74,15 +74,15 @@ exports.search = async function (req, res) {
     }
 }
 
-async function loadMenusForRole(data) {
-    console.log(data);
+async function loadMenusForRole(roleId, res) {
     var menus = await _menu._getAll();
-    
     _.forEach(menus, function (menu) {
-        console.log(menu);
-        
-        
+        _.remove(menu.childs, function (child) {
+            if(!_.has(child, '_id') ||
+                !_.find(child.activities, {roleId : mongoose.Types.ObjectId(roleId)})) 
+                    return child;
+        })
     })
     
-    
+    res.send(_output(menus ? 200 : 500, null, menus));    
 }

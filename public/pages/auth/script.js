@@ -6,13 +6,12 @@ var eventPage = function($) {
             var roldeId = $(this).attr('data_id');
             console.log('dang thuc hien chon quyen', roleIndex, roldeId, user);
             
-            _AjaxObject('/auth', 'POST', {_id: roldeId}, function(resp) {
+            _AjaxObject('/auth', 'POST', {_id: roldeId}, async function(resp) {
                 if(resp.code == 200 && resp.data){
-                    loadMenus(roldeId);
-                    $('#button_sidebar').css('display', '');
-                    roleIndex = resp.data;
                     $('#header_role_index').text(resp.data.name);
-                    _loadPageChild('user');
+                    roleIndex = resp.data;
+                    _bindMenuSideBar(roleIndex._id);
+                    _loadPageChild('my_user/id/' + user._id);
 
                 }else{
                     _DialogError(resp.message);
@@ -22,19 +21,24 @@ var eventPage = function($) {
         
     }
 
-    function loadMenus(roleId) {
+    async function loadMenus(roleId) {
         var dataObject = {
             type : 1,
             data : {
-                _id : roleId,
+                roleId : roleId,
             }
         }
-        _AjaxObject('/menu/search', 'GET', dataObject, function (resp) {
-            console.log(resp);
-            
-            
+
+        await _AjaxObject('/menu/search', 'GET', dataObject, function (resp) {
+            if(resp.code == 200){
+                _bindMenuSideBar(resp.data);
+            }else {
+                _DialogError(resp.message);
+            }
         })
     }
+
+
 
     return {
         init : function () {

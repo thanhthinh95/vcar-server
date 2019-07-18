@@ -102,6 +102,58 @@ window._DialogQuestion = function (title, content, fn_success) {
     });
 }
 
+window._bindMenuSideBar = function(roleId) {
+    if(roleId){
+        var dataObject = {
+            type : 1,
+            data : {
+                roleId : roleId,
+            }
+        }
+        $('#button_sidebar').css('display', 'none');
+    
+        _AjaxObject('/menu/search', 'GET', dataObject, function (resp) {
+            if(resp.code == 200){
+                bindMenus(resp.data);
+                $('#button_sidebar').css('display', '');
+            }else {
+                _DialogError(resp.message);
+            }
+        })
+    }
+}
+
+function bindMenus(menus) {
+    var html = '';
+    _.forEach(menus, function (menu) {
+        html += '<button class="dropdown-btn">' + menu.name +
+                '<i class="fa fa-caret-down"></i>' +
+                '</button>';
+        html += '<div class="dropdown-container">';
+        
+        _.forEach(menu.childs, function (child) {
+            html += '<a style="padding-left:30px" href="#'+ child.link +'" data_type="side"><i class="' + child.icon +' text-primary"></i>  ' + child.name + '</a>';
+        })
+        html += '<hr>';
+        html += '</div>';
+    })
+
+    $('#content_Navi').html(html);
+
+    var dropdown = document.getElementsByClassName("dropdown-btn");
+    
+    for (var i = 0; i < dropdown.length; i++) {
+        dropdown[i].addEventListener("click", function () {
+            this.classList.toggle("active_sidebar");
+            var dropdownContent = this.nextElementSibling;
+            if (dropdownContent.style.display === "block") {
+                dropdownContent.style.display = "none";
+            } else {
+                dropdownContent.style.display = "block";
+            }
+        });
+    }
+}
 
 window._loadPageChild = function (url) {
     var path = window.location.origin + '/' + url;
