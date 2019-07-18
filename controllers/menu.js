@@ -61,3 +61,28 @@ exports.delete = async function(req, res) {
     var data = await _menu._delete(req.params._id);
     res.send(_output(data ? 200 : 500, null, data));    
 }
+
+exports.search = async function (req, res) {
+    switch(req.query.type){
+        case '1':
+            await loadMenusForRole(req.query.data);
+            break;
+        case '2':
+
+        default:
+            break;
+    }
+}
+
+async function loadMenusForRole(data) {
+    console.log(data);
+    var menus = await _menu._getAll();
+    
+    _.forEach(menus, function (menu) {
+        console.log(menu);
+        
+        
+    })
+    
+    
+}

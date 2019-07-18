@@ -56,6 +56,10 @@ header{
   height: 30px;
 }
 
+.dropdown-container{
+  display: none;
+}
+
 .overlay a:hover, .overlay a:focus, .overlay .dropdown-btn:hover {
   color: #4aeb00;
 }
