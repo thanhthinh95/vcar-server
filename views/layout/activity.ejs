@@ -1,0 +1,107 @@
+<% if(page) {%>
+    <link rel="stylesheet" href='<%- "pages/" + page + "/style.css"%>'>
+<%}%>
+
+<% if(plugins) {%>
+    <% _.forEach(plugins, function(item){%>
+        <link rel="stylesheet" href='<%- "plugins/" + item + "/style.css"%>'>
+    <%})%>
+<%}%>
+
+<script>
+    var _fields = JSON.parse('<%- JSON.stringify(data.fields) %>');
+    var _sumRow = '<%- JSON.stringify(data.sumRow) %>';
+</script>
+
+
+
+<div class='card'>
+    <div class="card-header col-lg-12 col-md-12 col-sm-12">
+        <b class=""> <i class="fa fa-map-signs" aria-hidden="true"></i> <%- title%></b>
+</div>
+<div class='card-body'>
+    <div class='float-right action'>
+        <a href='<%- "#" + page%>' data-toggle="tooltip" title="Tạo mới">
+            <i class="fa fa-plus" aria-hidden="true"></i></a>
+        <a href="#" + data-toggle="tooltip" title="Xóa bỏ nội dung đã chọn">
+            <i class="fa fa-trash-o" aria-hidden="true"></i></a>
+        <span id='config' data-toggle="tooltip" title="Tùy chỉnh">
+            <i class="fa fa-cog" aria-hidden="true"></i></span>
+        <a href="#user" data-toggle="tooltip" title="Làm mới">
+            <i class="fa fa-refresh" aria-hidden="true"></i></a>
+    </div>
+
+    <div>
+        <form id="form_table">
+            <table class="table" id="table_data">
+                <thead></thead>
+                <tbody></tbody>
+            </table>
+        </form>
+
+    </div>
+
+    <div id="paging" class="row justify-content-center">
+        <button class="page" >&#10094;</button>
+        <button class="page">1</button>
+        <span class="page_more">...</span>
+        <button class="page">3</button>
+        <button class="page_active">4</button>
+        <button class="page">5</button>
+        <span class="page_more">...</span>
+        <button class="page">7</button>
+        <button class="page">&#10095;</button>
+    </div>
+</div>
+</div>
+
+
+<!-- ColumnShow -->
+<div class="modal fade" id="modal_config">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <b class="modal-title"><i class="fa fa-cog" aria-hidden="true"></i> TÙY CHỈNH THÔNG TIN HIỂN THỊ</b>
+            </div>
+
+            <form id='form_modal_config'>
+                 <!-- Modal body -->
+                <div class="modal-body">
+                    <div class='row'>
+                        <b class='col col-md-7 col-sm-7'>Số bản ghi trong 1 trang</b>
+                        <input class='col col-md-4 col-sm-4' type="number" id='sumRow' name='sumRow' min="1", max="100">
+                    </div>
+                    <div class='row'>
+                        <b class='col col-md-12 col-sm-12'>Thông tin hiển thị</b>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover" id='table_modal'>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-undo" aria-hidden="true"></i> Hủy</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> Hoàn Tất</button>
+                </div>
+            </form>
+
+           
+        </div>
+    </div>
+</div>
+
+<% if(page) {%>
+<script src='<%- "pages/" + page + "/script.js"%>'></script>
+<%}%>
+
+<% if(plugins) {%>
+    <% _.forEach(plugins, function(item){%>
+        <script src='<%- "plugins/" + item + "/script.js"%>'></script>
+    <%})%>
+<%}%>

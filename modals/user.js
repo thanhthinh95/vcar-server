@@ -19,8 +19,8 @@ userSchame.statics._getAll = async function () {
     return await _user.find({});
 }
 
-userSchame.statics._getId = async function (userId) {
-    return await _user.findOne({ _id: userId });
+userSchame.statics._getId = async function (_id) {
+    return await _user.findOne({ _id: _id });
 }
 
 

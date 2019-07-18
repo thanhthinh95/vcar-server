@@ -13,19 +13,8 @@ activitySchame.statics._getId = async function(_id) {
 }
 
 activitySchame.statics._getAll = async function() {
-    // var aggs = [
-    //     {$match : {parentId : null}},
-    //     {$sort : {priority : 1}},
-    //     {$lookup : {
-    //         from : 'activitys',
-    //         localField : '_id',
-    //         foreignField : 'parentId',
-    //         as : 'childs'
-    //     }}
-    
-    // ];
+    return await _activity.find({});
 
-    // return await _activity.aggregate(aggs); 
 }
 
 activitySchame.statics._create = async function (activity) {

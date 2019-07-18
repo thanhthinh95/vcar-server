@@ -25,6 +25,24 @@ menuSchame.statics._getId = async function(_id) {
     return await _menu.findById(_id);
 }
 
+menuSchame.statics._getMenuAndActivities = async function(link, roleId) {
+    var aggs = [
+        {$match : {link : link}},
+        {$lookup : {
+            from : 'activities',
+            localField : '_id',
+            foreignField : 'menuId',
+            as : 'activities'
+        }},
+        {$unwind: {path : '$activities', preserveNullAndEmptyArrays : true }},
+        {$match : {'activities.roleId' : mongoose.Types.ObjectId(roleId)}},
+    ];
+    
+    let menus = await _menu.aggregate(aggs); 
+    if(menus && menus.length > 0) return menus[0];
+    return null;
+}
+
 menuSchame.statics._getAll = async function() {
     var aggs = [
         {$match : {parentId : null}},
@@ -59,7 +77,6 @@ menuSchame.statics._getAll = async function() {
             childs : {$push : '$childs'},
         }},
         {$sort : {priority : 1}},
-
     ];
 
     return await _menu.aggregate(aggs); 

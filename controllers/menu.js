@@ -1,5 +1,6 @@
 exports.getAll = async function(req, res) {
     _render(req, res, 'menu', 'Quản lý menu', {
+        menu : await _menu._getMenuAndActivities('menu', req.session.roleIndex._id),
         menus : await _menu._getAll(),
         roles : await _role._getAll(),
         fontawesomes : _fontawesomes,
@@ -75,6 +76,8 @@ exports.search = async function (req, res) {
 }
 
 async function loadMenusForRole(roleId, res) {
+    if(!roleId) return res.send(_output(500));
+
     var menus = await _menu._getAll();
     _.forEach(menus, function (menu) {
         _.remove(menu.childs, function (child) {

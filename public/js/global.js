@@ -333,7 +333,9 @@ function itemBody(data, field) {
                 html += '<span style="display:inline-table;">' +data[field.path] + '</span>';
                 break;
             case 'Select':
-                html += '<span style="display:inline-table;">' + _.find(field.valueSelect, {_id : data[field.path]}) + '</span>';
+                let obj = _.find(field.valueSelect, {_id : data[field.path]});
+                
+                html += '<span style="display:inline-table;">' + (obj ? obj.name : 'Chưa xác định') + '</span>';
                 break;
             default:
                 return '';

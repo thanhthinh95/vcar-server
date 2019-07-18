@@ -5,7 +5,7 @@
     },
     "database" : {
         "name" : "v-car",
-        "ip": "172.16.1.195",
+        "ip": "localhost",
         "port": 27017,
         "username" : "",
         "password" : ""

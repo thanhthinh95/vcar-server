@@ -79,7 +79,6 @@ var eventPage = function($) {
                     _DialogSuccess('Đã cập nhật thành công', function () {
                         _loadPageChild('menu');
                         _bindMenuSideBar(roleIndex._id);
-
                     })
                 }else {
                     _DialogError(resp.message);
@@ -147,6 +146,7 @@ var eventPage = function($) {
             })
         }
     };
+
 
 
     return {
