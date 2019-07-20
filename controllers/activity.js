@@ -10,6 +10,7 @@ exports.getAll = async function(req, res) {
     ];
     
     _render(req, res, 'activity', 'Quản lý vai trò', {
+        menu : await _menu._getMenuAndActivities('activity', req.session.roleIndex._id),
         activities : await _activity._getAll(), 
         sumRow : config.table.sumRow,
         fields : _getFields(_activity, fieldShows)
@@ -21,55 +22,49 @@ exports.getId = async function (req, res) {
         _render(req, res, 'user_info', 'Thông tin người dùng', null, null)
     }else{
         var user = await _user._getId(req.params._id);
-        console.log(user);
-        
         _render(req, res, 'user_info', 'Thông tin người dùng', {user : user}, null)
     }
 }
 
 exports.search = async function (req, res) {
+    console.log('dang thuc hien tim kiem');
 
     if(_.has(req.query, 'dataMatch')){
         if(_.has(req.query.dataMatch, '_id') && mongoose.Types.ObjectId.isValid(req.query.dataMatch._id)) req.query.dataMatch._id = new mongoose.Types.ObjectId(req.query.dataMatch._id)
         else delete req.query.dataMatch._id; 
         if(_.has(req.query.dataMatch, 'name')) req.query.dataMatch.name = {'$regex' : new RegExp(_stringRegex(req.query.dataMatch.name), 'i')}
         if(_.has(req.query.dataMatch, 'email')) req.query.dataMatch.email = {'$regex' : new RegExp(_stringRegex(req.query.dataMatch.email), 'i')}
+
     }
-
-    console.log(req.query);
-
-    var data = await _activity.find(req.query.dataMatch)
-
-    console.log(data);
     
+    let data = await _activity._search(req.query.dataMatch, req.query.page, req.query.sumRow)
     res.send(_output(data ? 200 : 500, null, data));
 }
 
 
-exports.new = function (req, res) {
-    res.send('dang tao moi')
-}
-
-exports.edit = function (req, res) {
-    res.send('dang thuc hien sua')
-}
-
-//Khi user thuc hien chon quyen truy cap du an
 exports.create = async function (req, res) {
 
-    if(!_.has(req.body, '_id') || !mongoose.Types.ObjectId.isValid(req.body._id)){
-        return res.send(_output(501));
-    }else{
-        var role = await _role._getId(req.body);
-        req.session.roleIndex = role;
-        res.send(_output(role ? 200 : 500, null, role));
+}
+
+exports.update = async function (req, res) {
+    var dataUpdate = req.body;
+
+    if(_.has(dataUpdate, 'type')){ 
+        if(!_.isArray(dataUpdate.type)){//Neu type chi co 1 phan tu thi bien doi no thanh mang
+            dataUpdate.type = [dataUpdate.type];
+        }
+        dataUpdate.type = _.map(dataUpdate.type, function (item) {
+            return parseInt(item, 10);
+        });
+    }else {
+        dataUpdate.type = [];
     }
+    
+    let data = await _activity._update(dataUpdate._id, dataUpdate);
+    res.send(_output(data ? 200 : 500, null, data));
 }
 
-exports.update = function (req, res) {
-    res.send('dang thuc hien sua', req.body)
-}
-
-exports.delete = function (req, res) {
-    res.send('dang thuc hien xoa')
+exports.delete = async function (req, res) {
+    var data = await _activity._delete(req.params._id);
+    res.send(_output(data ? 200 : 500, null, data));  
 }

@@ -166,6 +166,35 @@ window._loadPageChild = function (url) {
     }, 'html')
 }
 
+window._bindPaginate = function (data) {
+    console.log(data);
+    let html = '';
+
+    if(data.hasPrevPage){
+        html += '<button class="page" data_page="'+ data.prevPage +'">&#10094;</button>'
+    }
+    
+    // <button class="page">1</button>
+    // <span class="page_more">...</span>
+    // <button class="page">3</button>
+
+    // <button class="page">5</button>
+    // <span class="page_more">...</span>
+    // <button class="page">7</button>
+    // <button class="page">&#10095;</button>
+
+
+    html += '<button class="page_active">'+ data.page +'</button>'
+
+
+
+    if(data.hasNextPage){
+        html += '<button class="page" data_page="'+ data.nextPage +'">&#10095;</button>'
+    }
+
+    $('#paging').html(html);
+    
+}
 
 window._appendModalConfig = function (modalId, fields) {
     if (fields) {
@@ -198,13 +227,10 @@ window._bindHeadTable = function (tableId, fields) {
     }
 }
 
-window._bindBodyTable = function (tableId, fields, data) {
+window._bindBodyTable = function (tableId, fields, data, activity) {
     fields = _.filter(_fields, function (element) {//Thuc hien loc cac filed co stastusShow = -1 va 1
         return (element.statusShow == -1 || element.statusShow == 1)
     });
-
-    console.log(tableId);
-    console.log(fields);
 
     $(tableId + ' tbody').empty();
     
@@ -221,11 +247,15 @@ window._bindBodyTable = function (tableId, fields, data) {
             html += itemBody(rowData, field);
         })
 
-        // html += '<th class="text-center align-middle"><button type="submit" class="btn-primary form-control"><i class="fa fa-filter"></i> Lọc</button></th>';
+        html += '<th class="text-center align-middle">' +
+            '<span href="#" id="edit_row_table" data_id="'+ rowData._id +'" + data-toggle="tooltip" title="Chỉnh sửa">' +
+            '<i class="fa fa-pencil-square-o text-primary" aria-hidden="true"></i></span>' +
+            '<span href="#" id="delete_row_table" data_id="'+ rowData._id +'" + class="pl-1" + data-toggle="tooltip" title="Xóa bỏ">' +
+            '<i class="fa fa-trash-o text-primary" aria-hidden="true"></i></span>' +
+            '</th>';
         html += '</tr>';
 
         $(tableId + ' tbody').append(html);
-        
     })
     
     
@@ -317,11 +347,11 @@ function itemFilter(item) {
 }
 
 function itemBody(data, field) {
-    var html = '<td class="text-center" title="fsd">';
+    var html = '<td class="text-center align-middle" title="fsd">';
     if(field.statusSearch){
         switch (field.instance) {
             case 'ObjectID':
-                html += '<span style="display:inline-table;">' +data[field.path] + '</span>';
+                html += '<span style="display:inline-table;">' + data[field.path] + '</span>';
                 break;
             case 'String':
                 html += '<span style="display:inline-table;">' +data[field.path] + '</span>';
@@ -333,9 +363,22 @@ function itemBody(data, field) {
                 html += '<span style="display:inline-table;">' +data[field.path] + '</span>';
                 break;
             case 'Select':
-                let obj = _.find(field.valueSelect, {_id : data[field.path]});
-                
-                html += '<span style="display:inline-table;">' + (obj ? obj.name : 'Chưa xác định') + '</span>';
+                if(field['$isMongooseArray']){//la 1 mang cac phan tu
+                    var str = '';
+                    _.forEach(data[field.path], function (item, index) {
+                        let obj = _.find(field.valueSelect, {_id : item});
+                        str += (obj ? obj.name : 'Chưa xác định');
+                        if(index < data[field.path].length - 1){
+                            str += '<br/>';
+                        }
+                    })
+
+                    html += '<span style="display:inline-table;">' + str + '</span>';
+                }else{ //la mot phan tu
+                    let obj = _.find(field.valueSelect, {_id : data[field.path]});
+                    html += '<span style="display:inline-table;">' + (obj ? obj.name : 'Chưa xác định') + '</span>';
+                }
+          
                 break;
             default:
                 return '';

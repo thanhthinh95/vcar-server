@@ -98,6 +98,7 @@ menuSchame.statics._delete = async function (menuId) {
 
 menuSchame.set('toJSON', {getters: true});
 menuSchame.set('toObject', {getters: true});
+menuSchame.plugin(require('mongoose-aggregate-paginate'));
 
 
 module.exports = mongoose.model('menu', menuSchame)

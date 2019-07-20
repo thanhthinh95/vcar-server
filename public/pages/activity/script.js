@@ -1,4 +1,6 @@
 var eventPage = function($) {
+    var activities = null;
+
     function bindEventClick() {
         $(document).on('click', '#config', function (e) {
             $('#modal_config').modal('show');
@@ -56,6 +58,59 @@ var eventPage = function($) {
             _changeIconSort($(this));
             bindBodyTable();
         });
+
+        $(document).on('click', '#edit_row_table', function (e) {
+
+            var obj = _.find(activities, {_id : $(this).attr('data_id')});
+            if(obj){
+                _.forEach(obj.type, function (item) {
+                    $('#type_'+item).prop('checked', true);
+                })
+
+                $('#_idObjectEdit').val(obj._id);
+                $('#modal_edit').modal('show');
+            }else{
+                _DialogError('Không tìm thấy bản ghi');
+            }
+        })
+
+        $(document).on('submit', '#form_modal_edit', function (e) {
+            e.preventDefault();
+            $('#modal_edit').modal('hide');
+            var objData = _createObjectInForm('#form_modal_edit');
+            _AjaxObject('/activity', 'PUT', objData, function(resp) {
+                if(resp.code == 200){
+                    _DialogSuccess('Đã cập nhật thành công', function () {
+                        _loadPageChild('activity');
+                    })
+                }else{
+                    _DialogError(resp.mesage);
+                }
+            })
+        })
+
+        $(document).on('click', '#delete_row_table', function (e) {
+            var _id = $(this).attr('data_id');
+            _DialogQuestion('Bạn đã chắc chắn ?', 'Quyền truy cập người dùng sẽ không còn vai trò này nữa', function () {
+                _AjaxObject('/activity/' + _id, 'DELETE', null, function(resp) {
+                    if(resp.code == 200){
+                        _DialogSuccess('Đã xóa bỏ thành công', function () {
+                            _loadPageChild('menu');
+                            _loadPageChild('activity');
+                        })
+                    }else{
+                        _DialogError(resp.mesage);
+                    }
+                })
+            })
+          
+        })
+
+        $(document).on('click', '.page', function(e) {
+            console.log('dang thuc hien click page');
+            bindBodyTable($(this).attr('data_page'))
+            
+        })
     }
 
  
@@ -72,15 +127,22 @@ var eventPage = function($) {
     }
     
 
-    function bindBodyTable() {
+    function bindBodyTable(page) {
         var objFilter = {
             dataMatch : _createObjectInForm('#form_table'),
             dataSort : _createObjectSort(), 
+            sumRow : $('#sumRow').val() ? $('#sumRow').val() : 15,
+            page : page ? page : 1,
         }
      
         _AjaxObject('/activity/search', 'GET', objFilter, function(resp) {
+            activities = null;
             if(resp.code == 200){
-                _bindBodyTable('#form_table', _fields, resp.data);
+                activities = resp.data.docs;
+                delete resp.data.docs;
+
+                _bindBodyTable('#form_table', _fields, activities);
+                _bindPaginate(resp.data);
             }else{
                 _DialogError(resp.mesage);
             }
@@ -98,7 +160,13 @@ var eventPage = function($) {
         },
         uncut : function (){
             console.log('dang thuc hien uncut su kien activity');
-            
+            $(document).off('click', '#config')
+            $(document).off('click', '.sort')
+            $(document).off('click', '#edit_row_table')
+            $(document).off('click', '#delete_row_table')
+            $(document).off('submit', '#form_modal_config')
+            $(document).off('submit', '#form_table')
+            $(document).off('submit', '#form_modal_edit')
         }
     }
 }(jQuery)

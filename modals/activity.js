@@ -8,23 +8,31 @@ activitySchame.statics._create = async function(activity) {
     return await _activity.create(activity);
 }
 
+activitySchame.statics._update = async function(_id, dataUpdate) {
+    return await _activity.findByIdAndUpdate(_id, dataUpdate,  {new: true});
+}
+
 activitySchame.statics._getId = async function(_id) {
     return await _activity.findById(_id);
+}
+activitySchame.statics._search = async function (dataMatch, page, sumRow) {
+    let options  = {
+        page : Number(page),
+        limit : Number(sumRow)
+    }
+
+    return await _activity.paginate(dataMatch, options)
 }
 
 activitySchame.statics._getAll = async function() {
     return await _activity.find({});
-
 }
 
 activitySchame.statics._create = async function (activity) {
     return await _activity.create(activity);
 }
 
-activitySchame.statics._createManyForMenu = async function (menuId, roleIds) {//for update menu
-    console.log(menuId);
-    console.log(roleIds);
-    
+activitySchame.statics._createManyForMenu = async function (menuId, roleIds) {//for update menu  
     //Khi cap nhat roleIds cua menu. thuc hien xoa het activity theo menuId va tao lai
     let data = await _activity.deleteMany({menuId :  menuId});
     if(roleIds && data){//Thuc hien tao moi activitys theo tung roleId  cho menu
@@ -35,9 +43,6 @@ activitySchame.statics._createManyForMenu = async function (menuId, roleIds) {//
                 roleId : roleId,
             })
         })
-
-        console.log(arrayActivity);
-        
         data = await _activity._create(arrayActivity);
     }
     return data;
@@ -55,6 +60,8 @@ activitySchame.statics._deleteManyForMenuId = async function(menuId) {
 
 activitySchame.set('toJSON', {getters: true});
 activitySchame.set('toObject', {getters: true});
+activitySchame.plugin(require('mongoose-aggregate-paginate'));
+activitySchame.plugin(require('mongoose-paginate-v2'));
 
 
 module.exports = mongoose.model('activity', activitySchame)

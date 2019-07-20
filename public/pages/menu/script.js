@@ -136,9 +136,7 @@ var eventPage = function($) {
         if (window.JSON) {
             var data = list.nestable('serialize');
             _AjaxObject('/menu', 'PUT', {dataUpdate : data}, function(resp) {
-                
                 _bindMenuSideBar(roleIndex._id);
-
             })
         } else {
             _DialogError('Thử lại sau', function() {

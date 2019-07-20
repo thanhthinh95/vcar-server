@@ -20,6 +20,7 @@ roleSchame.statics._getAll = async function() {
 
 roleSchame.set('toJSON', {getters: true});
 roleSchame.set('toObject', {getters: true});
+roleSchame.plugin(require('mongoose-aggregate-paginate'));
 
 
 module.exports = mongoose.model('role', roleSchame)

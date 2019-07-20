@@ -58,6 +58,7 @@ userSchame.statics._getRoles = async function (_idUser) {
 userSchame.set('toJSON', { getters: true });
 userSchame.set('toObject', { getters: true });
 userSchame.index({ email: 1 });
+userSchame.plugin(require('mongoose-aggregate-paginate'));
 
 
 module.exports = mongoose.model('user', userSchame)
