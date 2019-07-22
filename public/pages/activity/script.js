@@ -107,9 +107,26 @@ var eventPage = function($) {
         })
 
         $(document).on('click', '.page', function(e) {
-            console.log('dang thuc hien click page');
             bindBodyTable($(this).attr('data_page'))
-            
+        })
+
+        $(document).on('click', '#check_all_item_table', function (e) {
+            if($('#check_all_item_table').is(':checked')){
+                $('.check_item_table').prop("checked", true);
+            }else{
+                $('.check_item_table').prop("checked", false);
+            }
+        })
+
+        $(document).on('click', '#delete_item_checked', function (e) {
+            var data = _createObjectInForm('.check_item_table')
+            if(_.has(data, 'checkBoxIds')){
+                _DialogQuestion('Bạn có chắc chắn?', 'Dữ liệu bạn chọn sẽ bị xóa bỏ vĩnh viễn', function () {
+                    
+                })
+            }else{
+                _DialogError('Chọn một vài đối tượng để thực hiện xóa bỏ');
+            }
         })
     }
 
@@ -131,9 +148,14 @@ var eventPage = function($) {
         var objFilter = {
             dataMatch : _createObjectInForm('#form_table'),
             dataSort : _createObjectSort(), 
-            sumRow : $('#sumRow').val() ? $('#sumRow').val() : 15,
+            sumRow : _sumRow,
             page : page ? page : 1,
         }
+
+        if(_.has(objFilter.dataMatch, 'checkBoxIds')){//loai bo checkBoxId selected neu co
+            delete objFilter.dataMatch.checkBoxIds;
+        }
+
      
         _AjaxObject('/activity/search', 'GET', objFilter, function(resp) {
             activities = null;
@@ -162,8 +184,11 @@ var eventPage = function($) {
             console.log('dang thuc hien uncut su kien activity');
             $(document).off('click', '#config')
             $(document).off('click', '.sort')
+            $(document).off('click', '.page')
             $(document).off('click', '#edit_row_table')
             $(document).off('click', '#delete_row_table')
+            $(document).off('click', '#delete_item_checked')
+            $(document).off('click', '#check_all_item_table')
             $(document).off('submit', '#form_modal_config')
             $(document).off('submit', '#form_table')
             $(document).off('submit', '#form_modal_edit')

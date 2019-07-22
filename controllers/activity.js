@@ -27,8 +27,6 @@ exports.getId = async function (req, res) {
 }
 
 exports.search = async function (req, res) {
-    console.log('dang thuc hien tim kiem');
-
     if(_.has(req.query, 'dataMatch')){
         if(_.has(req.query.dataMatch, '_id') && mongoose.Types.ObjectId.isValid(req.query.dataMatch._id)) req.query.dataMatch._id = new mongoose.Types.ObjectId(req.query.dataMatch._id)
         else delete req.query.dataMatch._id; 
@@ -36,6 +34,9 @@ exports.search = async function (req, res) {
         if(_.has(req.query.dataMatch, 'email')) req.query.dataMatch.email = {'$regex' : new RegExp(_stringRegex(req.query.dataMatch.email), 'i')}
 
     }
+
+    console.log(req.query);
+    
     
     let data = await _activity._search(req.query.dataMatch, req.query.page, req.query.sumRow)
     res.send(_output(data ? 200 : 500, null, data));

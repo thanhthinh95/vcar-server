@@ -167,33 +167,37 @@ window._loadPageChild = function (url) {
 }
 
 window._bindPaginate = function (data) {
-    console.log(data);
     let html = '';
-
     if(data.hasPrevPage){
         html += '<button class="page" data_page="'+ data.prevPage +'">&#10094;</button>'
     }
-    
-    // <button class="page">1</button>
-    // <span class="page_more">...</span>
-    // <button class="page">3</button>
-
-    // <button class="page">5</button>
-    // <span class="page_more">...</span>
-    // <button class="page">7</button>
-    // <button class="page">&#10095;</button>
-
-
+    if(data.page != 1){
+        html += '<button class="page" data_page="1">1</button>'
+    }
+    if(data.page == 3){
+        html += '<button class="page" data_page="2">2</button>'   
+    }
+    if(data.page > 3){
+        html += '<button class="page_more">...</button>'
+        html += '<button class="page" data_page="'+ (data.page - 1) +'">'+ (data.page - 1) +'</button>'
+    }
     html += '<button class="page_active">'+ data.page +'</button>'
-
-
-
+    if(data.totalPages - data.page  >= 1){
+        html += '<button class="page" data_page="'+ (data.page + 1) +'">'+ (data.page + 1) +'</button>'
+    }
+    if(data.totalPages - data.page  > 2){
+        html += '<button class="page_more">...</button>'
+    }
+    if(data.totalPages - data.page  == 2){
+        html += '<button class="page" data_page="'+ data.totalPages +'">'+ data.totalPages +'</button>'        
+    }
+    if(data.totalPages - data.page  >= 3){
+        html += '<button class="page" data_page="'+ data.totalPages +'">'+ data.totalPages +'</button>'   
+    }
     if(data.hasNextPage){
         html += '<button class="page" data_page="'+ data.nextPage +'">&#10095;</button>'
     }
-
     $('#paging').html(html);
-    
 }
 
 window._appendModalConfig = function (modalId, fields) {
@@ -233,14 +237,15 @@ window._bindBodyTable = function (tableId, fields, data, activity) {
     });
 
     $(tableId + ' tbody').empty();
+    $('#check_all_item_table').prop("checked", false);
     
 
     _.forEach(data, function (rowData) {
         var html = '<tr class="">' + 
                 '<td class="text-center align-middle">' +
                 '<div class="custom-control custom-checkbox">' +
-                '<input type="checkbox" class="custom-control-input" name="hi" id="hi"/>' +
-                '<label class="custom-control-label" for="hi"></label>' +
+                '<input type="checkbox" class="custom-control-input check_item_table" name="checkBoxIds" id="check_item_table_'+ rowData._id +'" value="'+ rowData._id +'" />' +
+                '<label class="custom-control-label" for="check_item_table_'+ rowData._id +'"></label>' +
                 '</td>';
                    
         _.forEach(fields, function (field) {
@@ -249,10 +254,11 @@ window._bindBodyTable = function (tableId, fields, data, activity) {
 
         html += '<th class="text-center align-middle">' +
             '<span href="#" id="edit_row_table" data_id="'+ rowData._id +'" + data-toggle="tooltip" title="Chỉnh sửa">' +
-            '<i class="fa fa-pencil-square-o text-primary" aria-hidden="true"></i></span>' +
+            '<i class="fa fa-pencil-square-o fa-lg text-primary" aria-hidden="true"></i></span>' +
             '<span href="#" id="delete_row_table" data_id="'+ rowData._id +'" + class="pl-1" + data-toggle="tooltip" title="Xóa bỏ">' +
-            '<i class="fa fa-trash-o text-primary" aria-hidden="true"></i></span>' +
+            '<i class="fa fa-trash-o fa-lg text-primary" aria-hidden="true"></i></span>' +
             '</th>';
+        
         html += '</tr>';
 
         $(tableId + ' tbody').append(html);
@@ -291,8 +297,8 @@ function createFilterHeadTable(fields) {
     var html = '<tr id="filter_head_table"> ';
     html += '<th class="text-center align-middle">' +
         '<div class="custom-control custom-checkbox">' +
-        '<input type="checkbox" class="custom-control-input" name="hi" id="hi"/>' +
-        '<label class="custom-control-label" for="hi"></label>' +
+        '<input type="checkbox" class="custom-control-input" id="check_all_item_table"/>' +
+        '<label class="custom-control-label" for="check_all_item_table"></label>' +
         '</th>';
     _.forEach(fields, function (item) {
         html += itemFilter(item);
