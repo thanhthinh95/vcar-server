@@ -231,7 +231,9 @@ window._bindHeadTable = function (tableId, fields) {
     }
 }
 
-window._bindBodyTable = function (tableId, fields, data, activity) {
+window._bindBodyTable = function (tableId, fields, data, activities) {
+    // console.log(activities);
+    
     fields = _.filter(_fields, function (element) {//Thuc hien loc cac filed co stastusShow = -1 va 1
         return (element.statusShow == -1 || element.statusShow == 1)
     });
@@ -331,7 +333,7 @@ function itemFilter(item) {
                 break;
             case 'Select':
                 html += 
-                    '<div class=" input-group">' +
+                    '<div class="input-group">' +
                     '<select class="selectpicker form-control"  autocomplete="off" multiple data-selected-text-format="count > 2" data-width="auto" ' +
                     'name="'+ item.path +'"'+
                     (item.valueSelect.length > 4 ? ' data-live-search=true' : '') +

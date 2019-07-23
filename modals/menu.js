@@ -90,10 +90,10 @@ menuSchame.statics._updateOne = async function(query, dataUpdate) {
     return await _menu.updateOne(query, dataUpdate);
 }
 
-menuSchame.statics._delete = async function (menuId) {
+menuSchame.statics._delete = async function (ids) {
     //xoa bo tat ca menu va con cua menu
-    await _menu.deleteMany({$or :  [{parentId : menuId}, {_id : menuId}]});
-    return await _activity._deleteManyForMenuId(menuId);
+    await _menu.deleteMany({$or :  [{parentId : {$in : ids}}, {_id : {$in : ids}}]});
+    return await _activity._deleteManyForMenuId(ids);
 }
 
 menuSchame.set('toJSON', {getters: true});

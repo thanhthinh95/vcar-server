@@ -20,8 +20,6 @@ exports.create = async function (req, res) {
 }
 
 exports.update = async function (req, res) {
-    console.log(req.body);
-
     if(_.has(req.body, 'dataUpdate')){//Dang thuc hien cap nhat vi tri menu
         _.forEach(req.body.dataUpdate, async function (item, index) {//menu level 1
             await _menu._updateMany({_id : item.id}, {parentId : null, priority : (index + 1)});
@@ -59,7 +57,7 @@ async function updateChildren(parentId, childrens) {
 }
 
 exports.delete = async function(req, res) {
-    var data = await _menu._delete(req.params._id);
+    var data = await _menu._delete(req.body.ids);
     res.send(_output(data ? 200 : 500, null, data));    
 }
 

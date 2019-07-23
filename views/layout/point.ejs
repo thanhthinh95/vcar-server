@@ -1,0 +1,221 @@
+<% if(page) {%>
+    <link rel="stylesheet" href='<%- "pages/" + page + "/style.css"%>'>
+<%}%>
+
+<% if(plugins) {%>
+    <% _.forEach(plugins, function(item){%>
+        <link rel="stylesheet" href='<%- "plugins/" + item + "/style.css"%>'>
+    <%})%>
+<%}%>
+
+<script>
+    var _fields = JSON.parse('<%- JSON.stringify(data.fields) %>');
+    var _sumRow = '<%- JSON.stringify(data.sumRow) %>';
+    var _menu = JSON.parse('<%- JSON.stringify(data.menu) %>');
+</script>
+
+
+
+<div class='card'>
+    <div class="card-header col-lg-12 col-md-12 col-sm-12">
+        <b class=""> <i class='<%- (data.menu ? data.menu.icon : "fa fa-bandcam")%>'></i> <%- title%></b>
+</div>
+<div class='card-body'>
+    <div class='float-right action'>
+        <% if(data.menu && data.menu.activities && _.includes(data.menu.activities.type, 1)){%>
+            <span id='create_new' data-toggle="tooltip" title="Tạo mới">
+                <i class="fa fa-plus" aria-hidden="true"></i></span>
+        <%}%>
+       
+        <% if(data.menu && data.menu.activities && _.includes(data.menu.activities.type, 3)){%>
+            <span id='delete_item_checked' + data-toggle="tooltip" title="Xóa bỏ nội dung đã chọn">
+                <i class="fa fa-trash-o" aria-hidden="true"></i></span>
+        <%}%>
+
+        <span id='config' data-toggle="tooltip" title="Tùy chỉnh">
+            <i class="fa fa-cog" aria-hidden="true"></i></span>
+        <a href="#<%- page%>" data-toggle="tooltip" title="Làm mới">
+            <i class="fa fa-refresh" aria-hidden="true"></i></a>
+    </div>
+
+    <div>
+        <form id="form_table">
+            <table class="table" id="table_data">
+                <thead></thead>
+                <tbody></tbody>
+            </table>
+        </form>
+
+    </div>
+
+    <div id="paging" class="row justify-content-center">
+    </div>
+</div>
+</div>
+
+
+<!-- ColumnShow -->
+<div class="modal fade" id="modal_config">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <b class="modal-title"><i class="fa fa-cog" aria-hidden="true"></i> TÙY CHỈNH THÔNG TIN HIỂN THỊ</b>
+            </div>
+
+            <form id='form_modal_config'>
+                 <!-- Modal body -->
+                <div class="modal-body">
+                    <div class='row'>
+                        <b class='col col-md-7 col-sm-7'>Số bản ghi trong 1 trang</b>
+                        <input class='col col-md-4 col-sm-4' type="number" id='sumRow' name='sumRow' min="1", max="100">
+                    </div>
+                    <div class='row'>
+                        <b class='col col-md-12 col-sm-12'>Thông tin hiển thị</b>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover" id='table_modal'>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-undo" aria-hidden="true"></i> Hủy</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> Hoàn Tất</button>
+                </div>
+            </form>
+
+           
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Create New -->
+<div class="modal fade" id="modal_create">
+        <div class="modal-dialog">
+            <div class="modal-content">
+    
+                <div class="modal-header">
+                    <b class="modal-title"><i class="fa fa-plus-circle" aria-hidden="true"></i> TẠO MỚI THÔNG TIN</b>
+                </div>
+    
+                <form id='form_modal_create'>
+                     <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class='row pt-1'>
+                            <label class='col col-md-5 col-sm-5'>Tên điểm dừng</label>
+                            <input class='col col-md-6 col-sm-6' type="text" id='create_name' name='name' required>
+                        </div>
+    
+                        <div class='row pt-1'>
+                            <label class='col col-md-5 col-sm-5'>Thể loại</label>
+                            <select class="col col-md-6 col-sm-6 selectpicker form-control" id='create_type' data-width="auto" name="type" required>
+                                <option value=0>Điểm dừng trong bến</option>
+                                <option value=1>Điểm dừng ngoài bến</option>
+                            </select>
+                        </div>
+                        
+                        <div class='row pt-1'>
+                            <label class='col col-md-5 col-sm-5'>Trạng thái</label>
+                            <select class="col col-md-6 col-sm-6 selectpicker form-control" data-width="auto" id='create_status' name="status" required>
+                                <option value=0>Chưa kích hoạt</option>
+                                <option value=1>Kích hoạt</option>
+                            </select>
+                        </div>
+                        
+                        
+                    </div>
+    
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-undo" aria-hidden="true"></i> Hủy</button>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> Hoàn Tất</button>
+                    </div>
+                </form>
+    
+               
+            </div>
+        </div>
+    </div>
+
+
+
+<!-- ColumnShow -->
+<div class="modal fade" id="modal_edit">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <b class="modal-title"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> CẬP NHẬT THÔNG TIN</b>
+            </div>
+
+            <form id='form_modal_edit'>
+                 <!-- Modal body -->
+                <div class="modal-body">
+                    <div class='row'>
+                        <b class='col col-md-12 col-sm-12'>Vai trò</b>
+                    </div>
+
+                    <input type="hidden" name="_id" id="_idObjectEdit">
+
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="type" id="type_1" value=1 />
+                                        <label class="custom-control-label" for="type_1">Thêm mới</label>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="type" id="type_2" value=2 />
+                                        <label class="custom-control-label" for="type_2">Cập nhật</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="type" id="type_3" value=3 />
+                                        <label class="custom-control-label" for="type_3">Xóa bỏ</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-undo" aria-hidden="true"></i> Hủy</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> Hoàn Tất</button>
+                </div>
+            </form>
+
+           
+        </div>
+    </div>
+</div>
+
+<% if(page) {%>
+<script src='<%- "pages/" + page + "/script.js"%>'></script>
+<%}%>
+
+<% if(plugins) {%>
+    <% _.forEach(plugins, function(item){%>
+        <script src='<%- "plugins/" + item + "/script.js"%>'></script>
+    <%})%>
+<%}%>

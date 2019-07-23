@@ -31,12 +31,11 @@ var eventPage = function($) {
             var _id = $(this).attr('data_id');
 
             _DialogQuestion('Bạn có chắc chắn ?', 'Danh mục đang chọn và con của danh mục sẽ bị xóa vĩnh viễn!', function () {
-                _AjaxObject('/menu/' + _id, 'DELETE', null, function (resp) {
+                _AjaxObject('/menu', 'DELETE', {ids : [_id]}, function (resp) {
                     if(resp.code == 200){
                         _DialogSuccess('Đã xóa bỏ thành công', function () {
                             _loadPageChild('menu');
                             _bindMenuSideBar(roleIndex._id);
-
                         })
                     }else {
                         _DialogError(resp.message);

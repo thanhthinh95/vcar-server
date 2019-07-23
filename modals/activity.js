@@ -28,10 +28,6 @@ activitySchame.statics._getAll = async function() {
     return await _activity.find({});
 }
 
-activitySchame.statics._create = async function (activity) {
-    return await _activity.create(activity);
-}
-
 activitySchame.statics._createManyForMenu = async function (menuId, roleIds) {//for update menu  
     //Khi cap nhat roleIds cua menu. thuc hien xoa het activity theo menuId va tao lai
     let data = await _activity.deleteMany({menuId :  menuId});
@@ -49,13 +45,13 @@ activitySchame.statics._createManyForMenu = async function (menuId, roleIds) {//
 }
 
 
-activitySchame.statics._delete = async function (activityId) {
+activitySchame.statics._delete = async function (_ids) {
     //xoa bo tat ca activity va con cua activity
-    return await _activity.deleteMany({$or :  [{parentId : activityId}, {_id : activityId}]});
+    return await _activity.deleteMany({_id : {$in : _ids}});
 }
 
-activitySchame.statics._deleteManyForMenuId = async function(menuId) {
-    return await _activity.deleteMany({menuId :  menuId});
+activitySchame.statics._deleteManyForMenuId = async function(menuIds) {
+    return await _activity.deleteMany({menuId : {$in : menuIds}});
 }
 
 activitySchame.set('toJSON', {getters: true});

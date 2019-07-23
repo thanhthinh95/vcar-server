@@ -12,6 +12,14 @@ var eventPage = function($) {
             _appendModalConfig('#table_modal', _.filter(_fields, {statusShow : 0}));
         })
 
+        $(document).on('click', '#create_new', function (e) {
+            $('#create_name').val('');
+            $('#create_type').val(0);
+            $('#create_status').val(1);
+            $('select').selectpicker('refresh');
+            $('#modal_create').modal('show');
+        })
+
         $(document).on('submit', '#form_modal_config', function (e) {
             e.preventDefault();
             var _filedTems = _.filter(_fields, {statusShow : -1});
@@ -74,14 +82,29 @@ var eventPage = function($) {
             }
         })
 
+        $(document).on('submit', '#form_modal_create', function (e) {
+            e.preventDefault();
+            $('#modal_create').modal('hide');
+            var objData = _createObjectInForm('#form_modal_create');
+            _AjaxObject('/point', 'POST', objData, function(resp) {
+                if(resp.code == 200){
+                    _DialogSuccess('Đã tạo mới thành công', function () {
+                        _loadPageChild('point');
+                    })
+                }else{
+                    _DialogError(resp.mesage);
+                }
+            })
+        })
+
         $(document).on('submit', '#form_modal_edit', function (e) {
             e.preventDefault();
             $('#modal_edit').modal('hide');
             var objData = _createObjectInForm('#form_modal_edit');
-            _AjaxObject('/activity', 'PUT', objData, function(resp) {
+            _AjaxObject('/point', 'PUT', objData, function(resp) {
                 if(resp.code == 200){
                     _DialogSuccess('Đã cập nhật thành công', function () {
-                        _loadPageChild('activity');
+                        _loadPageChild('point');
                     })
                 }else{
                     _DialogError(resp.mesage);
@@ -92,11 +115,11 @@ var eventPage = function($) {
         $(document).on('click', '#delete_row_table', function (e) {
             var _id = $(this).attr('data_id');
             _DialogQuestion('Bạn đã chắc chắn ?', 'Quyền truy cập người dùng sẽ không còn vai trò này nữa', function () {
-                _AjaxObject('/activity', 'DELETE', {ids : [_id]}, function(resp) {
+                _AjaxObject('/point', 'DELETE', {ids : [_id]}, function(resp) {
                     if(resp.code == 200){
                         _DialogSuccess('Đã xóa bỏ thành công', function () {
                             _bindMenuSideBar(roleIndex._id);                                                
-                            _loadPageChild('activity');
+                            _loadPageChild('point');
                         })
                     }else{
                         _DialogError(resp.mesage);
@@ -122,11 +145,11 @@ var eventPage = function($) {
             var dataIds = _createObjectInForm('.check_item_table')
             if(_.has(dataIds, 'checkBoxIds')){
                 _DialogQuestion('Bạn có chắc chắn?', 'Dữ liệu bạn chọn sẽ bị xóa bỏ vĩnh viễn', function () {
-                    _AjaxObject('/activity', 'DELETE', {ids : dataIds.checkBoxIds}, function(resp) {
+                    _AjaxObject('/point', 'DELETE', {ids : dataIds.checkBoxIds}, function(resp) {
                         if(resp.code == 200){
                             _DialogSuccess('Đã xóa bỏ thành công', function () {
                                 _bindMenuSideBar(roleIndex._id);                    
-                                _loadPageChild('activity');
+                                _loadPageChild('point');
                             })
                         }else{
                             _DialogError(resp.mesage);
@@ -166,7 +189,7 @@ var eventPage = function($) {
         }
 
      
-        _AjaxObject('/activity/search', 'GET', objFilter, function(resp) {
+        _AjaxObject('/point/search', 'GET', objFilter, function(resp) {
             activities = null;
             if(resp.code == 200){
                 activities = resp.data.docs;
@@ -183,15 +206,16 @@ var eventPage = function($) {
 
     return {
         init : function () {
-            console.log('dang thuc hien init su kien activity');
+            console.log('dang thuc hien init su kien point');
             $('#table_modal tbody').sortable();
             bindHeadTable();
             bindBodyTable();
             bindEventClick();
         },
         uncut : function (){
-            console.log('dang thuc hien uncut su kien activity');
+            console.log('dang thuc hien uncut su kien point');
             $(document).off('click', '#config')
+            $(document).off('click', '#create_new')
             $(document).off('click', '.sort')
             $(document).off('click', '.page')
             $(document).off('click', '#edit_row_table')
@@ -201,6 +225,9 @@ var eventPage = function($) {
             $(document).off('submit', '#form_modal_config')
             $(document).off('submit', '#form_table')
             $(document).off('submit', '#form_modal_edit')
+            $(document).off('submit', '#form_modal_create')
+
+            
         }
     }
 }(jQuery)

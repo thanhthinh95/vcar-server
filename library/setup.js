@@ -171,7 +171,7 @@ function setRouter(namefile, key, fn) {
             break;
         case 'delete':
             method = 'delete';
-            url = '/' + namefile +'/:_id';
+            url = '/' + namefile;
             break;
         case 'search':
             method = 'get';
@@ -236,6 +236,8 @@ function setValueField(nameField) {
             return 'Người cập nhật';
         case 'status':
             return 'Trạng thái';
+        case 'type':
+            return 'Thể loại';
         default:
             return '';
     }
