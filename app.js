@@ -9,6 +9,7 @@ global.io = require('socket.io')(server);
 global.mongoose = require('mongoose');
 global._ = require('lodash');
 global.bcrypt = require('bcrypt');
+global.moment = require('moment');
 
 
 
@@ -74,27 +75,7 @@ function buildApp() {
 
     server.listen(config.app.port);
 
-    io.on('connection',  require('./library/io.js'));
-
-    // _role._create({name : 'Kỹ thuật hệ thống', description : 'Nhân viên kỹ thuật hệ thống'});
-    // _role._create({name : 'Nhân viên hệ thống', description : 'Nhân viên hệ thống'});
-    // _role._create({name : 'Nhà xe', description : 'Kỹ thuật viên của nhà xe'});
-    // _role._create({name : 'Nhân viên', description : 'Nhân viên của nhà xe'});
-
-    // _menu._create({name : 'Quản lý', priority : 1});
-    // _menu._create({name : 'Công việc', priority : 2});
-    // _menu._create({name : 'Báo cáo', priority : 3});
-
-
-    // _menu._create({name : 'Quản lý 01', priority : 1, parentId : '5d231d952b31b13560a2e56d'});
-    // _menu._create({name : 'Quản lý 02', priority : 2, parentId : '5d231d952b31b13560a2e56d'});
-    // _menu._create({name : 'Quản lý 03', priority : 3, parentId : '5d231d952b31b13560a2e56d'});
-
-
-    // _menu._create({name : 'Quản lý 01 - 1', priority : 1, parentId : '5d2320cf152dfd3638affe65'});
-    // _menu._create({name : 'Quản lý 02 - 2', priority : 2, parentId : '5d2320cf152dfd3638affe65'});
-    // _menu._create({name : 'Quản lý 03 - 3', priority : 3, parentId : '5d2320cf152dfd3638affe65'});
-    
+    io.on('connection',  require('./library/io.js'));    
 }
 
 

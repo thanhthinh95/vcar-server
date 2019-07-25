@@ -65,7 +65,7 @@ global._stringRegex = function(e) {
 app.get('/', function (req, res, next) {
     if (req.session.user) {
         _render(req, res, 'home', 'Trang Chủ', {
-            roleIndex: req.session.roleIndex,
+            roleIndex: req.session.roleIndex ? req.session.roleIndex : null,
             user: req.session.user
         }, ['jquery-ui', 'bootstrap-select', 'tempusdominus-bootstrap']);
     } else {

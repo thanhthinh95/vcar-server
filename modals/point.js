@@ -1,11 +1,11 @@
 var objSchame = new mongoose.Schema({
     name : {type : String, required: true},
-    type : {type : Number, default : 0}, //0: Diem dung trong ben, 1: Diem dung ngoai ben
-    createBy : {type : mongoose.Schema.Types.ObjectId, ref: 'user', required: true},
+    type : {type : Number, required: true}, //0: Diem dung trong ben, 1: Diem dung ngoai ben
+    createBy : {type : mongoose.Schema.Types.ObjectId, ref: 'user', default: null},
     created : {type : Date, default: Date.now},
     updateBy : {type : mongoose.Schema.Types.ObjectId, ref: 'user', default: null},
     updated : {type : Date, default: null},
-    status : {type : Number, default : 0}, //0: Khong kich hoat, 1: Kich hoat
+    status : {type : Number, required: true}, //0: Khong kich hoat, 1: Kich hoat
 },{id: false, versionKey: 'v'});
 
 objSchame.statics._create = async function(obj) {
@@ -36,7 +36,7 @@ objSchame.statics._getAll = async function() {
 
 
 objSchame.statics._delete = async function (_ids) {
-    return await _activity.deleteMany({_id : {$in : _ids}});
+    return await _point.deleteMany({_id : {$in : _ids}});
 }
 
 objSchame.set('toJSON', {getters: true});

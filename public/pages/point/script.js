@@ -1,5 +1,5 @@
 var eventPage = function($) {
-    var activities = null;
+    var dataTableRows = null;
 
     function bindEventClick() {
         $(document).on('click', '#config', function (e) {
@@ -13,11 +13,16 @@ var eventPage = function($) {
         })
 
         $(document).on('click', '#create_new', function (e) {
-            $('#create_name').val('');
-            $('#create_type').val(0);
-            $('#create_status').val(1);
-            $('select').selectpicker('refresh');
-            $('#modal_create').modal('show');
+            _bindModalInfo(null, '#modal_info', _fields, ['name', 'type', 'status']);
+        })
+
+        $(document).on('click', '#edit_row_table', function (e) {
+            var dataRow = _.find(dataTableRows, {_id : $(this).attr('data_id')});
+            if(dataRow){
+                 _bindModalInfo(dataRow, '#modal_info', _fields, ['name', 'type', 'status']);
+            }else{
+                _DialogError('Không tìm thấy bản ghi');
+            }
         })
 
         $(document).on('submit', '#form_modal_config', function (e) {
@@ -67,49 +72,35 @@ var eventPage = function($) {
             bindBodyTable();
         });
 
-        $(document).on('click', '#edit_row_table', function (e) {
 
-            var obj = _.find(activities, {_id : $(this).attr('data_id')});
-            if(obj){
-                _.forEach(obj.type, function (item) {
-                    $('#type_'+item).prop('checked', true);
+
+        $(document).on('submit', '#form_modal_info', function (e) {
+            e.preventDefault();
+            $('#modal_info').modal('hide');
+            var objData = _createObjectInForm('#form_modal_info');
+
+
+            if(_.isEqual($(this).attr('data_action'), 'create')){
+                _AjaxObject('/point', 'POST', objData, function(resp) {
+                    if(resp.code == 200){
+                        _DialogSuccess('Đã tạo mới thành công', function () {
+                            _loadPageChild('point');
+                        })
+                    }else{
+                        _DialogError(resp.mesage);
+                    }
                 })
-
-                $('#_idObjectEdit').val(obj._id);
-                $('#modal_edit').modal('show');
-            }else{
-                _DialogError('Không tìm thấy bản ghi');
+            }else if(_.isEqual($(this).attr('data_action'), 'update')) {
+                _AjaxObject('/point', 'PUT', objData, function(resp) {
+                    if(resp.code == 200){
+                        _DialogSuccess('Đã cập nhật thành công', function () {
+                            _loadPageChild('point');
+                        })
+                    }else{
+                        _DialogError(resp.mesage);
+                    }
+                })
             }
-        })
-
-        $(document).on('submit', '#form_modal_create', function (e) {
-            e.preventDefault();
-            $('#modal_create').modal('hide');
-            var objData = _createObjectInForm('#form_modal_create');
-            _AjaxObject('/point', 'POST', objData, function(resp) {
-                if(resp.code == 200){
-                    _DialogSuccess('Đã tạo mới thành công', function () {
-                        _loadPageChild('point');
-                    })
-                }else{
-                    _DialogError(resp.mesage);
-                }
-            })
-        })
-
-        $(document).on('submit', '#form_modal_edit', function (e) {
-            e.preventDefault();
-            $('#modal_edit').modal('hide');
-            var objData = _createObjectInForm('#form_modal_edit');
-            _AjaxObject('/point', 'PUT', objData, function(resp) {
-                if(resp.code == 200){
-                    _DialogSuccess('Đã cập nhật thành công', function () {
-                        _loadPageChild('point');
-                    })
-                }else{
-                    _DialogError(resp.mesage);
-                }
-            })
         })
 
         $(document).on('click', '#delete_row_table', function (e) {
@@ -190,12 +181,12 @@ var eventPage = function($) {
 
      
         _AjaxObject('/point/search', 'GET', objFilter, function(resp) {
-            activities = null;
+            dataTableRows = null;
             if(resp.code == 200){
-                activities = resp.data.docs;
+                dataTableRows = resp.data.docs;
                 delete resp.data.docs;
 
-                _bindBodyTable('#form_table', _fields, activities);
+                _bindBodyTable('#form_table', _fields, dataTableRows, _menu.activities);
                 _bindPaginate(resp.data);
             }else{
                 _DialogError(resp.mesage);
@@ -224,10 +215,7 @@ var eventPage = function($) {
             $(document).off('click', '#check_all_item_table')
             $(document).off('submit', '#form_modal_config')
             $(document).off('submit', '#form_table')
-            $(document).off('submit', '#form_modal_edit')
-            $(document).off('submit', '#form_modal_create')
-
-            
+            $(document).off('submit', '#form_modal_info')
         }
     }
 }(jQuery)

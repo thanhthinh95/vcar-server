@@ -97,40 +97,18 @@
 
 
 
-<!-- Create New -->
-<div class="modal fade" id="modal_create">
+<!-- modal info -->
+<div class="modal fade" id="modal_info">
         <div class="modal-dialog">
             <div class="modal-content">
     
                 <div class="modal-header">
-                    <b class="modal-title"><i class="fa fa-plus-circle" aria-hidden="true"></i> TẠO MỚI THÔNG TIN</b>
+                    <b class="modal-title" id="info_title"><i class="fa fa-plus-circle" aria-hidden="true"></i> TẠO MỚI THÔNG TIN</b>
                 </div>
     
-                <form id='form_modal_create'>
+                <form id='form_modal_info' data_action="">
                      <!-- Modal body -->
-                    <div class="modal-body">
-                        <div class='row pt-1'>
-                            <label class='col col-md-5 col-sm-5'>Tên điểm dừng</label>
-                            <input class='col col-md-6 col-sm-6' type="text" id='create_name' name='name' required>
-                        </div>
-    
-                        <div class='row pt-1'>
-                            <label class='col col-md-5 col-sm-5'>Thể loại</label>
-                            <select class="col col-md-6 col-sm-6 selectpicker form-control" id='create_type' data-width="auto" name="type" required>
-                                <option value=0>Điểm dừng trong bến</option>
-                                <option value=1>Điểm dừng ngoài bến</option>
-                            </select>
-                        </div>
-                        
-                        <div class='row pt-1'>
-                            <label class='col col-md-5 col-sm-5'>Trạng thái</label>
-                            <select class="col col-md-6 col-sm-6 selectpicker form-control" data-width="auto" id='create_status' name="status" required>
-                                <option value=0>Chưa kích hoạt</option>
-                                <option value=1>Kích hoạt</option>
-                            </select>
-                        </div>
-                        
-                        
+                    <div class="modal-body" id="info_body">
                     </div>
     
                     <!-- Modal footer -->
@@ -144,71 +122,6 @@
             </div>
         </div>
     </div>
-
-
-
-<!-- ColumnShow -->
-<div class="modal fade" id="modal_edit">
-    <div class="modal-dialog">
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <b class="modal-title"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> CẬP NHẬT THÔNG TIN</b>
-            </div>
-
-            <form id='form_modal_edit'>
-                 <!-- Modal body -->
-                <div class="modal-body">
-                    <div class='row'>
-                        <b class='col col-md-12 col-sm-12'>Vai trò</b>
-                    </div>
-
-                    <input type="hidden" name="_id" id="_idObjectEdit">
-
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" name="type" id="type_1" value=1 />
-                                        <label class="custom-control-label" for="type_1">Thêm mới</label>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" name="type" id="type_2" value=2 />
-                                        <label class="custom-control-label" for="type_2">Cập nhật</label>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" name="type" id="type_3" value=3 />
-                                        <label class="custom-control-label" for="type_3">Xóa bỏ</label>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Modal footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-undo" aria-hidden="true"></i> Hủy</button>
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> Hoàn Tất</button>
-                </div>
-            </form>
-
-           
-        </div>
-    </div>
-</div>
 
 <% if(page) {%>
 <script src='<%- "pages/" + page + "/script.js"%>'></script>

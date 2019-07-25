@@ -1,5 +1,5 @@
 var eventPage = function($) {
-    var activities = null;
+    var dataTableRows = null;
 
     function bindEventClick() {
         $(document).on('click', '#config', function (e) {
@@ -61,7 +61,7 @@ var eventPage = function($) {
 
         $(document).on('click', '#edit_row_table', function (e) {
 
-            var obj = _.find(activities, {_id : $(this).attr('data_id')});
+            var obj = _.find(dataTableRows, {_id : $(this).attr('data_id')});
             if(obj){
                 _.forEach(obj.type, function (item) {
                     $('#type_'+item).prop('checked', true);
@@ -167,12 +167,12 @@ var eventPage = function($) {
 
      
         _AjaxObject('/activity/search', 'GET', objFilter, function(resp) {
-            activities = null;
+            dataTableRows = null;
             if(resp.code == 200){
-                activities = resp.data.docs;
+                dataTableRows = resp.data.docs;
                 delete resp.data.docs;
 
-                _bindBodyTable('#form_table', _fields, activities);
+                _bindBodyTable('#form_table', _fields, dataTableRows, _menu.activities);
                 _bindPaginate(resp.data);
             }else{
                 _DialogError(resp.mesage);
