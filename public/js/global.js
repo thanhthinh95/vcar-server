@@ -503,6 +503,7 @@ function itemInfo(item, valueItem) {
             html +=
                 '<select class="col col-md-6 col-sm-6 selectpicker form-control" data-width="auto" ' +
                 'name="' + item.path + '" ' +
+                (item.valueSelect.length > 4 ? ' data-live-search=true' : '') +
                 'title="Chọn ' + _.lowerFirst(item.textShow) + '" ' +
                 (item.isRequired ? 'required' : '') + '>';
 

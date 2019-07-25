@@ -238,6 +238,12 @@ function setValueField(nameField) {
             return 'Trạng thái';
         case 'type':
             return 'Thể loại';
+
+        case 'startPoint':
+            return 'Điểm xuất phát';
+
+        case 'endPoint':
+            return 'Điểm dừng';
         default:
             return '';
     }
