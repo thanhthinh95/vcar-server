@@ -240,6 +240,8 @@ function setValueField(nameField) {
             return 'Thể loại';
         case 'startPoint':
             return 'Điểm xuất phát';
+        case 'endPoint':
+            return 'Điểm dừng';
         case 'userId':
             return 'Người dùng';
         case 'carSupplierId':
