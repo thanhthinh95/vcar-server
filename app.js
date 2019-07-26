@@ -30,7 +30,7 @@ let _stringConnect = 'mongodb://'
 
 
 
-mongoose.connect(_stringConnect, {useCreateIndex : true, useNewUrlParser : true, connectTimeoutMS : 3000}, function (error) {
+mongoose.connect(_stringConnect, {useCreateIndex : true, useNewUrlParser : true, connectTimeoutMS : 4000, useFindAndModify : false}, function (error) {
     if(error){
         console.log('connect database fail: ' + _stringConnect);
         return;

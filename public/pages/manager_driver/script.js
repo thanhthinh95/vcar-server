@@ -12,6 +12,19 @@ var eventPage = function($) {
             _appendModalConfig('#table_modal', _.filter(_fields, {statusShow : 0}));
         })
 
+        $(document).on('click', '#create_new', function (e) {
+            _bindModalInfo(null, '#modal_info', _fields, ['userId', 'carSupplierId', 'status']);
+        })
+
+        $(document).on('click', '#edit_row_table', function (e) {
+            var dataRow = _.find(dataTableRows, {_id : $(this).attr('data_id')});
+            if(dataRow){
+                 _bindModalInfo(dataRow, '#modal_info', _fields, ['userId', 'carSupplierId', 'status']);
+            }else{
+                _DialogError('Không tìm thấy bản ghi');
+            }
+        })
+
         $(document).on('submit', '#form_modal_config', function (e) {
             e.preventDefault();
             var _filedTems = _.filter(_fields, {statusShow : -1});
@@ -59,44 +72,45 @@ var eventPage = function($) {
             bindBodyTable();
         });
 
-        $(document).on('click', '#edit_row_table', function (e) {
 
-            var obj = _.find(dataTableRows, {_id : $(this).attr('data_id')});
-            if(obj){
-                _.forEach(obj.type, function (item) {
-                    $('#type_'+item).prop('checked', true);
-                })
 
-                $('#_idObjectEdit').val(obj._id);
-                $('#modal_edit').modal('show');
-            }else{
-                _DialogError('Không tìm thấy bản ghi');
-            }
-        })
-
-        $(document).on('submit', '#form_modal_edit', function (e) {
+        $(document).on('submit', '#form_modal_info', function (e) {
             e.preventDefault();
-            $('#modal_edit').modal('hide');
-            var objData = _createObjectInForm('#form_modal_edit');
-            _AjaxObject('/activity', 'PUT', objData, function(resp) {
-                if(resp.code == 200){
-                    _DialogSuccess('Đã cập nhật thành công', function () {
-                        _loadPageChild('activity');
-                    })
-                }else{
-                    _DialogError(resp.message);
-                }
-            })
+            $('#modal_info').modal('hide');
+            var objData = _createObjectInForm('#form_modal_info');
+
+
+            if(_.isEqual($(this).attr('data_action'), 'create')){
+                _AjaxObject('/manager_driver', 'POST', objData, function(resp) {
+                    if(resp.code == 200){
+                        _DialogSuccess('Đã tạo mới thành công', function () {
+                            _loadPageChild('manager_driver');
+                        })
+                    }else{
+                        _DialogError(resp.message);
+                    }
+                })
+            }else if(_.isEqual($(this).attr('data_action'), 'update')) {
+                _AjaxObject('/manager_driver', 'PUT', objData, function(resp) {
+                    if(resp.code == 200){
+                        _DialogSuccess('Đã cập nhật thành công', function () {
+                            _loadPageChild('manager_driver');
+                        })
+                    }else{
+                        _DialogError(resp.message);
+                    }
+                })
+            }
         })
 
         $(document).on('click', '#delete_row_table', function (e) {
             var _id = $(this).attr('data_id');
             _DialogQuestion('Bạn đã chắc chắn ?', 'Quyền truy cập người dùng sẽ không còn vai trò này nữa', function () {
-                _AjaxObject('/activity', 'DELETE', {ids : [_id]}, function(resp) {
+                _AjaxObject('/manager_driver', 'DELETE', {ids : [_id]}, function(resp) {
                     if(resp.code == 200){
                         _DialogSuccess('Đã xóa bỏ thành công', function () {
                             _bindMenuSideBar(roleIndex._id);                                                
-                            _loadPageChild('activity');
+                            _loadPageChild('manager_driver');
                         })
                     }else{
                         _DialogError(resp.message);
@@ -122,11 +136,11 @@ var eventPage = function($) {
             var dataIds = _createObjectInForm('.check_item_table')
             if(_.has(dataIds, 'checkBoxIds')){
                 _DialogQuestion('Bạn có chắc chắn?', 'Dữ liệu bạn chọn sẽ bị xóa bỏ vĩnh viễn', function () {
-                    _AjaxObject('/activity', 'DELETE', {ids : dataIds.checkBoxIds}, function(resp) {
+                    _AjaxObject('/manager_driver', 'DELETE', {ids : dataIds.checkBoxIds}, function(resp) {
                         if(resp.code == 200){
                             _DialogSuccess('Đã xóa bỏ thành công', function () {
                                 _bindMenuSideBar(roleIndex._id);                    
-                                _loadPageChild('activity');
+                                _loadPageChild('manager_driver');
                             })
                         }else{
                             _DialogError(resp.message);
@@ -166,7 +180,7 @@ var eventPage = function($) {
         }
 
      
-        _AjaxObject('/activity/search', 'GET', objFilter, function(resp) {
+        _AjaxObject('/manager_driver/search', 'GET', objFilter, function(resp) {
             dataTableRows = null;
             if(resp.code == 200){
                 dataTableRows = resp.data.docs;
@@ -183,15 +197,16 @@ var eventPage = function($) {
 
     return {
         init : function () {
-            console.log('dang thuc hien init su kien activity');
+            console.log('dang thuc hien init su kien manager_driver');
             $('#table_modal tbody').sortable();
             bindHeadTable();
             bindBodyTable();
             bindEventClick();
         },
         uncut : function (){
-            console.log('dang thuc hien uncut su kien activity');
+            console.log('dang thuc hien uncut su kien manager_driver');
             $(document).off('click', '#config')
+            $(document).off('click', '#create_new')
             $(document).off('click', '.sort')
             $(document).off('click', '.page')
             $(document).off('click', '#edit_row_table')
@@ -200,7 +215,7 @@ var eventPage = function($) {
             $(document).off('click', '#check_all_item_table')
             $(document).off('submit', '#form_modal_config')
             $(document).off('submit', '#form_table')
-            $(document).off('submit', '#form_modal_edit')
+            $(document).off('submit', '#form_modal_info')
         }
     }
 }(jQuery)

@@ -238,12 +238,12 @@ function setValueField(nameField) {
             return 'Trạng thái';
         case 'type':
             return 'Thể loại';
-
         case 'startPoint':
             return 'Điểm xuất phát';
-
-        case 'endPoint':
-            return 'Điểm dừng';
+        case 'userId':
+            return 'Người dùng';
+        case 'carSupplierId':
+            return 'Nhà xe';            
         default:
             return '';
     }

@@ -82,7 +82,7 @@ var eventPage = function($) {
             if(resp.code == 200){
                 _bindBodyTable('#form_table', _fields, resp.data);
             }else{
-                _DialogError(resp.mesage);
+                _DialogError(resp.message);
             }
         })
     }

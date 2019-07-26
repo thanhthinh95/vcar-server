@@ -86,7 +86,7 @@ var eventPage = function($) {
                             _loadPageChild('car_supplier');
                         })
                     }else{
-                        _DialogError(resp.mesage);
+                        _DialogError(resp.message);
                     }
                 })
             }else if(_.isEqual($(this).attr('data_action'), 'update')) {
@@ -96,7 +96,7 @@ var eventPage = function($) {
                             _loadPageChild('car_supplier');
                         })
                     }else{
-                        _DialogError(resp.mesage);
+                        _DialogError(resp.message);
                     }
                 })
             }
@@ -112,7 +112,7 @@ var eventPage = function($) {
                             _loadPageChild('car_supplier');
                         })
                     }else{
-                        _DialogError(resp.mesage);
+                        _DialogError(resp.message);
                     }
                 })
             })
@@ -142,7 +142,7 @@ var eventPage = function($) {
                                 _loadPageChild('car_supplier');
                             })
                         }else{
-                            _DialogError(resp.mesage);
+                            _DialogError(resp.message);
                         }
                     })
                 })
@@ -188,7 +188,7 @@ var eventPage = function($) {
                 _bindBodyTable('#form_table', _fields, dataTableRows, _menu.activities);
                 _bindPaginate(resp.data);
             }else{
-                _DialogError(resp.mesage);
+                _DialogError(resp.message);
             }
         })
     }

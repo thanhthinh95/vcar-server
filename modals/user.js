@@ -55,6 +55,16 @@ userSchame.statics._getRoles = async function (_idUser) {
 }
 
 
+userSchame.statics._addRole = async function(_id, roleId) {
+    return await _user.updateOne({_id : _id}, 
+        {$addToSet : {roles : roleId}});
+}
+
+userSchame.statics._removeRole = async function(_ids, roleId) {
+    return await _user.updateMany({_id : {$in : _ids}}, 
+        {$pull : {roles : roleId}});
+}
+
 userSchame.set('toJSON', { getters: true });
 userSchame.set('toObject', { getters: true });
 userSchame.index({ email: 1 });
