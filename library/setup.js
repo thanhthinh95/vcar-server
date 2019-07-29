@@ -247,10 +247,25 @@ function setValueField(nameField) {
             return 'Điểm xuất phát';
         case 'endPoint':
             return 'Điểm dừng';
+        case 'pointStop':
+                return 'Điểm dừng';
         case 'userId':
             return 'Người dùng';
         case 'carSupplierId':
-            return 'Nhà xe';            
+            return 'Nhà xe'; 
+        case 'description':
+            return 'Mô tả';   
+        case 'controlSea':
+            return 'Biển kiểm soát';               
+        case 'color':
+            return 'Màu sắc';    
+        case 'fare':
+            return 'Giá vé';          
+        case 'numberSeat':
+            return 'Số ghế';      
+            
+        case 'imageUrl':
+                return 'Hình ảnh';               
         default:
             return '';
     }

@@ -9,7 +9,9 @@ var eventPage = function($) {
                     $('#header_role_index').text(resp.data.name);
                     roleIndex = resp.data;
                     _bindMenuSideBar(roleIndex._id);
-                    _loadPageChild('my_user/id/' + user._id);
+                    if(_.has(roleIndex, 'urlDefault')){
+                        _loadPageChild(roleIndex.urlDefault);
+                    }
                 }else{
                     _DialogError(resp.message);
                 }
@@ -18,37 +20,16 @@ var eventPage = function($) {
         
     }
 
-    async function loadMenus(roleId) {
-        var dataObject = {
-            type : 1,
-            data : {
-                roleId : roleId,
-            }
-        }
-
-        await _AjaxObject('/menu/search', 'GET', dataObject, function (resp) {
-            if(resp.code == 200){
-                _bindMenuSideBar(resp.data);
-            }else {
-                _DialogError(resp.message);
-            }
-        })
-    }
-
-
 
     return {
         init : function () {
             console.log('dang thuc hien init su kien auth');
-            
             $('#button_sidebar').css('display', 'none');
             bindEventClick();
-
         },
         uncut : function (){
             console.log('dang thuc hien uncut su kien auth');
-            
-            
+            $(document).off('click', '#btn_role');
         }
     }
 }(jQuery)

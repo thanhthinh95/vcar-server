@@ -15,7 +15,7 @@ var eventPage = function($) {
         $(document).on('click', '#create_new', function (e) {
             _bindModalInfo(null, '#modal_info', _fields, ['name', 'email', 'numberPhone', 'birthDay', 'gender', 'roles', 'status']);
 
-            $('.datetimepicker-input').datetimepicker({
+            $('#info_date_birthDay').datetimepicker({
                 locale : 'vi',
                 format : 'DD/MM/YYYY'
             });
@@ -26,9 +26,10 @@ var eventPage = function($) {
             if(dataRow){
                 _bindModalInfo(dataRow, '#modal_info', _fields, ['name', 'email', 'numberPhone', 'password', 'birthDay', 'gender', 'roles', 'status']);
 
-                $('.datetimepicker-input').datetimepicker({
+                $('#info_date_birthDay').datetimepicker({
                     locale : 'vi',
-                    format : 'DD/MM/YYYY'
+                    format : 'DD/MM/YYYY',
+                    date : dataRow.birthDay,
                 });
             }else{
                 _DialogError('Không tìm thấy bản ghi');
@@ -195,8 +196,6 @@ var eventPage = function($) {
             
             if(resp.code == 200){
                 dataTableRows = resp.data.docs;
-                console.log(dataTableRows);
-                
                 delete resp.data.docs;
 
                 _bindBodyTable('#form_table', _fields, dataTableRows, _menu.activities);

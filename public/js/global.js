@@ -10,7 +10,6 @@ window._loadPageChild = function (url) {
         $('#pageChild').html(html);
         eventPage.init();
         $('[data-toggle="tooltip"]').tooltip();
-
     }, 'html')
 }
 
@@ -411,17 +410,17 @@ function itemBody(data, field) {
     
     switch (field.instance) {
         case 'ObjectID':
-            html += '<span style="display:inline-table;">' + data[field.path] + '</span>';
+            html += '<span style="display:inline-table;">' + (data[field.path] ? data[field.path] : '') + '</span>';
             break;
         case 'String':
             if(_.isEqual(field.path, 'password')){
                 html += '<span style="display:inline-table;">***</span>';
             }else {
-                html += '<span style="display:inline-table;">' + data[field.path] + '</span>';
+                html += '<span style="display:inline-table;">' + (data[field.path] ? data[field.path] : '') + '</span>';
             }
             break;
         case 'Number':
-            html += '<span style="display:inline-table;">' + data[field.path] + '</span>';
+            html += '<span style="display:inline-table;">' + (data[field.path] ? data[field.path] : '') + '</span>';
             break;
         case 'Date':
             html += '<span style="display:inline-table;">' + (data[field.path] ? moment(data[field.path]).format('HH:mm DD/MM/YY') : '') + '</span>';
@@ -467,6 +466,8 @@ window._bindModalInfo = function name(dataShow, modalId, fields, fieldNameShows)
 
     _.forEach(fieldNameShows, function (fieldName) {
         let field = _.find(fields, { path: fieldName });
+        console.log(field);
+        
         if (field) {
             let valueField = dataShow ? dataShow[field.path] : null;
             html += itemInfo(field, valueField);
@@ -474,11 +475,16 @@ window._bindModalInfo = function name(dataShow, modalId, fields, fieldNameShows)
     })
 
     $('#info_body').html(html);
+
+    $('select').selectpicker({
+        countSelectedText :   '{0} mục đã chọn',
+    });
     $('select').selectpicker('refresh');
     $(modalId).modal('show');
 }
 
 function itemInfo(item, valueItem) {
+    
     var html = '<div class="row pt-1">';
     html += '<label class="col col-md-5 col-sm-5">' + item.textShow + '</label>';
 
@@ -487,11 +493,39 @@ function itemInfo(item, valueItem) {
         //     html += '<input class="form-control" type="text" autocomplete="off" name="'+ item.path +'"></input>';
         //     break;
         case 'String':
+            console.log('4', item.path);
+
             if(_.isEqual(item.path, 'email')){
                 html += '<input class="col col-md-6 col-sm-6" type="email" autocomplete="off" ' +
                     'name="' + item.path + '" ' +
                     'value="' + (valueItem ? valueItem : '') + '" ' +
                     (item.isRequired ? 'required' : '') + '>';
+            } else if(_.isEqual(item.path, 'imageUrl')){
+                console.log('hhihih');
+                
+                html += '<div class="container">' +
+                        '<fieldset class="form-group">' +
+                        '<a href="javascript:void(0)">Upload Image</a>' +
+                        '<input type="file" id="pro-image" name="pro-image" style="display: none;" class="form-control" multiple>' +
+                        '</fieldset>' +
+                        '<div class="preview-images-zone">' +
+                        '<div class="preview-image preview-show-1">' +
+                        'div class="image-cancel" data-no="1">x</div>' +
+                        '<div class="image-zone"><img id="pro-img-1" src="https://img.purch.com/w/660/aHR0cDovL3d3dy5saXZlc2NpZW5jZS5jb20vaW1hZ2VzL2kvMDAwLzA5Ny85NTkvb3JpZ2luYWwvc2h1dHRlcnN0b2NrXzYzOTcxNjY1LmpwZw=="></div>' +
+                        '<div class="tools-edit-image"><a href="javascript:void(0)" data-no="1" class="btn btn-light btn-edit-image">edit</a></div>' +
+                        '</div>' +
+                        '<div class="preview-image preview-show-2">' +
+                        '<div class="image-cancel" data-no="2">x</div>' +
+                        '<div class="image-zone"><img id="pro-img-2" src="https://www.codeproject.com/KB/GDI-plus/ImageProcessing2/flip.jpg"></div>' +
+                        '<div class="tools-edit-image"><a href="javascript:void(0)" data-no="2" class="btn btn-light btn-edit-image">edit</a></div>' +
+                        '</div>' +
+                        '<div class="preview-image preview-show-3">' +
+                        '<div class="image-cancel" data-no="3">x</div>' +
+                        '<div class="image-zone"><img id="pro-img-3" src="http://i.stack.imgur.com/WCveg.jpg"></div>' +
+                        '<div class="tools-edit-image"><a href="javascript:void(0)" data-no="3" class="btn btn-light btn-edit-image">edit</a></div>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>'
             }else{
                 html += '<input class="col col-md-6 col-sm-6" type="text" autocomplete="off" ' +
                     'name="' + item.path + '" ' +
@@ -500,14 +534,13 @@ function itemInfo(item, valueItem) {
             }
 
             break;
-        // case 'Number':
-        //     html += '<input class="form-control" type="number" autocomplete="off" name="'+ item.path +'"></input>';
-        //     break;
+        case 'Number':
+            html += '<input class="col col-md-6 col-sm-6" type="number" autocomplete="off" name="'+ item.path +'"></input>';
+            break;
         case 'Date':
             html += '<div class="col col-md-6 col-sm-6 input-group p-0">'+
-                '<input type="text" autocomplete="off" class="form-control datetimepicker-input" id="date_'+  item.path +'" ' +
-                'name="'+  item.path +'" data-toggle="datetimepicker" data-target="#date_'+  item.path +'" '+
-                'value="' + (valueItem ? moment(valueItem).format('DD/MM/YYYY')  : '') + '" ' +
+                '<input type="text" autocomplete="off" class="form-control datetimepicker-input" id="info_date_'+  item.path +'" ' +
+                'name="'+  item.path +'" data-toggle="datetimepicker" data-target="#info_date_'+  item.path +'" '+
                 (item.isRequired ? 'required' : '') + ' />' +
                 '<div class="input-group-append">' +
                 '<span class="input-group-text"><i class="fa fa-calendar"></i></span>'+
@@ -519,7 +552,7 @@ function itemInfo(item, valueItem) {
                     '<select class="col col-md-6 col-sm-6 selectpicker form-control" data-width="auto" ' +
                     (item['$isMongooseArray'] ? 'autocomplete="off" multiple data-selected-text-format="count > 2" ' : '') +
                     'name="' + item.path + '" ' +
-                    (item.valueSelect.length > 4 ? ' data-live-search=true' : '') +
+                    (item.valueSelect.length > 4 ? ' data-live-search=true' : '') + ' ' +
                     'title="Chọn ' + _.lowerFirst(item.textShow) + '" ' +
                     (item.isRequired || ( item.caster && item.caster.isRequired) ? 'required' : '') + ' >';
 

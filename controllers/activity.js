@@ -34,9 +34,6 @@ exports.search = async function (req, res) {
         if(_.has(req.query.dataMatch, 'email')) req.query.dataMatch.email = {'$regex' : new RegExp(_stringRegex(req.query.dataMatch.email), 'i')}
 
     }
-
-    console.log(req.query);
-    
     
     let data = await _activity._search(req.query.dataMatch, req.query.page, req.query.sumRow)
     res.send(_output(data ? 200 : 500, null, data));

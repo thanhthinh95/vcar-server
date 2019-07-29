@@ -13,7 +13,7 @@ var eventPage = function($) {
         })
 
         $(document).on('click', '#create_new', function (e) {
-            _bindModalInfo(null, '#modal_info', _fields, ['name', 'type', 'status']);
+            _bindModalInfo(null, '#modal_info', _fields, ['imageUrl', 'carSupplierId', 'type', 'controlSea', 'numberSeat', 'color', 'fare', 'pointStop', 'status']);
         })
 
         $(document).on('click', '#edit_row_table', function (e) {
@@ -81,20 +81,20 @@ var eventPage = function($) {
 
 
             if(_.isEqual($(this).attr('data_action'), 'create')){
-                _AjaxObject('/point', 'POST', objData, function(resp) {
+                _AjaxObject('/car', 'POST', objData, function(resp) {
                     if(resp.code == 200){
                         _DialogSuccess('Đã tạo mới thành công', function () {
-                            _loadPageChild('point');
+                            _loadPageChild('car');
                         })
                     }else{
                         _DialogError(resp.message);
                     }
                 })
             }else if(_.isEqual($(this).attr('data_action'), 'update')) {
-                _AjaxObject('/point', 'PUT', objData, function(resp) {
+                _AjaxObject('/car', 'PUT', objData, function(resp) {
                     if(resp.code == 200){
                         _DialogSuccess('Đã cập nhật thành công', function () {
-                            _loadPageChild('point');
+                            _loadPageChild('car');
                         })
                     }else{
                         _DialogError(resp.message);
@@ -106,11 +106,11 @@ var eventPage = function($) {
         $(document).on('click', '#delete_row_table', function (e) {
             var _id = $(this).attr('data_id');
             _DialogQuestion('Bạn đã chắc chắn ?', 'Quyền truy cập người dùng sẽ không còn vai trò này nữa', function () {
-                _AjaxObject('/point', 'DELETE', {ids : [_id]}, function(resp) {
+                _AjaxObject('/car', 'DELETE', {ids : [_id]}, function(resp) {
                     if(resp.code == 200){
                         _DialogSuccess('Đã xóa bỏ thành công', function () {
                             _bindMenuSideBar(roleIndex._id);                                                
-                            _loadPageChild('point');
+                            _loadPageChild('car');
                         })
                     }else{
                         _DialogError(resp.message);
@@ -136,11 +136,11 @@ var eventPage = function($) {
             var dataIds = _createObjectInForm('.check_item_table')
             if(_.has(dataIds, 'checkBoxIds')){
                 _DialogQuestion('Bạn có chắc chắn?', 'Dữ liệu bạn chọn sẽ bị xóa bỏ vĩnh viễn', function () {
-                    _AjaxObject('/point', 'DELETE', {ids : dataIds.checkBoxIds}, function(resp) {
+                    _AjaxObject('/car', 'DELETE', {ids : dataIds.checkBoxIds}, function(resp) {
                         if(resp.code == 200){
                             _DialogSuccess('Đã xóa bỏ thành công', function () {
                                 _bindMenuSideBar(roleIndex._id);                    
-                                _loadPageChild('point');
+                                _loadPageChild('car');
                             })
                         }else{
                             _DialogError(resp.message);
@@ -180,7 +180,7 @@ var eventPage = function($) {
         }
 
      
-        _AjaxObject('/point/search', 'GET', objFilter, function(resp) {
+        _AjaxObject('/car/search', 'GET', objFilter, function(resp) {
             dataTableRows = null;
             if(resp.code == 200){
                 dataTableRows = resp.data.docs;
@@ -197,14 +197,14 @@ var eventPage = function($) {
 
     return {
         init : function () {
-            console.log('dang thuc hien init su kien point');
+            console.log('dang thuc hien init su kien car');
             $('#table_modal tbody').sortable();
             bindHeadTable();
             bindBodyTable();
             bindEventClick();
         },
         uncut : function (){
-            console.log('dang thuc hien uncut su kien point');
+            console.log('dang thuc hien uncut su kien car');
             $(document).off('click', '#config')
             $(document).off('click', '#create_new')
             $(document).off('click', '.sort')

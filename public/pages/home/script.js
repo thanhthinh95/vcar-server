@@ -34,6 +34,10 @@ var eventPage = function ($) {
             _loadPageChild('auth');
         }else {//neu user truoc do da chon quyen, thuc hien get menus ra sidebar
             _bindMenuSideBar(roleIndex._id);
+
+            setTimeout(function () {
+                _loadPageChild(roleIndex.urlDefault);
+            }, 500);
         }
     }
 
@@ -75,10 +79,13 @@ var eventPage = function ($) {
                 if (_.split(hash, '#').length == 2) {//duong dan co dau #
                     e.preventDefault();
                     _loadPageChild(_.split(hash, '#')[1]);
+                }
 
-                    if ($(this).attr('data_type') == 'side') {
-                      closeSideBar();
-                    }
+
+
+                var data = $('#button_sidebar').attr('data_action');
+                if(data == 'open'){// Dang o trang thai mo
+                    closeSideBar();
                 }
             })
 

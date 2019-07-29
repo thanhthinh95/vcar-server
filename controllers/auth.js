@@ -6,8 +6,6 @@ exports.getAll = async function(req, res) {
 
 exports.getId = function (req, res) {
     res.send('dang thuc hien get theo id');
-    console.log(req.query);
-    console.log(req.params);
 }
 
 exports.new = function (req, res) {

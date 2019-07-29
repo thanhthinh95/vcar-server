@@ -72,8 +72,6 @@ exports.update = async function (req, res) {
     obj.birthDay = moment(req.body.birthDay, 'DD/MM/YYYY')._d;
     obj.updateBy = req.session.user._id;
     obj.updated = new Date();
-
-    console.log(obj);
     var data = await _user._update(obj._id, obj);
     res.send(_output(data ? 200 : 500, null, data));  
 }

@@ -108,8 +108,7 @@ var eventPage = function($) {
             _DialogQuestion('Bạn đã chắc chắn ?', 'Quyền truy cập người dùng sẽ không còn vai trò này nữa', function () {
                 _AjaxObject('/manager_driver', 'DELETE', {ids : [_id]}, function(resp) {
                     if(resp.code == 200){
-                        _DialogSuccess('Đã xóa bỏ thành công', function () {
-                            _bindMenuSideBar(roleIndex._id);                                                
+                        _DialogSuccess('Đã xóa bỏ thành công', function () {                                            
                             _loadPageChild('manager_driver');
                         })
                     }else{

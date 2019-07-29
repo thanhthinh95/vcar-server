@@ -4,7 +4,7 @@ exports.getAll = async function(req, res) {
     var fieldShows = [
         _objField('_id', null, 0, false, true),
         _objField('carSupplierId', null, 1, true, true, await _car_supplier._getAll()),
-        _objField('userId', 'Quản lý', 1, true, true, await _user._getAll()),
+        _objField('userId', 'Nhân viên', 1, true, true, await _user._getAll()),
         _objField('createBy', null, 0, false, true, await _user._getAll()),
         _objField('created', null, 1, true, true),
         _objField('updateBy', null, 0, false, true, await _user._getAll()),
@@ -12,10 +12,10 @@ exports.getAll = async function(req, res) {
         _objField('status', null, 1, true, true, [{_id: 0, name : 'Chưa kích hoạt'},{_id : 1, name : "Kích hoạt"}]),
     ];
     
-    _render(req, res, 'manager_driver', 'Quản lý kỹ thuật viên nhà xe', {
-        menu : await _menu._getMenuAndActivities('manager_driver', req.session.roleIndex._id),
+    _render(req, res, 'employee', 'Quản lý nhân viên nhà xe', {
+        menu : await _menu._getMenuAndActivities('employee', req.session.roleIndex._id),
         sumRow : config.table.sumRow,
-        fields : _getFields(_manager_driver, fieldShows)
+        fields : _getFields(_employee, fieldShows)
     })
 }
 
@@ -46,8 +46,9 @@ exports.search = async function (req, res) {
     if(!_.has(req.query, 'dataSort')){
         req.query.dataSort = {}
     }
+
     
-    let data = await _manager_driver._search(req.query.dataMatch, req.query.dataSort, req.query.page, req.query.sumRow)
+    let data = await _employee._search(req.query.dataMatch, req.query.dataSort, req.query.page, req.query.sumRow)
     res.send(_output(data ? 200 : 500, null, data));
 }
 
@@ -57,7 +58,7 @@ exports.create = async function (req, res) {
     obj.status = Number(obj.status);
     obj.createBy = req.session.user._id;
     obj.created = Date.now();
-    var data = await _manager_driver._create(obj);
+    var data = await _employee._create(obj);
     res.send(_output(data ? 200 : 500,
         data ? null : 'Người dùng này đã được thêm vào nhà xe trước đó', data));
 }
@@ -67,12 +68,12 @@ exports.update = async function (req, res) {
     obj.status = Number(obj.status);
     obj.updateBy = req.session.user._id;
     obj.updated = Date.now();
-    let data = await _manager_driver._update(obj._id, obj);
+    let data = await _employee._update(obj._id, obj);
     res.send(_output(data ? 200 : 500,
         data ? null : 'Người dùng này đã được thêm vào nhà xe trước đó', data));
 }
 
 exports.delete = async function (req, res) {
-    var data = await _manager_driver._delete(req.body.ids);
+    var data = await _employee._delete(req.body.ids);
     res.send(_output(data ? 200 : 500, null, data));  
 }
