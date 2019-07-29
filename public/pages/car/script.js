@@ -14,6 +14,8 @@ var eventPage = function($) {
 
         $(document).on('click', '#create_new', function (e) {
             _bindModalInfo(null, '#modal_info', _fields, ['imageUrl', 'carSupplierId', 'type', 'controlSea', 'numberSeat', 'color', 'fare', 'pointStop', 'status']);
+            $( ".preview-images-zone" ).sortable();
+
         })
 
         $(document).on('click', '#edit_row_table', function (e) {
@@ -151,6 +153,7 @@ var eventPage = function($) {
                 _DialogError('Chọn một vài đối tượng để thực hiện xóa bỏ');
             }
         })
+
     }
 
  

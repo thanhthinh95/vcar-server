@@ -9,7 +9,7 @@
 }
 .preview-images-zone > .preview-image:first-child {
     height: 185px;
-    width: 185px;
+    width: 164px;
     position: relative;
     margin-right: 5px;
 }
@@ -61,8 +61,4 @@
 .ui-sortable-helper {
     width: 90px !important;
     height: 90px !important;
-}
-
-.container {
-    padding-top: 50px;
 }
