@@ -41,7 +41,6 @@ exports.search = async function (req, res) {
                 '$lte' : moment(req.query.dataMatch.updated, 'DD/MM/YYYY').endOf('day')._d
             };
         }
-
     }
 
     if(!_.has(req.query, 'dataSort')){

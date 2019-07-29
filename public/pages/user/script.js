@@ -1,4 +1,6 @@
 var eventPage = function($) {
+    var dataTableRows = null;
+
     function bindEventClick() {
         $(document).on('click', '#config', function (e) {
             $('#modal_config').modal('show');
@@ -8,6 +10,29 @@ var eventPage = function($) {
             _appendModalConfig('#table_modal', _.filter(_fields, {statusShow : -1}));
             _appendModalConfig('#table_modal', _.filter(_fields, {statusShow : 1}));
             _appendModalConfig('#table_modal', _.filter(_fields, {statusShow : 0}));
+        })
+
+        $(document).on('click', '#create_new', function (e) {
+            _bindModalInfo(null, '#modal_info', _fields, ['name', 'email', 'numberPhone', 'birthDay', 'gender', 'roles', 'status']);
+
+            $('.datetimepicker-input').datetimepicker({
+                locale : 'vi',
+                format : 'DD/MM/YYYY'
+            });
+        })
+
+        $(document).on('click', '#edit_row_table', function (e) {
+            var dataRow = _.find(dataTableRows, {_id : $(this).attr('data_id')});
+            if(dataRow){
+                _bindModalInfo(dataRow, '#modal_info', _fields, ['name', 'email', 'numberPhone', 'password', 'birthDay', 'gender', 'roles', 'status']);
+
+                $('.datetimepicker-input').datetimepicker({
+                    locale : 'vi',
+                    format : 'DD/MM/YYYY'
+                });
+            }else{
+                _DialogError('Không tìm thấy bản ghi');
+            }
         })
 
         $(document).on('submit', '#form_modal_config', function (e) {
@@ -56,6 +81,86 @@ var eventPage = function($) {
             _changeIconSort($(this));
             bindBodyTable();
         });
+
+
+
+        $(document).on('submit', '#form_modal_info', function (e) {
+            e.preventDefault();
+            $('#modal_info').modal('hide');
+            var objData = _createObjectInForm('#form_modal_info');
+
+
+            if(_.isEqual($(this).attr('data_action'), 'create')){
+                _AjaxObject('/user', 'POST', objData, function(resp) {
+                    if(resp.code == 200){
+                        _DialogSuccess('Đã tạo mới thành công', function () {
+                            _loadPageChild('user');
+                        })
+                    }else{
+                        _DialogError(resp.message);
+                    }
+                })
+            }else if(_.isEqual($(this).attr('data_action'), 'update')) {
+                _AjaxObject('/user', 'PUT', objData, function(resp) {
+                    if(resp.code == 200){
+                        _DialogSuccess('Đã cập nhật thành công', function () {
+                            _loadPageChild('user');
+                        })
+                    }else{
+                        _DialogError(resp.message);
+                    }
+                })
+            }
+        })
+
+        $(document).on('click', '#delete_row_table', function (e) {
+            var _id = $(this).attr('data_id');
+            _DialogQuestion('Bạn đã chắc chắn ?', 'Quyền truy cập người dùng sẽ không còn vai trò này nữa', function () {
+                _AjaxObject('/user', 'DELETE', {ids : [_id]}, function(resp) {
+                    if(resp.code == 200){
+                        _DialogSuccess('Đã xóa bỏ thành công', function () {
+                            _bindMenuSideBar(roleIndex._id);                                                
+                            _loadPageChild('user');
+                        })
+                    }else{
+                        _DialogError(resp.message);
+                    }
+                })
+            })
+          
+        })
+
+        $(document).on('click', '.page', function(e) {
+            bindBodyTable($(this).attr('data_page'))
+        })
+
+        $(document).on('click', '#check_all_item_table', function (e) {
+            if($('#check_all_item_table').is(':checked')){
+                $('.check_item_table').prop("checked", true);
+            }else{
+                $('.check_item_table').prop("checked", false);
+            }
+        })
+
+        $(document).on('click', '#delete_item_checked', function (e) {
+            var dataIds = _createObjectInForm('.check_item_table')
+            if(_.has(dataIds, 'checkBoxIds')){
+                _DialogQuestion('Bạn có chắc chắn?', 'Dữ liệu bạn chọn sẽ bị xóa bỏ vĩnh viễn', function () {
+                    _AjaxObject('/user', 'DELETE', {ids : dataIds.checkBoxIds}, function(resp) {
+                        if(resp.code == 200){
+                            _DialogSuccess('Đã xóa bỏ thành công', function () {
+                                _bindMenuSideBar(roleIndex._id);                    
+                                _loadPageChild('user');
+                            })
+                        }else{
+                            _DialogError(resp.message);
+                        }
+                    })
+                })
+            }else{
+                _DialogError('Chọn một vài đối tượng để thực hiện xóa bỏ');
+            }
+        })
     }
 
  
@@ -72,15 +177,30 @@ var eventPage = function($) {
     }
     
 
-    function bindBodyTable() {
+    function bindBodyTable(page) {
         var objFilter = {
             dataMatch : _createObjectInForm('#form_table'),
             dataSort : _createObjectSort(), 
+            sumRow : _sumRow,
+            page : page ? page : 1,
         }
+
+        if(_.has(objFilter.dataMatch, 'checkBoxIds')){//loai bo checkBoxId selected neu co
+            delete objFilter.dataMatch.checkBoxIds;
+        }
+
      
         _AjaxObject('/user/search', 'GET', objFilter, function(resp) {
+            dataTableRows = null;
+            
             if(resp.code == 200){
-                _bindBodyTable('#form_table', _fields, resp.data);
+                dataTableRows = resp.data.docs;
+                console.log(dataTableRows);
+                
+                delete resp.data.docs;
+
+                _bindBodyTable('#form_table', _fields, dataTableRows, _menu.activities);
+                _bindPaginate(resp.data);
             }else{
                 _DialogError(resp.message);
             }
@@ -98,7 +218,17 @@ var eventPage = function($) {
         },
         uncut : function (){
             console.log('dang thuc hien uncut su kien user');
-            
+            $(document).off('click', '#config')
+            $(document).off('click', '#create_new')
+            $(document).off('click', '.sort')
+            $(document).off('click', '.page')
+            $(document).off('click', '#edit_row_table')
+            $(document).off('click', '#delete_row_table')
+            $(document).off('click', '#delete_item_checked')
+            $(document).off('click', '#check_all_item_table')
+            $(document).off('submit', '#form_modal_config')
+            $(document).off('submit', '#form_table')
+            $(document).off('submit', '#form_modal_info')
         }
     }
 }(jQuery)

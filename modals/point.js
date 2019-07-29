@@ -8,6 +8,11 @@ var objSchame = new mongoose.Schema({
     status : {type : Number, required: true}, //0: Khong kich hoat, 1: Kich hoat
 },{id: false, versionKey: 'v'});
 
+objSchame.statics._getAll = async function() {
+    return await _point.find({status : 1});
+}
+
+
 objSchame.statics._create = async function(obj) {
     return await _point.create(obj);
 }
@@ -30,9 +35,6 @@ objSchame.statics._search = async function (dataMatch, sort, page, sumRow) {
     return await _point.paginate(dataMatch, options)
 }
 
-objSchame.statics._getAll = async function() {
-    return await _point.find({});
-}
 
 
 objSchame.statics._delete = async function (_ids) {

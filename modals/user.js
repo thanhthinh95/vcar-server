@@ -1,30 +1,41 @@
-var userSchame = new mongoose.Schema({
-    name: { type: String, default: 'Người dùng' },
-    email: { type: String, required: true, unique: true },
-    numberPhone: { type: String, default: null },
+var objSchame = new mongoose.Schema({
+    name: { type: String, required: true},
+    email: { type: String, required: true},
+    numberPhone: { type: String, required: true},
     password: { type: String, required: true },
-    brithDay: { type: Date, default: Date.now },
-    gender: { type: Number, default: null },
-    roles: [{ type: mongoose.Schema.Types.ObjectId, ref: 'role' }],
+    birthDay: { type: Date, required: true},
+    gender: { type: Number, required: true},//0: Nu | 1: Nam
+    roles: [{ type: mongoose.Schema.Types.ObjectId, ref: 'role', required: true}],
 
-    created: { type: Date, default: Date.now },
-    createBy: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
+    created: { type: Date, default: Date.now},
+    createBy: { type: mongoose.Schema.Types.ObjectId, ref: 'user', default : null},
     updated: { type: Date, default: Date.now },
-    updateBy: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
-    status: { type: Number, default: 1 },
+    updateBy: { type: mongoose.Schema.Types.ObjectId, ref: 'user', default : null},
+    status: { type: Number, required: true  },
 }, { id: false, versionKey: 'v' });
 
 
-userSchame.statics._getAll = async function () {
-    return await _user.find({});
+objSchame.statics._getAll = async function () {
+    return await _user.find({status : 1});
 }
 
-userSchame.statics._getId = async function (_id) {
+objSchame.statics._getId = async function (_id) {
     return await _user.findOne({ _id: _id });
 }
 
+objSchame.statics._create = async function(obj) {
+    return await _user.create(obj);
+}
 
-userSchame.statics._login = async function (email, password) {
+objSchame.statics._update = async function(_id, dataUpdate) {
+    return await _user.findByIdAndUpdate(_id, dataUpdate,  {new: true});
+}
+
+objSchame.statics._delete = async function (_ids) {
+    return await _user.deleteMany({_id : {$in : _ids}});
+}
+
+objSchame.statics._login = async function (email, password) {
     var user = await _user.findOne({ email: email, status: 1 });
     if (!user) return null; //Khong ton tai email
     var kq = await bcrypt.compare(password, user.password);
@@ -32,11 +43,11 @@ userSchame.statics._login = async function (email, password) {
 }
 
 
-userSchame.statics._updatePassword = async function (email, newPassword) {
+objSchame.statics._updatePassword = async function (email, newPassword) {
     return await _user.findOneAndUpdate({ email: email, status: 1 }, { password: newPassword });
 }
 
-userSchame.statics._getRoles = async function (_idUser) {
+objSchame.statics._getRoles = async function (_idUser) {
     var data = await _user.aggregate([
         { $match: { _id: mongoose.Types.ObjectId(_idUser), status: 1 } },
         {
@@ -55,20 +66,34 @@ userSchame.statics._getRoles = async function (_idUser) {
 }
 
 
-userSchame.statics._addRole = async function(_id, roleId) {
+objSchame.statics._addRole = async function(_id, roleId) {
     return await _user.updateOne({_id : _id}, 
         {$addToSet : {roles : roleId}});
 }
 
-userSchame.statics._removeRole = async function(_ids, roleId) {
+objSchame.statics._removeRole = async function(_ids, roleId) {
     return await _user.updateMany({_id : {$in : _ids}}, 
         {$pull : {roles : roleId}});
 }
 
-userSchame.set('toJSON', { getters: true });
-userSchame.set('toObject', { getters: true });
-userSchame.index({ email: 1 });
-userSchame.plugin(require('mongoose-aggregate-paginate'));
+
+objSchame.statics._search = async function (dataMatch, sort, page, sumRow) {
+    let options  = {
+        page : Number(page),
+        limit : Number(sumRow),
+        sort : sort,
+    }
+
+    return await _user.paginate(dataMatch, options)
+}
 
 
-module.exports = mongoose.model('user', userSchame)
+objSchame.set('toJSON', { getters: true });
+objSchame.set('toObject', { getters: true });
+objSchame.index({ email: 1 });
+objSchame.plugin(require('mongoose-aggregate-paginate'));
+objSchame.plugin(require('mongoose-paginate-v2'));
+
+
+
+module.exports = mongoose.model('user', objSchame)

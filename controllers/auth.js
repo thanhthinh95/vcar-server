@@ -19,16 +19,14 @@ exports.edit = function (req, res) {
 }
 
 //Khi user thuc hien chon quyen truy cap du an
-exports.create = async function (req, res) {
-
-    if(!_.has(req.body, '_id') || !mongoose.Types.ObjectId.isValid(req.body._id)){
-        return res.send(_output(501));
-    }else{
-        var role = await _role._getId(req.body);
-        req.session.roleIndex = role;
-        res.send(_output(role ? 200 : 500, null, role));
-    }
-    
+exports.action = async function (req, res) {
+    switch (req.params._typeAction) {
+        case 'selectRole':
+            await selectRole(req, res);
+            break;
+        default:
+            break;
+    }  
 }
 
 exports.update = function (req, res) {
@@ -37,4 +35,14 @@ exports.update = function (req, res) {
 
 exports.delete = function (req, res) {
     res.send('dang thuc hien xoa')
+}
+
+async function selectRole(req, res) {
+    if(!_.has(req.body, '_id') || !mongoose.Types.ObjectId.isValid(req.body._id)){
+        return res.send(_output(501));
+    }else{
+        var role = await _role._getId(req.body);
+        req.session.roleIndex = role;
+        res.send(_output(role ? 200 : 500, null, role));
+    }
 }

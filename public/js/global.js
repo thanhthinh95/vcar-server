@@ -408,42 +408,46 @@ window._bindBodyTable = function (tableId, fields, data, activity) {
 
 function itemBody(data, field) {
     var html = '<td class="text-center align-middle" title="fsd">';
-    if (field.statusSearch) {
-        switch (field.instance) {
-            case 'ObjectID':
+    
+    switch (field.instance) {
+        case 'ObjectID':
+            html += '<span style="display:inline-table;">' + data[field.path] + '</span>';
+            break;
+        case 'String':
+            if(_.isEqual(field.path, 'password')){
+                html += '<span style="display:inline-table;">***</span>';
+            }else {
                 html += '<span style="display:inline-table;">' + data[field.path] + '</span>';
-                break;
-            case 'String':
-                html += '<span style="display:inline-table;">' + data[field.path] + '</span>';
-                break;
-            case 'Number':
-                html += '<span style="display:inline-table;">' + data[field.path] + '</span>';
-                break;
-            case 'Date':
-                html += '<span style="display:inline-table;">' + (data[field.path] ? moment(data[field.path]).format('HH:mm DD/MM/YY') : '') + '</span>';
-                break;
-            case 'Select':
-                if (field['$isMongooseArray']) {//la 1 mang cac phan tu
-                    var str = '';
-                    _.forEach(data[field.path], function (item, index) {
-                        let obj = _.find(field.valueSelect, { _id: item });
-                        str += (obj ? obj.name : 'Chưa xác định');
-                        if (index < data[field.path].length - 1) {
-                            str += '<br/>';
-                        }
-                    })
+            }
+            break;
+        case 'Number':
+            html += '<span style="display:inline-table;">' + data[field.path] + '</span>';
+            break;
+        case 'Date':
+            html += '<span style="display:inline-table;">' + (data[field.path] ? moment(data[field.path]).format('HH:mm DD/MM/YY') : '') + '</span>';
+            break;
+        case 'Select':
+            if (field['$isMongooseArray']) {//la 1 mang cac phan tu
+                var str = '';
+                _.forEach(data[field.path], function (item, index) {
+                    let obj = _.find(field.valueSelect, { _id: item });
+                    str += (obj ? obj.name : 'Chưa xác định');
+                    if (index < data[field.path].length - 1) {
+                        str += '<br/>';
+                    }
+                })
 
-                    html += '<span style="display:inline-table;">' + str + '</span>';
-                } else { //la mot phan tu
-                    let obj = _.find(field.valueSelect, { _id: data[field.path] });
-                    html += '<span style="display:inline-table;">' + (obj ? obj.name : 'Chưa xác định') + '</span>';
-                }
+                html += '<span style="display:inline-table;">' + str + '</span>';
+            } else { //la mot phan tu
+                let obj = _.find(field.valueSelect, { _id: data[field.path] });
+                html += '<span style="display:inline-table;">' + (obj ? obj.name : 'Chưa xác định') + '</span>';
+            }
 
-                break;
-            default:
-                return '';
-        }
+            break;
+        default:
+            return '';
     }
+    
 
     html += '</td>';
     return html;
@@ -483,49 +487,58 @@ function itemInfo(item, valueItem) {
         //     html += '<input class="form-control" type="text" autocomplete="off" name="'+ item.path +'"></input>';
         //     break;
         case 'String':
-            html += '<input class="col col-md-6 col-sm-6" type="text" autocomplete="off" ' +
-                'name="' + item.path + '" ' +
-                'value="' + (valueItem ? valueItem : '') + '" ' +
-                (item.isRequired ? 'required' : '') + '>';
+            if(_.isEqual(item.path, 'email')){
+                html += '<input class="col col-md-6 col-sm-6" type="email" autocomplete="off" ' +
+                    'name="' + item.path + '" ' +
+                    'value="' + (valueItem ? valueItem : '') + '" ' +
+                    (item.isRequired ? 'required' : '') + '>';
+            }else{
+                html += '<input class="col col-md-6 col-sm-6" type="text" autocomplete="off" ' +
+                    'name="' + item.path + '" ' +
+                    'value="' + (valueItem ? valueItem : '') + '" ' +
+                    (item.isRequired ? 'required' : '') + '>';
+            }
+
             break;
         // case 'Number':
         //     html += '<input class="form-control" type="number" autocomplete="off" name="'+ item.path +'"></input>';
         //     break;
-        // case 'Date':
-        //     html += '<div class="input-group">'+
-        //         '<input type="text" autocomplete="off" class="form-control datetimepicker-input" id="date_'+  item.path +'" name="'+  item.path +'" data-toggle="datetimepicker" data-target="#date_'+  item.path +'"/>'+
-        //         '<div class="input-group-append">' +
-        //         '<span class="input-group-text"><i class="fa fa-calendar"></i></span>'+
-        //         '</div>' +
-        //         '</div>';
-        //     break;
+        case 'Date':
+            html += '<div class="col col-md-6 col-sm-6 input-group p-0">'+
+                '<input type="text" autocomplete="off" class="form-control datetimepicker-input" id="date_'+  item.path +'" ' +
+                'name="'+  item.path +'" data-toggle="datetimepicker" data-target="#date_'+  item.path +'" '+
+                'value="' + (valueItem ? moment(valueItem).format('DD/MM/YYYY')  : '') + '" ' +
+                (item.isRequired ? 'required' : '') + ' />' +
+                '<div class="input-group-append">' +
+                '<span class="input-group-text"><i class="fa fa-calendar"></i></span>'+
+                '</div>' +
+                '</div>';
+            break;
         case 'Select':
-            html +=
-                '<select class="col col-md-6 col-sm-6 selectpicker form-control" data-width="auto" ' +
-                'name="' + item.path + '" ' +
-                (item.valueSelect.length > 4 ? ' data-live-search=true' : '') +
-                'title="Chọn ' + _.lowerFirst(item.textShow) + '" ' +
-                (item.isRequired ? 'required' : '') + '>';
+                html +=
+                    '<select class="col col-md-6 col-sm-6 selectpicker form-control" data-width="auto" ' +
+                    (item['$isMongooseArray'] ? 'autocomplete="off" multiple data-selected-text-format="count > 2" ' : '') +
+                    'name="' + item.path + '" ' +
+                    (item.valueSelect.length > 4 ? ' data-live-search=true' : '') +
+                    'title="Chọn ' + _.lowerFirst(item.textShow) + '" ' +
+                    (item.isRequired || ( item.caster && item.caster.isRequired) ? 'required' : '') + ' >';
 
-            _.forEach(item.valueSelect, function (val) {
-                let valSelected = '';
-                //Neu gia tri nam trong mang value hoac gia tri bang value thi selected
-                if ((!_.isArray(valueItem) && _.isEqual(valueItem, val._id)) ||
-                    (_.isArray(valueItem) && _.includes(valueItem, val._id))
-                ) {
-                    valSelected = 'selected'
-                }
-
-                html += '<option value="' + val._id + '" ' + valSelected + ' >' + val.name + '</option>';
-            })
-            html += '</select>';
+                _.forEach(item.valueSelect, function (val) {
+                    let valSelected = '';
+                    //Neu gia tri nam trong mang value hoac gia tri bang value thi selected
+                    if ((!_.isArray(valueItem) && _.isEqual(valueItem, val._id)) ||
+                        (_.isArray(valueItem) && _.includes(valueItem, val._id))
+                    ) {
+                        valSelected = 'selected'
+                    }
+    
+                    html += '<option value="' + val._id + '" ' + valSelected + ' >' + val.name + '</option>';
+                })
+                html += '</select>';
             break;
         default:
             return '';
     }
-
-
-    console.log(html);
 
 
     html += '</div>';

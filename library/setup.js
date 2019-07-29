@@ -177,6 +177,11 @@ function setRouter(namefile, key, fn) {
             method = 'get';
             url = '/' + namefile + '/search';
             break;
+
+        case 'action': //cac chuc nang tuy chinh khac
+            method = 'post';
+            url = '/' + namefile + '/action/:_typeAction';
+            break;
         default:
             break;
     }
@@ -220,7 +225,7 @@ function setValueField(nameField) {
             return 'Số điện thoại';
         case 'password':
             return 'Mật khẩu';
-        case 'brithDay':
+        case 'birthDay':
             return 'Ngày sinh';
         case 'gender':
             return 'Giới tính';

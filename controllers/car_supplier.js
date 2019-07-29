@@ -3,8 +3,8 @@ exports.getAll = async function(req, res) {
     // _objField(field, textShow, statusShow, statusSort, statusSearch, valueSelect)
     var fieldShows = [
         _objField('_id', null, 0, false, true),
-        _objField('name', null, -1, true, true),
-        _objField('numberPhone', null, 1, true, true),
+        _objField('name', 'Tên Nhà Xe', -1, true, true),
+        _objField('numberPhone', 'Số Tổng Đài', 1, true, true),
         _objField('startPoint', null, 1, true, true, await _point._getAll()),
         _objField('endPoint', null, 1, true, true, await _point._getAll()),
         _objField('createBy', null, 0, false, true, await _user._getAll()),
