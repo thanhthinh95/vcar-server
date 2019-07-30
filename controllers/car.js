@@ -82,3 +82,32 @@ exports.delete = async function (req, res) {
     var data = await _car._delete(req.body.ids);
     res.send(_output(data ? 200 : 500, null, data));  
 }
+
+exports.action = async function (req, res) {
+    switch (req.params._typeAction) {
+        case 'upload_image':
+            await uploadImage(req, res);
+            break;
+        default:
+            break;
+    }  
+}
+
+async function uploadImage(req, res) {
+    let listUrl = [];
+    let index = 0;
+    async.forEach(req.files.image_files, function (file, next) {
+        fsx.mkdirp('/public/image-car', function (err) {
+            index++;
+            let arr = file.name.split('.');
+            let url = 'image-car/' + index + '_' + new Date().getTime() + '.' + arr[arr.length -1];
+
+            file.mv('public/' + url, function (error) {
+                listUrl.push(url);
+                next();
+            })  
+        })
+    }, function (error) {
+        res.send(_output(error ? 500 : 200, null, {urls : listUrl}));
+    }) 
+}

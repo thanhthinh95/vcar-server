@@ -10,6 +10,7 @@ global.mongoose = require('mongoose');
 global._ = require('lodash');
 global.bcrypt = require('bcrypt');
 global.moment = require('moment');
+global.async = require('async');
 
 
 
@@ -48,6 +49,7 @@ function buildApp() {
     app.set('view engine', 'ejs');
     app.set('view cache', false);
 
+    app.use(require("express-fileupload")());
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended: true}));
     app.use(require('express-session')({
@@ -63,6 +65,7 @@ function buildApp() {
     app.use('/pages', express.static('public/pages'));
     app.use('/fonts', express.static('public/fonts'));
     app.use('/plugins', express.static('public/plugins'));
+    app.use('/image-car', express.static('public/image-car'));
     app.use('/views', express.static('views'));
 
     app.use(require('./library/auth-access.js'));

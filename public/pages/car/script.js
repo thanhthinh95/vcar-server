@@ -154,6 +154,81 @@ var eventPage = function($) {
             }
         })
 
+        $(document).on('click', '.image-cancel', function() {
+            $(this).parent().remove();
+        });
+
+    
+
+        $(document).on('click', '#add_new_image', function (e) {
+            e.preventDefault();
+            $("#upload_image").click();
+        })
+
+        $(document).on('change', '#upload_image', function name(params) {
+            console.log('dang thuc hien uploadfile');
+            if(this.files){
+                let checkSize = true;
+                let sumSize = 0;
+                var formData = new FormData();
+
+                _.forEach(this.files, function (file) {
+                    formData.append('image_files', file);
+                    var size = Number(((file.size / 1024) / 1024).toFixed(4));
+                    sumSize += size;
+                    if (size > 5) { // MB
+                        checkSize =  false;
+                    }
+                })
+
+                if(checkSize && sumSize < 20){
+                    _AjaxFormData('car/action/upload_image', 'POST', formData, function(resp) {
+                        if(resp.code == 200){
+                            
+                            _.forEach(resp.data.urls, function (url) {
+                                var html =  '<div class="preview-image">' +
+                                    '<div class="image-cancel">x</div>' +
+                                    '<div class="image-zone"><img src="' + url + '"></div>' +
+                                    '</div>';
+                                
+                               $(".preview-images-zone").append(html);
+                                
+                            })
+                            
+                        }else {
+                            _DialogError(resp.message);
+                        }
+                    })
+                }else{
+                    _DialogError('Số lượng 1 file phải nhỏ hơn 5MB, tổng dung lượng file phải nhỏ hơn 20MB');
+                }
+            }
+
+            // if (window.File && window.FileList && window.FileReader) {
+                // var files = event.target.files; //FileList object
+
+                // var output = $(".preview-images-zone");
+        
+                // for (let i = 0; i < files.length; i++) {
+                //     var file = files[i];
+                //     if(!file.type.match('image')) continue;
+                    
+                //     var picReader = new FileReader();
+                    
+                //     picReader.addEventListener('load', function (event) {
+                //         var picFile = event.target;
+      
+        
+                //         output.append(html);
+                //     });
+        
+                //     picReader.readAsDataURL(file);
+                // }
+                // $("#pro-image").val('');
+            // } else {
+            //     _DialogError('Trình duyệt không hỗ trợ, thử lại sau!');
+            // }
+        })
     }
 
  
@@ -219,6 +294,9 @@ var eventPage = function($) {
             $(document).off('submit', '#form_modal_config')
             $(document).off('submit', '#form_table')
             $(document).off('submit', '#form_modal_info')
+
+            $(document).off('click', '.image-cancel');
+            $(document).off('change', '#upload_image');
         }
     }
 }(jQuery)

@@ -56,6 +56,27 @@ window._AjaxObject = function (url, method, object, success, dataType) {
     })
 }
 
+window._AjaxFormData = function (url, method, object, success) {
+    $('#loader').modal('show');
+
+    $.ajax({
+        async: true,
+        url: url,
+        type: method,
+        data: object,
+        contentType: false,
+        processData: false,
+        success: function (resp) {
+            setTimeout(function () {
+                $('#loader').modal('hide');
+                setTimeout(function () {
+                    success(resp)
+                }, 100);
+            }, 500);
+        },
+    })
+}
+
 //////////////////////////////////////////////////////////////
 window._DialogError = function (content, fn_OK) {
     $.confirm({
@@ -466,8 +487,6 @@ window._bindModalInfo = function name(dataShow, modalId, fields, fieldNameShows)
 
     _.forEach(fieldNameShows, function (fieldName) {
         let field = _.find(fields, { path: fieldName });
-        console.log(field);
-        
         if (field) {
             let valueField = dataShow ? dataShow[field.path] : null;
             html += itemInfo(field, valueField);
@@ -475,9 +494,8 @@ window._bindModalInfo = function name(dataShow, modalId, fields, fieldNameShows)
     })
 
     $('#info_body').html(html);
-
     $('select').selectpicker({
-        countSelectedText :   '{0} mục đã chọn',
+        countSelectedText : '{0} mục đã chọn',
     });
     $('select').selectpicker('refresh');
     $(modalId).modal('show');
@@ -544,40 +562,22 @@ function itemInfo(item, valueItem) {
 
         case 'Array':
             if(_.isEqual(item.path, 'imageUrl')){
-                
                 html += '<div class="container">' +
-                        
-                        '<div class="preview-images-zone">' +
-                        '<div class="preview-image preview-show-1">' +
-                        '<div class="image-cancel" data-no="1">x</div>' +
-                        '<div class="image-zone"><img id="pro-img-1" src="https://img.purch.com/w/660/aHR0cDovL3d3dy5saXZlc2NpZW5jZS5jb20vaW1hZ2VzL2kvMDAwLzA5Ny85NTkvb3JpZ2luYWwvc2h1dHRlcnN0b2NrXzYzOTcxNjY1LmpwZw=="></div>' +                        
-                        '</div>' +
-                        '<div class="preview-image preview-show-2">' +
-                        '<div class="image-cancel" data-no="2">x</div>' +
-                        '<div class="image-zone"><img id="pro-img-2" src="https://www.codeproject.com/KB/GDI-plus/ImageProcessing2/flip.jpg"></div>' +
-                        '</div>' +
-                        '<div class="preview-image preview-show-3">' +
-                        '<div class="image-cancel" data-no="3">x</div>' +
-                        '<div class="image-zone"><img id="pro-img-3" src="http://i.stack.imgur.com/WCveg.jpg"></div>' +
-                        '</div>' +
+                        '<div class="preview-images-zone">';
 
-                        '<div class="preview-image preview-show-3">' +
-                        '<div class="image-cancel" data-no="3">x</div>' +
-                        '<div class="image-zone"><img id="pro-img-3" src="http://i.stack.imgur.com/WCveg.jpg"></div>' +
-                        '</div>' +
-
-
-                        '<div class="preview-image preview-show-3">' +
-                        '<div class="image-cancel" data-no="3">x</div>' +
-                        '<div class="image-zone"><img id="pro-img-3" src="http://i.stack.imgur.com/WCveg.jpg"></div>' +
-                        '</div>' +
-                        '</div>' +
-
-                        '<fieldset class="form-group">' +
-                        '<a style="float: right;" href="f">Thêm hình mới</a>' +
-                        '<input type="file" id="pro-image" name="pro-image" style="display: none;" class="form-control" multiple>' +
-                        '</fieldset>' +
+                _.forEach(item.path.imageUrl, function(url) {
+                    html += '<div class="preview-image">' +
+                        '<div class="image-cancel">x</div>' +
+                        '<div class="image-zone"><img src="'+ url +'"></div>' +                        
                         '</div>'
+                })
+                      
+                html += '</div>';
+                html += '<fieldset class="form-group">' +
+                '<a style="float: right;" href="a" id="add_new_image">Thêm hình mới</a>' +
+                '<input type="file" accept="image/*" id="upload_image" name="upload_image" style="display: none;" class="form-control" multiple>' +
+                '</fieldset>' +
+                '</div>'
             }
             break;
         default:
