@@ -57,6 +57,16 @@ exports.search = async function (req, res) {
     res.send(_output(data ? 200 : 500, null, data));
 }
 
+exports.new = async function (req, res) {
+    console.log('hi');
+    
+    _render(req, res, 'car_new', 'Tạo mới xe', {
+        // menu : await _menu._getMenuAndActivities('car', req.session.roleIndex._id),
+        // sumRow : config.table.sumRow,
+        // fields : _getFields(_car, fieldShows)
+    })
+    
+}
 
 exports.create = async function (req, res) {
     let obj = req.body;
@@ -96,16 +106,17 @@ exports.action = async function (req, res) {
 async function uploadImage(req, res) {
     let listUrl = [];
     let index = 0;
+    if(!_.isArray(req.files.image_files)) req.files.image_files = [req.files.image_files];
     async.forEach(req.files.image_files, function (file, next) {
         fsx.mkdirp('/public/image-car', function (err) {
             index++;
             let arr = file.name.split('.');
-            let url = 'image-car/' + index + '_' + new Date().getTime() + '.' + arr[arr.length -1];
+            let url = 'image-car/' + new Date().getTime() + '_' + index + '.' + arr[arr.length -1];
 
             file.mv('public/' + url, function (error) {
                 listUrl.push(url);
                 next();
-            })  
+            })
         })
     }, function (error) {
         res.send(_output(error ? 500 : 200, null, {urls : listUrl}));

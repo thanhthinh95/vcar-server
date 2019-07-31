@@ -249,14 +249,19 @@ var eventPage = function($) {
 
     return {
         init : function () {
-            console.log('dang thuc hien init su kien car');
-            $('#table_modal tbody').sortable();
-            bindHeadTable();
-            bindBodyTable();
-            bindEventClick();
+            console.log('dang thuc hien init su kien car_new');
+            $('select').selectpicker({
+                countSelectedText : '{0} mục đã chọn',
+            });
+            $('select').selectpicker('refresh');
+            
+            $('#table_timeline tbody').sortable();
+            // bindHeadTable();
+            // bindBodyTable();
+            // bindEventClick();
         },
         uncut : function (){
-            console.log('dang thuc hien uncut su kien car');
+            console.log('dang thuc hien uncut su kien car_new');
             $(document).off('click', '#config')
             $(document).off('click', '#create_new')
             $(document).off('click', '.sort')

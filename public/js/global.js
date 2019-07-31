@@ -57,7 +57,7 @@ window._AjaxObject = function (url, method, object, success, dataType) {
 }
 
 window._AjaxFormData = function (url, method, object, success) {
-    $('#loader').modal('show');
+    // $('#loader').modal('show');
 
     $.ajax({
         async: true,
@@ -68,11 +68,11 @@ window._AjaxFormData = function (url, method, object, success) {
         processData: false,
         success: function (resp) {
             setTimeout(function () {
-                $('#loader').modal('hide');
+                // $('#loader').modal('hide');
                 setTimeout(function () {
                     success(resp)
                 }, 100);
-            }, 500);
+            }, 1000);
         },
     })
 }
@@ -183,7 +183,6 @@ function bindMenus(menus) {
         });
     }
 }
-
 
 window._bindPaginate = function (data) {
     let html = '';
@@ -543,6 +542,7 @@ function itemInfo(item, valueItem) {
                     (item['$isMongooseArray'] ? 'autocomplete="off" multiple data-selected-text-format="count > 2" ' : '') +
                     'name="' + item.path + '" ' +
                     (item.valueSelect.length > 4 ? ' data-live-search=true' : '') + ' ' +
+                    (item.valueSelect.length > 6 ? ' data-actions-box=true' : '') + ' ' +
                     'title="Chọn ' + _.lowerFirst(item.textShow) + '" ' +
                     (item.isRequired || ( item.caster && item.caster.isRequired) ? 'required' : '') + ' >';
 
@@ -575,7 +575,7 @@ function itemInfo(item, valueItem) {
                 html += '</div>';
                 html += '<fieldset class="form-group">' +
                 '<a style="float: right;" href="a" id="add_new_image">Thêm hình mới</a>' +
-                '<input type="file" accept="image/*" id="upload_image" name="upload_image" style="display: none;" class="form-control" multiple>' +
+                '<input type="file" accept="image/*" id="upload_image" style="display: none;" class="form-control" multiple>' +
                 '</fieldset>' +
                 '</div>'
             }

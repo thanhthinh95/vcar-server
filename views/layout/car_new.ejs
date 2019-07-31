@@ -1,0 +1,157 @@
+<% if(page) {%>
+<link rel="stylesheet" href='<%- "pages/" + page + "/style.css"%>'>
+<%}%>
+
+<% if(plugins) {%>
+<% _.forEach(plugins, function(item){%>
+<link rel="stylesheet" href='<%- "plugins/" + item + "/style.css"%>'>
+<%})%>
+<%}%>
+
+<script>
+
+</script>
+
+
+
+<div class='card'>
+    <div class="card-header col-lg-12 col-md-12 col-sm-12">
+        <b class=""> <i class='<%- (data.menu ? data.menu.icon : "fa fa-bandcam")%>'></i> <%- title%></b>
+</div>
+
+<div class='card-body'>
+    <div class="row">
+        <div class="col col-lg-7 col-md-7 col-sm-7">
+            <div class="row">
+                <div class="container">
+                    <div class="preview-images-zone">
+                    </div>
+                </div>
+
+                <fieldset class="form-group">
+                    <a style="float: right;" href="a" id="add_new_image">Thêm hình mới</a>
+                    <input type="file" accept="image/*" id="upload_image" style="display: none;" class="form-control"
+                        multiple>
+                </fieldset>
+            </div>
+
+            <div class="row pt-1">
+                <label class="col col-md-3 col-sm-3 my-auto text-right">Nhà Xe</label>
+                <select class="col col-md-8 col-sm-8 selectpicker form-control" name="" data-live-search="true"
+                    title="Chọn Nhà Xe">
+                </select>
+            </div>
+
+            <div class="row pt-1">
+                <label class="col col-md-3 col-sm-3 my-auto text-right">Thể Loại</label>
+                <select class="col col-md-8 col-sm-8 selectpicker form-control" name="" data-live-search="true"
+                    title="Chọn Thể Loại">
+                </select>
+            </div>
+
+
+            <div class="row pt-1">
+                <label class="col col-md-3 col-sm-3 my-auto text-right">Biểm Kiểm Soát</label>
+                <input class="col col-md-8 col-sm-8 selectpicker form-control" name=""
+                    placeholder="VD: 35BG-23459"></input>
+            </div>
+
+            <div class="row pt-1">
+                <label class="col col-md-3 col-sm-3 my-auto text-right">Màu Sắc</label>
+                <input class="col col-md-8 col-sm-8 selectpicker form-control" name=""
+                    placeholder="VD: Xanh Lam"></input>
+            </div>
+
+            <div class="row pt-1">
+                <label class="col col-md-3 col-sm-3 my-auto text-right">Giá Vé</label>
+                <input class="col col-md-8 col-sm-8 selectpicker form-control" name="" type="number"
+                    placeholder="VD: 85000"></input>
+            </div>
+
+
+
+        </div>
+
+        <div class="col col-lg-5 col-md-5 col-sm-5">
+            <div class="row">
+                <select class="col selectpicker form-control pr-2" name="" data-live-search="true"
+                    title="Chọn Điểm Dừng">
+                </select>
+
+
+                <span class="align-middle my-auto">
+                    <button type='submit' class="btn btn-primary w-100">
+                        <i class="fa fa-plus-circle text-white mx-auto" aria-hidden="true" data-toggle="tooltip"
+                            title="Thêm điểm dừng vào trặng đường"></i>
+                    </button>
+                </span>
+            </div>
+
+            <div class='row'>
+                <table id="table_timeline">
+                    <tbody>
+                        <tr>
+                            <td class="td_modal">
+                                <div class="custom-control custom-checkbox">
+                                    <img class="img_timeline" src="img/timeline.png">
+
+                                    <label class="">ten diem dung</label>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td_modal">
+                                <div class="custom-control custom-checkbox">
+                                    <img class="img_timeline" src="img/timeline.png">
+
+                                    <label class="">ten diem dung</label>
+                                </div>
+                            </td>
+                        </tr>
+
+
+
+                        <tr>
+                            <td class="td_modal">
+                                <div class="custom-control custom-checkbox">
+                                    <img class="img_timeline" src="img/timeline.png">
+
+                                    <label class="">ten diem dung</label>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="td_modal">
+                                <div class="custom-control custom-checkbox">
+                                    <img class="img_timeline" src="img/timeline.png">
+
+                                    <label class="">ten diem dung</label>
+                                </div>
+                            </td>
+                        </tr>
+
+
+                    </tbody>
+                </table>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</div>
+
+
+<% if(page) {%>
+<script src='<%- "pages/" + page + "/script.js"%>'></script>
+<%}%>
+
+<% if(plugins) {%>
+<% _.forEach(plugins, function(item){%>
+<script src='<%- "plugins/" + item + "/script.js"%>'></script>
+<%})%>
+<%}%>

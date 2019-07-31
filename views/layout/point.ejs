@@ -99,29 +99,29 @@
 
 <!-- modal info -->
 <div class="modal fade" id="modal_info">
-        <div class="modal-dialog">
-            <div class="modal-content">
-    
-                <div class="modal-header">
-                    <b class="modal-title" id="info_title"><i class="fa fa-plus-circle" aria-hidden="true"></i> TẠO MỚI THÔNG TIN</b>
-                </div>
-    
-                <form id='form_modal_info' data_action="">
-                     <!-- Modal body -->
-                    <div class="modal-body" id="info_body">
-                    </div>
-    
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-undo" aria-hidden="true"></i> Hủy</button>
-                        <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> Hoàn Tất</button>
-                    </div>
-                </form>
-    
-               
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <b class="modal-title" id="info_title"><i class="fa fa-plus-circle" aria-hidden="true"></i> TẠO MỚI THÔNG TIN</b>
             </div>
+
+            <form id='form_modal_info' data_action="">
+                    <!-- Modal body -->
+                <div class="modal-body" id="info_body">
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-undo" aria-hidden="true"></i> Hủy</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> Hoàn Tất</button>
+                </div>
+            </form>
+
+            
         </div>
     </div>
+</div>
 
 <% if(page) {%>
 <script src='<%- "pages/" + page + "/script.js"%>'></script>
