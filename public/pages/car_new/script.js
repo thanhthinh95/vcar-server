@@ -45,6 +45,8 @@ var eventPage = function($) {
                 }
             })
 
+        
+            
             let objUnCheck = _.map($("input:checkbox:not(:checked)"), function (item) {
                 return {name : item.name};
             })

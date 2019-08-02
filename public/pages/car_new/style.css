@@ -58,9 +58,15 @@
 .preview-image:hover > .image-cancel {
     display: block;
 }
+
 .ui-sortable-helper {
-    width: 90px !important;
-    height: 90px !important;
+
+}
+
+.custom_overflow{
+    min-height: 50px;
+    max-height: 350px;
+    overflow-y: scroll;
 }
 
 
@@ -71,6 +77,8 @@
 
 .td_modal{
     height: 50px;
+    width: 100%;
+    padding: 0px;
 }
 
 table{
