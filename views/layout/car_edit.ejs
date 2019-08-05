@@ -10,7 +10,8 @@
 
 <script>
     var carSupplier = JSON.parse('<%- JSON.stringify(data.carSupplier) %>');
-var pointStop = JSON.parse('<%- JSON.stringify(data.pointStop) %>');
+    var car = JSON.parse('<%- JSON.stringify(data.car) %>');
+    var pointStop = JSON.parse('<%- JSON.stringify(data.pointStop) %>');
 </script>
 
 
@@ -42,7 +43,9 @@ var pointStop = JSON.parse('<%- JSON.stringify(data.pointStop) %>');
                         <select class="col col-md-8 col-sm-8 selectpicker form-control" name="carSupplierId" data-live-search="true" required
                             title="Chọn Nhà Xe" id="carSupplierId" name="carSupplierId">
                             <% _.forEach(data.carSupplier, function(item) {%>
-                            <option value="<%- item._id%>"><%- item.name%></option>
+                                <option 
+                                <%- _.has(data.car.carSupplierId, item._id) ? 'selected' : ''%>
+                                value="<%- item._id%>"><%- item.name%></option>
                             <%})%>
                         </select>
                     </div>

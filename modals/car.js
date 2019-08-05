@@ -1,11 +1,11 @@
 var objSchame = new mongoose.Schema({
     carSupplierId : {type : mongoose.Schema.Types.ObjectId, ref: 'car_supplier', require: null},
     controlSea : {type : String, required: true},//Bien kiem soat
-    imageUrl : [{type : String, required: true}],//Hinh anh
-    type : {type : Number, required: true}, //0: Xe Limousine | 1: Xe Ngồi | 2: Xe guong nam
+    imageUrl : [{type : String, default: null}],//Hinh anh
+    type : {type : Number, required: true}, //0: Xe Limousine | 1: Xe Ngồi | 2: Xe guong nam | 3: xe ghe nga
     numberSeat : {type : Number, required: true}, //So luong ghe ngoi
     fare : {type : Number, required: true}, //Gia 
-    pointStop : [{type : mongoose.Schema.Types.ObjectId, ref: 'point', require: null}],//Danh sach cac diem dung
+    pointStop : [{type : mongoose.Schema.Types.ObjectId, ref: 'point', default: null}],//Danh sach cac diem dung
 
     createBy : {type : mongoose.Schema.Types.ObjectId, ref: 'user', default: null},
     created : {type : Date, default: Date.now},

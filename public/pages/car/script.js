@@ -14,18 +14,13 @@ var eventPage = function($) {
 
         $(document).on('click', '#create_new', function (e) {
             _loadPageChild('car/new');
-            // _bindModalInfo(null, '#modal_info', _fields, ['imageUrl', 'carSupplierId', 'type', 'controlSea', 'numberSeat', 'color', 'fare', 'status', 'pointStop']);
-            // $( ".preview-images-zone" ).sortable();
-
         })
 
         $(document).on('click', '#edit_row_table', function (e) {
-            var dataRow = _.find(dataTableRows, {_id : $(this).attr('data_id')});
-            if(dataRow){
-                _bindModalInfo(dataRow, '#modal_info', _fields, ['name', 'type', 'status']);
-            }else{
-                _DialogError('Không tìm thấy bản ghi');
-            }
+            let url = 'car/edit?_id=' + $(this).attr('data_id');
+            console.log(url);
+            
+            _loadPageChild(url);
         })
 
         $(document).on('submit', '#form_modal_config', function (e) {
@@ -158,8 +153,6 @@ var eventPage = function($) {
         $(document).on('click', '.image-cancel', function() {
             $(this).parent().remove();
         });
-
-    
 
         $(document).on('click', '#add_new_image', function (e) {
             e.preventDefault();
