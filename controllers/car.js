@@ -14,7 +14,7 @@ exports.getAll = async function(req, res) {
         _objField('created', null, 0, true, true),
         _objField('updateBy', null, 0, false, true, await _user._getAll()),
         _objField('updated', null, 1, true, true),
-        _objField('status', null, 1, true, true, [{_id: 0, name : 'Chưa kích hoạt'},{_id : 1, name : "Kích hoạt"}]),
+        _objField('status', null, 1, true, true, [{_id: 0, name : 'Tạm dừng hoạt động'},{_id : 1, name : "Đang hoạt động"}]),
     ];
     
     _render(req, res, 'car', 'Quản lý xe', {
@@ -58,9 +58,11 @@ exports.search = async function (req, res) {
 }
 
 exports.new = async function (req, res) {
-    console.log('hi');
-    
     _render(req, res, 'car_new', 'Tạo mới xe', {
+        carSupplier : await _car_supplier._getAll(),
+        type : [{_id: 0, name : 'Xe Limousine'},{_id : 1, name : "Xe ngồi"}, {_id : 2, name : 'Xe gường nằm'}],
+        status : [{_id: 0, name : 'Tạm dừng hoạt động'},{_id : 1, name : "Đang hoạt động"}],
+        pointStop : await _point._getAll(),
         // menu : await _menu._getMenuAndActivities('car', req.session.roleIndex._id),
         // sumRow : config.table.sumRow,
         // fields : _getFields(_car, fieldShows)
@@ -98,6 +100,9 @@ exports.action = async function (req, res) {
         case 'upload_image':
             await uploadImage(req, res);
             break;
+        case 'delete_image':
+            await deleteImage(req, res);
+            break;
         default:
             break;
     }  
@@ -121,4 +126,17 @@ async function uploadImage(req, res) {
     }, function (error) {
         res.send(_output(error ? 500 : 200, null, {urls : listUrl}));
     }) 
+}
+
+async function deleteImage(req, res) {
+    if(!_.has(req.body, 'url')){
+        res.send(_output(500));
+    }else{
+        var url = require('url').parse(req.body.url);
+        console.log(url.pathname);
+        fsx.remove('public' + url.pathname, function (error) {
+            res.send(_output(error ? 500 : 200));
+        })
+        
+    }
 }

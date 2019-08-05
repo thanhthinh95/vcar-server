@@ -57,7 +57,7 @@ window._AjaxObject = function (url, method, object, success, dataType) {
 }
 
 window._AjaxFormData = function (url, method, object, success) {
-    // $('#loader').modal('show');
+    $('#loader').modal('show');
 
     $.ajax({
         async: true,
@@ -68,7 +68,7 @@ window._AjaxFormData = function (url, method, object, success) {
         processData: false,
         success: function (resp) {
             setTimeout(function () {
-                // $('#loader').modal('hide');
+                $('#loader').modal('hide');
                 setTimeout(function () {
                     success(resp)
                 }, 100);

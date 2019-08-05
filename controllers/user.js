@@ -9,9 +9,9 @@ exports.getAll = async function(req, res) {
         _objField('gender', null, 1, false, true, [{_id: 0, name : 'Nữ'},{_id : 1, name : "Nam"}]),
         _objField('birthDay', null, 0, true, true),
         _objField('created', null, 0, true, true),
-        _objField('createBy', null, 0, false, false),
+        _objField('createBy', null, 0, false, true, await _user._getAll()),
         _objField('updated', null, 1, true, true),
-        _objField('updateBy', null, 0, true, false),
+        _objField('updateBy', null, 0, false, true, await _user._getAll()),
         _objField('roles', null, 1, false, true,  await _role._getAll()),
         _objField('status', null, 1, false, true, [{_id: 0, name : 'Chưa kích hoạt'},{_id : 1, name : "Kích hoạt"}]),
     ];

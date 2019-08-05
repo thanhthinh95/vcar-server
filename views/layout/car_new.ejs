@@ -9,7 +9,8 @@
 <%}%>
 
 <script>
-
+    var carSupplier = JSON.parse('<%- JSON.stringify(data.carSupplier) %>');
+    var pointStop = JSON.parse('<%- JSON.stringify(data.pointStop) %>');
 </script>
 
 
@@ -17,208 +18,165 @@
 <div class='card'>
     <div class="card-header col-lg-12 col-md-12 col-sm-12">
         <b class=""> <i class='<%- (data.menu ? data.menu.icon : "fa fa-bandcam")%>'></i> <%- title%></b>
-</div>
+    </div>
 
-<div class='card-body'>
-    <div class="row">
-        <div class="col col-lg-7 col-md-7 col-sm-7">
-            <div class="row">
-                <div class="container">
-                    <div class="preview-images-zone">
+    <div class='card-body'>
+        <div class="row">
+            <div class="col col-lg-7 col-md-7 col-sm-7">
+                <div class="row">
+                    <div class="container pr-5">
+                        <div class="preview-images-zone">
+                        </div>
                     </div>
                 </div>
 
-                <fieldset class="form-group">
-                    <a style="float: right;" href="a" id="add_new_image">Thêm hình mới</a>
+                <div class="row">
+                    <a class="col" href="none" id="add_new_image">Thêm hình mới</a>
                     <input type="file" accept="image/*" id="upload_image" style="display: none;" class="form-control"
                         multiple>
-                </fieldset>
+                </div>
+
+                <div class="row pt-1">
+                    <b class="col col-md-3 col-sm-3 my-auto text-right">Nhà Xe</b>
+                    <select class="col col-md-8 col-sm-8 selectpicker form-control" name="" data-live-search="true"
+                        title="Chọn Nhà Xe" id="carSupplierId" name="carSupplierId">
+                        <% _.forEach(data.carSupplier, function(item) {%>
+                        <option value="<%- item._id%>"><%- item.name%></option>
+                        <%})%>
+                    </select>
+                </div>
+
+                <div class="row pt-1">
+                    <b class="col col-md-3 col-sm-3 my-auto text-right">Thể Loại</b>
+                    <select class="col col-md-5 col-sm-5 selectpicker form-control pr-3" name="" data-live-search="true"
+                        title="Chọn Thể Loại" name="type">
+                        <% _.forEach(data.type, function(item) {%>
+                        <option value="<%- item._id%>"><%- item.name%></option>
+                        <%})%>
+                    </select>
+
+                    <select class="col col-md-3 col-sm-3 selectpicker form-control" name="status"
+                        title="Chọn Trạng Thái" name="status">
+                        <% _.forEach(data.status, function(item) {%>
+                        <option value="<%- item._id%>"><%- item.name%></option>
+                        <%})%>
+                    </select>
+                </div>
+
+                <div class="row pt-1">
+                    <b class="col col-md-3 col-sm-3 my-auto text-right">Biểm Kiểm Soát</b>
+                    <input class="col col-md-8 col-sm-8 selectpicker form-control" name=""
+                        placeholder="VD: 35BG-23459"></input>
+                </div>
+
+                <div class="row pt-1">
+                    <b class="col col-md-3 col-sm-3 my-auto text-right">Số Lượng Ghế</b>
+                    <input class="col col-md-8 col-sm-8 form-control" name="" type="number" min='2' max='80' step='1'
+                        placeholder="Số ghế VD: 16"></input>
+                </div>
+
+                <div class="row pt-1">
+                    <b class="col col-md-3 col-sm-3 my-auto text-right">Giá Vé (VNĐ)</b>
+                    <input class="col col-md-8 col-sm-8 form-control" name="" type="number" min='1000' max='1000000'
+                        step="500" placeholder="VD: 85000"></input>
+                </div>
+
+                <div class="row pt-1">
+                    <b class="col col-md-3 col-sm-3 my-auto text-right">Khung Giờ Đi</b>
+                    <input class="col col-md-8 col-sm-8 selectpicker form-control" name="" type="text"
+                        placeholder="VD: 06:45, 10:40, 14:30"></input>
+                </div>
+
+                <div class="row pt-1">
+                    <b class="col col-md-3 col-sm-3 my-auto text-right">Khung Giờ Về</b>
+                    <input class="col col-md-8 col-sm-8 selectpicker form-control" name="" type="text"
+                        placeholder="VD: 09:00, 12:20, 15:45"></input>
+                </div>
+
+                <div class="row pt-1">
+                    <div class="col col-lg-3 col-md-3 col-sm-3 my-auto text-right"></div>
+                    <div class="col col-lg-9 col-md-9 col-sm-9">
+                        <div class="row">
+                            <span class="col col-lg-1 col-md-1 col-sm-1 pl-0 pr-2">
+                                <button class="btn btn-primary" style="height: 38px;">
+                                    <i class="fa fa-chevron-left text-white mx-auto" aria-hidden="true"
+                                        data-toggle="tooltip" title="Thêm khung giờ về"></i>
+                                </button>
+                            </span>
+
+                            <span class="col col-lg-9 col-md-9 col-sm-9 pl-0 pr-2">
+                                <input type="text" class="form-control datetimepicker-input" id="timeonly"
+                                    autocomplete=false data-toggle="datetimepicker" data-target="#timeonly"></input>
+                            </span>
+
+
+                            <span class="col col-lg-1 col-md-1 col-sm-1 pl-0 pr-7">
+                                <button class="btn btn-primary" style="height: 38px;">
+                                    <i class="fa fa-chevron-right text-white mx-auto" aria-hidden="true"
+                                        data-toggle="tooltip" title="Thêm khung giờ đi"></i>
+                                </button>
+                            </span>
+                        </div>
+
+
+                    </div>
+
+                </div>
             </div>
 
-            <div class="row pt-1">
-                <b class="col col-md-3 col-sm-3 my-auto text-right">Nhà Xe</b>
-                <select class="col col-md-8 col-sm-8 selectpicker form-control" name="" data-live-search="true"
-                    title="Chọn Nhà Xe">
-                </select>
-            </div>
-
-            <div class="row pt-1">
-                <b class="col col-md-3 col-sm-3 my-auto text-right">Thể Loại</b>
-                <select class="col col-md-8 col-sm-8 selectpicker form-control" name="" data-live-search="true"
-                    title="Chọn Thể Loại">
-                </select>
-            </div>
+            <div class="col col-lg-5 col-md-5 col-sm-5">
 
 
-            <div class="row pt-1">
-                <b class="col col-md-3 col-sm-3 my-auto text-right">Biểm Kiểm Soát</b>
-                <input class="col col-md-8 col-sm-8 selectpicker form-control" name=""
-                    placeholder="VD: 35BG-23459"></input>
-            </div>
+                <div class="row">
+                    <select class="col selectpicker form-control pr-2" id="pointStop" data-live-search="true"
+                        title="Chọn Điểm Dừng">
 
-            <div class="row pt-1">
-                <b class="col col-md-3 col-sm-3 my-auto text-right">Màu Sắc</b>
-                <input class="col col-md-8 col-sm-8 selectpicker form-control" name=""
-                    placeholder="VD: Xanh Lam"></input>
-            </div>
+                        <% _.forEach(data.pointStop, function(item) {%>
+                        <option value="<%- item._id%>"><%- item.name%></option>
+                        <%})%>
+                    </select>
 
-            <div class="row pt-1">
-                <b class="col col-md-3 col-sm-3 my-auto text-right">Giá Vé</b>
-                <input class="col col-md-8 col-sm-8 selectpicker form-control" name="" type="number"
-                    placeholder="VD: 85000"></input>
-            </div>
+                    <span class="align-middle my-auto">
+                        <button class="btn btn-primary w-100"
+                            data-toggle="tooltip"
+                            id='add_new_point_stop'
+                            title="Thêm điểm dừng vào trặng đường">
+                            <i class="fa fa-plus-circle text-white mx-auto" aria-hidden="true"></i>
+                        </button>
+                    </span>
+                </div>
 
+                <div class="row pt-2">
+                    <b id='start_point_name'></b>
+                    <label class="col text-right" id="sum_stop_point"></label>
+                </div>
 
+                <div class='row pr-2 custom_overflow'>
+                    <table id="table_timeline" class="w-100">
+                        <tbody></tbody>
+                    </table>
+                </div>
 
-        </div>
+                <div class="row">
+                    <b id=end_point_name></b>
+                </div>
 
-        <div class="col col-lg-5 col-md-5 col-sm-5">
-            <div class="row">
-                <select class="col selectpicker form-control pr-2" name="" data-live-search="true"
-                    title="Chọn Điểm Dừng">
-                </select>
+                <div class="row pt-3">
+                    <span class="pl-2">
+                        <a class="btn btn-success btn-icon-text m-t-10 m-r-10 waves-effect waves-effect"
+                            data-toggle="tooltip" title="Trở về quản lý xe" href="/#car">
+                            <i class="fa fa-chevron-circle-left"></i> Quay lại</a>
+                    </span>
 
-
-                <span class="align-middle my-auto">
-                    <button type='submit' class="btn btn-primary w-100">
-                        <i class="fa fa-plus-circle text-white mx-auto" aria-hidden="true" data-toggle="tooltip"
-                            title="Thêm điểm dừng vào trặng đường"></i>
-                    </button>
-                </span>
-            </div>
-
-            <div class="row pt-2">
-                <b>Hà Nội</b>
-                <labe class="col text-right">Số điêm dừng: 54</label>
-            </div>
-
-            <div class='row pr-2 custom_overflow'>
-                <table id="table_timeline" class="w-100">
-                    <tbody>
-                        <tr>
-                            <td class="td_modal">
-                                <img class="img_timeline" src="img/timeline.png">
-                                <label class="">ten diem dung</label>
-                                <span class="align-middle my-auto float-right pt-2">
-                                    <button class="btn btn-defauft">
-                                        <i class="fa fa-lg fa-minus-circle text-danger" aria-hidden="true"
-                                            data-toggle="tooltip" title="Loại bỏ điểm dừng"></i>
-                                    </button>
-                                </span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td class="td_modal">
-                                <img class="img_timeline" src="img/timeline.png">
-                                <label class="">ten diem dung</label>
-                                <span class="align-middle my-auto float-right pt-2">
-                                    <button class="btn btn-defauft">
-                                        <i class="fa fa-lg fa-minus-circle text-danger" aria-hidden="true"
-                                            data-toggle="tooltip" title="Loại bỏ điểm dừng"></i>
-                                    </button>
-                                </span>
-                            </td>
-                        </tr>
-
-
-
-                        <tr>
-                            <td class="td_modal">
-                                <img class="img_timeline" src="img/timeline.png">
-                                <label class="">ten diem dung (ngã ba số 1 cạnh cửa hàng)</label>
-                                <span class="align-middle my-auto float-right pt-2">
-                                    <button class="btn btn-defauft">
-                                        <i class="fa fa-lg fa-minus-circle text-danger" aria-hidden="true"
-                                            data-toggle="tooltip" title="Loại bỏ điểm dừng"></i>
-                                    </button>
-                                </span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td class="td_modal">
-                                <img class="img_timeline" src="img/timeline.png">
-                                <label class="">ten diem dung</label>
-                                <span class="align-middle my-auto float-right pt-2">
-                                    <button class="btn btn-defauft">
-                                        <i class="fa fa-lg fa-minus-circle text-danger" aria-hidden="true"
-                                            data-toggle="tooltip" title="Loại bỏ điểm dừng"></i>
-                                    </button>
-                                </span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                                <td class="td_modal">
-                                    <img class="img_timeline" src="img/timeline.png">
-                                    <label class="">ten diem dung</label>
-                                    <span class="align-middle my-auto float-right pt-2">
-                                        <button class="btn btn-defauft">
-                                            <i class="fa fa-lg fa-minus-circle text-danger" aria-hidden="true"
-                                                data-toggle="tooltip" title="Loại bỏ điểm dừng"></i>
-                                        </button>
-                                    </span>
-                                </td>
-                            </tr>
-    
-    
-    
-                            <tr>
-                                <td class="td_modal">
-                                    <img class="img_timeline" src="img/timeline.png">
-                                    <label class="">ten diem dung (ngã ba số 1 cạnh cửa hàng)</label>
-                                    <span class="align-middle my-auto float-right pt-2">
-                                        <button class="btn btn-defauft">
-                                            <i class="fa fa-lg fa-minus-circle text-danger" aria-hidden="true"
-                                                data-toggle="tooltip" title="Loại bỏ điểm dừng"></i>
-                                        </button>
-                                    </span>
-                                </td>
-                            </tr>
-    
-                            <tr>
-                                <td class="td_modal">
-                                    <img class="img_timeline" src="img/timeline.png">
-                                    <label class="">ten diem dung</label>
-                                    <span class="align-middle my-auto float-right pt-2">
-                                        <button class="btn btn-defauft">
-                                            <i class="fa fa-lg fa-minus-circle text-danger" aria-hidden="true"
-                                                data-toggle="tooltip" title="Loại bỏ điểm dừng"></i>
-                                        </button>
-                                    </span>
-                                </td>
-                            </tr>                        
-
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="row">
-                <b>Sài Gòn</b>
-            </div>
-
-            <div class="row pt-5">
-                <span class="pl-2">
-                    <button class="btn btn-success">
-                        <a href="#car">
-                            <i class="fa fa-chevron-circle-left text-white mx-auto" aria-hidden="true" data-toggle="tooltip"
-                            title="Trở về quản lý xe"></i> Trở Lại
-                        </a>
-                        
-                    </button>
-                </span>
-
-                <span class="pl-2">
-                    <button type='submit' class="btn btn-primary">
-                        <i class="fa fa-plus-circle text-white mx-auto" aria-hidden="true" data-toggle="tooltip"
-                            title="Thêm mới xe"></i> Thêm Mới
-                    </button>
-                </span>
+                    <span class="pl-2">
+                        <button type='submit' class="btn btn-primary" data-toggle="tooltip" title="Thêm mới xe">
+                            <i class="fa fa-plus-circle text-white mx-auto" aria-hidden="true"></i> Thêm Mới
+                        </button>
+                    </span>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 </div>
 

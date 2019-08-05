@@ -4,7 +4,6 @@ var objSchame = new mongoose.Schema({
     imageUrl : [{type : String, required: true}],//Hinh anh
     type : {type : Number, required: true}, //0: Xe Limousine | 1: Xe Ngồi | 2: Xe guong nam
     numberSeat : {type : Number, required: true}, //So luong ghe ngoi
-    color : {type : String, required: true},//Mau sac
     fare : {type : Number, required: true}, //Gia 
     pointStop : [{type : mongoose.Schema.Types.ObjectId, ref: 'point', require: null}],//Danh sach cac diem dung
 

@@ -59,14 +59,12 @@
     display: block;
 }
 
-.ui-sortable-helper {
-
-}
-
 .custom_overflow{
     min-height: 50px;
-    max-height: 350px;
+    max-height: 300px;
     overflow-y: scroll;
+
+
 }
 
 
@@ -89,3 +87,20 @@ table{
     cursor:move;
 }
   
+/* tuy chinh thanh cuon */
+.custom_overflow::-webkit-scrollbar {
+    width: 5px;
+}
+  
+.custom_overflow::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+
+.custom_overflow::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+  
+/* Handle on hover */
+.custom_overflow::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
