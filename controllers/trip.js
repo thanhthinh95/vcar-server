@@ -42,6 +42,10 @@ exports.search = async function (req, res) {
                 '$lte': moment(req.query.dataMatch.updated, 'DD/MM/YYYY').endOf('day')._d
             };
         }
+
+        if (_.has(req.query.dataMatch, 'timeStart')) {
+            req.query.dataMatch.timeStart =  moment('01/01/1970 ' + req.query.dataMatch.timeStart, 'DD/MM/YYYY HH:mm')._d;
+        }
     }
 
     if (!_.has(req.query, 'dataSort')) {
@@ -60,7 +64,7 @@ exports.create = async function (req, res) {
     obj.status = Number(obj.status);
     obj.createBy = req.session.user._id;
     obj.created = Date.now();
-    obj.timeStart = moment(obj.timeStart, 'HH:mm')._d;
+    obj.timeStart = moment('01/01/1970 ' + obj.timeStart, 'DD/MM/YYYY HH:mm')._d;
     var data = await _trip._create(obj);
     res.send(_output(data ? 200 : 500, null, data));
 }
@@ -71,7 +75,8 @@ exports.update = async function (req, res) {
     obj.status = Number(obj.status);
     obj.updateBy = req.session.user._id;
     obj.updated = Date.now();
-    obj.timeStart = moment(obj.timeStart, 'HH:mm')._d;
+    obj.timeStart = moment('01/01/1970 ' + obj.timeStart, 'DD/MM/YYYY HH:mm')._d;
+
     let data = await _trip._update(obj._id, obj);
     res.send(_output(data ? 200 : 500, null, data));
 }

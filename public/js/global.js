@@ -269,7 +269,6 @@ function createFilterHeadTable(fields) {
 function itemFilter(item) {
     var html = '<th class="text-center align-middle">';
     if (item.statusSearch) {
-        console.log(item.instance);
 
         switch (item.instance) {
             case 'ObjectID':
