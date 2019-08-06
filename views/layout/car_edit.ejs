@@ -24,10 +24,18 @@
     <div class='card-body'>
         <form id='form_data'>
             <div class="row">
+                <input type="hidden" name="_id" value="<%- data.car._id%>">
                 <div class="col col-lg-7 col-md-7 col-sm-7">
                     <div class="row">
                         <div class="container pr-5">
                             <div class="preview-images-zone">
+                                <% _.forEach(data.car.imageUrl, function(item){%>
+                                <div class="preview-image">
+                                    <input type="hidden" name="imageUrl" value="<%- item%>">
+                                    <div class="image-cancel">x</div>
+                                    <div class="image-zone"><img src="<%- item%>"></div>
+                                </div>
+                                <%})%>
                             </div>
                         </div>
                     </div>
@@ -40,11 +48,11 @@
 
                     <div class="row pt-1">
                         <b class="col col-md-3 col-sm-3 my-auto text-right">Nhà Xe</b>
-                        <select class="col col-md-8 col-sm-8 selectpicker form-control" name="carSupplierId" data-live-search="true" required
-                            title="Chọn Nhà Xe" id="carSupplierId" name="carSupplierId">
+                        <select class="col col-md-8 col-sm-8 selectpicker form-control" name="carSupplierId"
+                            data-live-search="true" required title="Chọn Nhà Xe" id="carSupplierId" name="carSupplierId"
+                            disabled>
                             <% _.forEach(data.carSupplier, function(item) {%>
-                                <option 
-                                <%- _.has(data.car.carSupplierId, item._id) ? 'selected' : ''%>
+                            <option <%- (_.isEqual(data.car.carSupplierId, item._id) ? 'selected ' : ' ')%>
                                 value="<%- item._id%>"><%- item.name%></option>
                             <%})%>
                         </select>
@@ -52,30 +60,34 @@
 
                     <div class="row pt-1">
                         <b class="col col-md-3 col-sm-3 my-auto text-right">Thể Loại</b>
-                        <select class="col col-md-8 col-sm-8 selectpicker form-control" name="type" data-live-search="true" required
-                            title="Chọn Thể Loại" name="type">
+                        <select class="col col-md-8 col-sm-8 selectpicker form-control" name="type"
+                            data-live-search="true" required title="Chọn Thể Loại" name="type">
                             <% _.forEach(data.type, function(item) {%>
-                            <option value="<%- item._id%>"><%- item.name%></option>
+                            <option <%- (_.isEqual(data.car.type, item._id) ? 'selected ' : ' ')%>
+                                value="<%- item._id%>"><%- item.name%></option>
                             <%})%>
                         </select>
                     </div>
 
                     <div class="row pt-1">
                         <b class="col col-md-3 col-sm-3 my-auto text-right">Biểm Kiểm Soát</b>
-                        <input class="col col-md-8 col-sm-8 selectpicker form-control" name="controlSea" autocomplete="false" required
+                        <input class="col col-md-8 col-sm-8 selectpicker form-control" name="controlSea"
+                            value="<%- data.car.controlSea%>" autocomplete="false" required
                             placeholder="VD: 35BG-23459"></input>
                     </div>
 
                     <div class="row pt-1">
                         <b class="col col-md-3 col-sm-3 my-auto text-right">Số Lượng Ghế</b>
-                        <input class="col col-md-8 col-sm-8 form-control" name="numberSeat" type="number" min='2' max='80' required
-                            step='1' placeholder="Số ghế VD: 16"></input>
+                        <input class="col col-md-8 col-sm-8 form-control" name="numberSeat" type="number" min='2'
+                            value="<%- data.car.numberSeat%>" max='80' required step='1'
+                            placeholder="Số ghế VD: 16"></input>
                     </div>
 
                     <div class="row pt-1">
                         <b class="col col-md-3 col-sm-3 my-auto text-right">Giá Vé (VNĐ)</b>
-                        <input class="col col-md-8 col-sm-8 form-control" name="fare" type="number" min='1000' max='1000000' required
-                            step="500" placeholder="VD: 85000"></input>
+                        <input class="col col-md-8 col-sm-8 form-control" name="fare" type="number" min='1000'
+                            value="<%- data.car.fare%>" max='1000000' required step="500"
+                            placeholder="VD: 85000"></input>
                     </div>
 
                     <div class="row pt-1">
@@ -83,7 +95,8 @@
                         <select class="col col-md-8 col-sm-8 selectpicker form-control" name="status" required
                             title="Chọn Trạng Thái" name="status">
                             <% _.forEach(data.status, function(item) {%>
-                            <option value="<%- item._id%>"><%- item.name%></option>
+                            <option <%- (_.isEqual(data.car.status, item._id) ? 'selected ' : ' ')%>
+                                value="<%- item._id%>"><%- item.name%></option>
                             <%})%>
                         </select>
                     </div>
@@ -109,18 +122,38 @@
                     </div>
 
                     <div class="row pt-2">
-                        <b id='start_point_name'></b>
-                        <label class="col text-right" id="sum_stop_point"></label>
+                        <b id="start_point_name">
+                            <%- _.find(data.pointStop ,{_id : _.find(data.carSupplier, {_id : data.car.carSupplierId}).startPoint}).name %></b>
+                        <label class="col text-right"
+                            id="sum_stop_point"><%- ("Số điểm dừng: " + data.car.pointStop.length)%></label>
                     </div>
 
                     <div class='row pr-2 custom_overflow'>
                         <table id="table_timeline" class="w-100">
-                            <tbody></tbody>
+                            <tbody>
+                                <% _.forEach(data.car.pointStop, function(item){%>
+                                <% var pointObj = _.find(data.pointStop, {_id : item})%>
+                                <tr data_id="<%- pointObj._id%>">
+                                    <input type="hidden" name="pointStop" value="<%- pointObj._id%>">
+                                    <td class="td_modal">
+                                        <img class="img_timeline" src="img/timeline.png">
+                                        <label class=""><%- pointObj.name%></label>
+                                        <span class="align-middle my-auto float-right pt-2">
+                                            <button type="button" class="btn btn-defauft btn_remove_point">
+                                                <i class="fa fa-lg fa-minus-circle text-danger" aria-hidden="true"
+                                                    data-toggle="tooltip" title="Loại bỏ điểm dừng"></i>
+                                            </button>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <%})%>
+                            </tbody>
                         </table>
                     </div>
 
                     <div class="row">
-                        <b id=end_point_name></b>
+                        <b
+                            id=end_point_name><%- _.find(data.pointStop ,{_id : _.find(data.carSupplier, {_id : data.car.carSupplierId}).endPoint}).name %></b>
                     </div>
 
                     <div class="row pt-3">
@@ -132,7 +165,7 @@
 
                         <span class="pl-2">
                             <button type='submit' class="btn btn-primary" data-toggle="tooltip" title="Thêm mới xe">
-                                <i class="fa fa-plus-circle text-white mx-auto" aria-hidden="true"></i> Thêm Mới
+                                <i class="fa fa-plus-circle text-white mx-auto" aria-hidden="true"></i> Cập Nhật
                             </button>
                         </span>
                     </div>

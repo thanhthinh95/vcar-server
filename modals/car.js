@@ -18,6 +18,17 @@ objSchame.statics._getAll = async function() {
     return await _car.find({status : 1});
 }
 
+objSchame.statics._getAllForTrip = async function() {
+    let listObj = await _car.find({status : 1})
+                            .populate({path : 'carSupplierId', select: 'name'});
+
+    let listOutput = [];
+    _.forEach(listObj, function (item) {
+        listOutput.push({_id : item._id, name : item.carSupplierId.name + ' | ' + item.controlSea});
+    })                            
+    return listOutput;
+}
+
 
 objSchame.statics._create = async function(obj) {
     return await _car.create(obj);

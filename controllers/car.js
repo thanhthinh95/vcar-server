@@ -19,7 +19,7 @@ exports.getAll = async function (req, res) {
         }]),
         _objField('numberSeat', null, 1, true, true),
         _objField('fare', null, 1, true, true),
-        _objField('pointStop', null, 1, true, true, await _point._getAll()),
+        _objField('pointStop', null, 0, true, true, await _point._getAll()),
         _objField('createBy', null, 0, false, true, await _user._getAll()),
         _objField('created', null, 0, true, true),
         _objField('updateBy', null, 0, false, true, await _user._getAll()),

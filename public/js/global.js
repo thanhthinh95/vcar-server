@@ -269,6 +269,8 @@ function createFilterHeadTable(fields) {
 function itemFilter(item) {
     var html = '<th class="text-center align-middle">';
     if (item.statusSearch) {
+        console.log(item.instance);
+
         switch (item.instance) {
             case 'ObjectID':
                 html += '<input class="form-control" type="text" autocomplete="off" name="' + item.path + '"></input>';
@@ -284,6 +286,14 @@ function itemFilter(item) {
                     '<input type="text" autocomplete="off" class="form-control datetimepicker-input" id="date_' + item.path + '" name="' + item.path + '" data-toggle="datetimepicker" data-target="#date_' + item.path + '"/>' +
                     '<div class="input-group-append">' +
                     '<span class="input-group-text"><i class="fa fa-calendar"></i></span>' +
+                    '</div>' +
+                    '</div>';
+                break;
+            case 'Time':
+                html += '<div class="input-group">' +
+                    '<input type="text" autocomplete="off" class="form-control datetimepicker-input" id="time_' + item.path + '" name="' + item.path + '" data-toggle="datetimepicker" data-target="#time_' + item.path + '"/>' +
+                    '<div class="input-group-append">' +
+                    '<span class="input-group-text"><i class="fa fa-clock-o"></i></span>' +
                     '</div>' +
                     '</div>';
                 break;
@@ -406,13 +416,13 @@ window._bindBodyTable = function (tableId, fields, data, activity) {
         })
 
         html += '<th class="text-center align-middle">';
-        if(activity && _.includes(activity.type, 2)){
+        if (activity && _.includes(activity.type, 2)) {
             html += '<span href="#" id="edit_row_table" data_id="' + rowData._id + '" + data-toggle="tooltip" title="Chỉnh sửa">' +
-                    '<i class="fa fa-pencil-square-o fa-lg text-primary" aria-hidden="true"></i></span>';
+                '<i class="fa fa-pencil-square-o fa-lg text-primary" aria-hidden="true"></i></span>';
         }
-             
-        if(activity && _.includes(activity.type, 3)){
-            html += '<span href="#" id="delete_row_table" data_id="' + rowData._id + '" + class="pl-1" + data-toggle="tooltip" title="Xóa bỏ">'+
+
+        if (activity && _.includes(activity.type, 3)) {
+            html += '<span href="#" id="delete_row_table" data_id="' + rowData._id + '" + class="pl-1" + data-toggle="tooltip" title="Xóa bỏ">' +
                 '<i class="fa fa-trash-o fa-lg text-primary" aria-hidden="true"></i></span>';
         }
         html += '</th>';
@@ -427,15 +437,15 @@ window._bindBodyTable = function (tableId, fields, data, activity) {
 
 function itemBody(data, field) {
     var html = '<td class="text-center align-middle" title="fsd">';
-    
+
     switch (field.instance) {
         case 'ObjectID':
             html += '<span style="display:inline-table;">' + (data[field.path] ? data[field.path] : '') + '</span>';
             break;
         case 'String':
-            if(_.isEqual(field.path, 'password')){
+            if (_.isEqual(field.path, 'password')) {
                 html += '<span style="display:inline-table;">***</span>';
-            }else {
+            } else {
                 html += '<span style="display:inline-table;">' + (data[field.path] ? data[field.path] : '') + '</span>';
             }
             break;
@@ -445,6 +455,9 @@ function itemBody(data, field) {
         case 'Date':
             html += '<span style="display:inline-table;">' + (data[field.path] ? moment(data[field.path]).format('HH:mm DD/MM/YY') : '') + '</span>';
             break;
+        case 'Time':
+            html += '<span style="display:inline-table;">' + (data[field.path] ? moment(data[field.path]).format('HH:mm') : '') + '</span>';
+            break;            
         case 'Select':
             if (field['$isMongooseArray']) {//la 1 mang cac phan tu
                 var str = '';
@@ -466,13 +479,13 @@ function itemBody(data, field) {
         default:
             return '';
     }
-    
+
 
     html += '</td>';
     return html;
 }
 
-//////////////////- Tạo modal thêm mới -////////////////////////
+//////////////////- Tạo modal thêm mới, Sua Thong Tin -////////////////////////
 window._bindModalInfo = function name(dataShow, modalId, fields, fieldNameShows) {//Datashow = null : create | Datashow != null: update
     var html = '';
     if (!dataShow) {
@@ -481,7 +494,7 @@ window._bindModalInfo = function name(dataShow, modalId, fields, fieldNameShows)
     } else {
         $('#info_title').html('<i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i> CẬP NHẬT THÔNG TIN');
         $('#form_modal_info').attr('data_action', 'update')
-        html += '<input type="hidden" name="_id" value="'+ dataShow._id +'">'
+        html += '<input type="hidden" name="_id" value="' + dataShow._id + '">'
     }
 
     _.forEach(fieldNameShows, function (fieldName) {
@@ -494,14 +507,14 @@ window._bindModalInfo = function name(dataShow, modalId, fields, fieldNameShows)
 
     $('#info_body').html(html);
     $('select').selectpicker({
-        countSelectedText : '{0} mục đã chọn',
+        countSelectedText: '{0} mục đã chọn',
     });
     $('select').selectpicker('refresh');
     $(modalId).modal('show');
 }
 
 function itemInfo(item, valueItem) {
-    
+
     var html = '<div class="row pt-1">';
     html += '<label class="col col-md-5 col-sm-5">' + item.textShow + '</label>';
 
@@ -510,7 +523,7 @@ function itemInfo(item, valueItem) {
         //     html += '<input class="form-control" type="text" autocomplete="off" name="'+ item.path +'"></input>';
         //     break;
         case 'String':
-            if(_.isEqual(item.path, 'email')){
+            if (_.isEqual(item.path, 'email')) {
                 html += '<input class="col col-md-6 col-sm-6" type="email" autocomplete="off" ' +
                     'name="' + item.path + '" ' +
                     'value="' + (valueItem ? valueItem : '') + '" ' +
@@ -524,60 +537,73 @@ function itemInfo(item, valueItem) {
 
             break;
         case 'Number':
-            html += '<input class="col col-md-6 col-sm-6" type="number" autocomplete="off" name="'+ item.path +'"></input>';
+            html += '<input class="col col-md-6 col-sm-6" type="number" autocomplete="off" name="' + item.path + '"></input>';
             break;
         case 'Date':
-            html += '<div class="col col-md-6 col-sm-6 input-group p-0">'+
-                '<input type="text" autocomplete="off" class="form-control datetimepicker-input" id="info_date_'+  item.path +'" ' +
-                'name="'+  item.path +'" data-toggle="datetimepicker" data-target="#info_date_'+  item.path +'" '+
+            html += '<div class="col col-md-6 col-sm-6 input-group p-0">' +
+                '<input type="text" autocomplete="off" class="form-control datetimepicker-input" id="info_date_' + item.path + '" ' +
+                'name="' + item.path + '" data-toggle="datetimepicker" data-target="#info_date_' + item.path + '" ' +
                 (item.isRequired ? 'required' : '') + ' />' +
                 '<div class="input-group-append">' +
-                '<span class="input-group-text"><i class="fa fa-calendar"></i></span>'+
+                '<span class="input-group-text"><i class="fa fa-calendar"></i></span>' +
                 '</div>' +
                 '</div>';
             break;
+        case 'Time':
+            console.log((valueItem ? moment(valueItem).format('HH:mm') : ''));
+            
+            html += '<div class="col col-md-6 col-sm-6 input-group p-0">' +
+                '<input type="text" autocomplete="off" class="form-control datetimepicker-input" id="info_time_' + item.path + '" ' +
+                'name="' + item.path + '" data-toggle="datetimepicker" data-target="#info_time_' + item.path + '" ' +
+                'value="' + (valueItem ? moment(valueItem).format('HH:mm') : '') + '" ' +
+                (item.isRequired ? 'required' : '') + ' />' +
+                '<div class="input-group-append">' +
+                '<span class="input-group-text"><i class="fa fa-clock-o"></i></span>' +
+                '</div>' +
+                '</div>';
+            break;            
         case 'Select':
-                html +=
-                    '<select class="col col-md-6 col-sm-6 selectpicker form-control" data-width="auto" ' +
-                    (item['$isMongooseArray'] ? 'autocomplete="off" multiple data-selected-text-format="count > 2" ' : '') +
-                    'name="' + item.path + '" ' +
-                    (item.valueSelect.length > 4 ? ' data-live-search=true' : '') + ' ' +
-                    (item.valueSelect.length > 6 ? ' data-actions-box=true' : '') + ' ' +
-                    'title="Chọn ' + _.lowerFirst(item.textShow) + '" ' +
-                    (item.isRequired || ( item.caster && item.caster.isRequired) ? 'required' : '') + ' >';
+            html +=
+                '<select class="col col-md-6 col-sm-6 selectpicker form-control" data-width="auto" ' +
+                (item['$isMongooseArray'] ? 'autocomplete="off" multiple data-selected-text-format="count > 2" ' : '') +
+                'name="' + item.path + '" ' +
+                (item.valueSelect.length > 4 ? ' data-live-search=true' : '') + ' ' +
+                (item.valueSelect.length > 6 ? ' data-actions-box=true' : '') + ' ' +
+                'title="Chọn ' + _.lowerFirst(item.textShow) + '" ' +
+                (item.isRequired || (item.caster && item.caster.isRequired) ? 'required' : '') + ' >';
 
-                _.forEach(item.valueSelect, function (val) {
-                    let valSelected = '';
-                    //Neu gia tri nam trong mang value hoac gia tri bang value thi selected
-                    if ((!_.isArray(valueItem) && _.isEqual(valueItem, val._id)) ||
-                        (_.isArray(valueItem) && _.includes(valueItem, val._id))
-                    ) {
-                        valSelected = 'selected'
-                    }
-    
-                    html += '<option value="' + val._id + '" ' + valSelected + ' >' + val.name + '</option>';
-                })
-                html += '</select>';
+            _.forEach(item.valueSelect, function (val) {
+                let valSelected = '';
+                //Neu gia tri nam trong mang value hoac gia tri bang value thi selected
+                if ((!_.isArray(valueItem) && _.isEqual(valueItem, val._id)) ||
+                    (_.isArray(valueItem) && _.includes(valueItem, val._id))
+                ) {
+                    valSelected = 'selected'
+                }
+
+                html += '<option value="' + val._id + '" ' + valSelected + ' >' + val.name + '</option>';
+            })
+            html += '</select>';
             break;
 
         case 'Array':
-            if(_.isEqual(item.path, 'imageUrl')){
+            if (_.isEqual(item.path, 'imageUrl')) {
                 html += '<div class="container">' +
-                        '<div class="preview-images-zone">';
+                    '<div class="preview-images-zone">';
 
-                _.forEach(item.path.imageUrl, function(url) {
+                _.forEach(item.path.imageUrl, function (url) {
                     html += '<div class="preview-image">' +
                         '<div class="image-cancel">x</div>' +
-                        '<div class="image-zone"><img src="'+ url +'"></div>' +                        
+                        '<div class="image-zone"><img src="' + url + '"></div>' +
                         '</div>'
                 })
-                      
+
                 html += '</div>';
                 html += '<fieldset class="form-group">' +
-                '<a style="float: right;" href="a" id="add_new_image">Thêm hình mới</a>' +
-                '<input type="file" accept="image/*" id="upload_image" style="display: none;" class="form-control" multiple>' +
-                '</fieldset>' +
-                '</div>'
+                    '<a style="float: right;" href="a" id="add_new_image">Thêm hình mới</a>' +
+                    '<input type="file" accept="image/*" id="upload_image" style="display: none;" class="form-control" multiple>' +
+                    '</fieldset>' +
+                    '</div>'
             }
             break;
         default:
