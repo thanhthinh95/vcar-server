@@ -103,7 +103,7 @@ var eventPage = function($) {
 
         $(document).on('click', '#delete_row_table', function (e) {
             var _id = $(this).attr('data_id');
-            _DialogQuestion('Bạn đã chắc chắn ?', 'Quyền truy cập người dùng sẽ không còn vai trò này nữa', function () {
+            _DialogQuestion('Bạn đã chắc chắn ?', 'Xe và tất cả các chuyến đi của xe sẽ bị xóa bỏ vĩnh viễn', function () {
                 _AjaxObject('/car', 'DELETE', {ids : [_id]}, function(resp) {
                     if(resp.code == 200){
                         _DialogSuccess('Đã xóa bỏ thành công', function () {
@@ -133,7 +133,7 @@ var eventPage = function($) {
         $(document).on('click', '#delete_item_checked', function (e) {
             var dataIds = _createObjectInForm('.check_item_table')
             if(_.has(dataIds, 'checkBoxIds')){
-                _DialogQuestion('Bạn có chắc chắn?', 'Dữ liệu bạn chọn sẽ bị xóa bỏ vĩnh viễn', function () {
+                _DialogQuestion('Bạn có chắc chắn?', 'Xe và tất cả các chuyến đi của xe sẽ bị xóa bỏ vĩnh viễn', function () {
                     _AjaxObject('/car', 'DELETE', {ids : dataIds.checkBoxIds}, function(resp) {
                         if(resp.code == 200){
                             _DialogSuccess('Đã xóa bỏ thành công', function () {

@@ -51,11 +51,17 @@ objSchame.statics._search = async function (dataMatch, sort, page, sumRow) {
 
     return await _car.paginate(dataMatch, options)
 }
-
+ 
 
 
 objSchame.statics._delete = async function (_ids) {
+    await _trip._deleteManyForCar(_ids);
     return await _car.deleteMany({_id : {$in : _ids}});
+}
+
+objSchame.statics._deleteManyForCarSupplier = async function (carSupplierIds) {//Xoa tat ca cac xe trong nha xe
+    let ids = await _car.distinct('_id', {carSupplierId : {$in : carSupplierIds}});
+    return await _car._delete(ids);
 }
 
 objSchame.set('toJSON', {getters: true});

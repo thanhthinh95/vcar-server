@@ -42,6 +42,10 @@ objSchame.statics._delete = async function (_ids) {
     return await _trip.deleteMany({_id : {$in : _ids}});
 }
 
+objSchame.statics._deleteManyForCar = async function(carIds) {
+    return await _trip.deleteMany({carId : {$in : carIds}});
+}
+
 objSchame.set('toJSON', {getters: true});
 objSchame.set('toObject', {getters: true});
 objSchame.plugin(require('mongoose-aggregate-paginate'));

@@ -38,6 +38,9 @@ objSchame.statics._search = async function (dataMatch, sort, page, sumRow) {
 }
 
 objSchame.statics._delete = async function (_ids) {
+    await _car._deleteManyForCarSupplier(_ids);//xoa tat ca xe
+    await _manager_driver._deleteManyForCarSupplier(_ids);// xoa tat ca quan ly nha xe
+    await _employee._deleteManyForCarSupplier(_ids);//xoa tat ca nhan vien nha xe
     return await _car_supplier.deleteMany({_id : {$in : _ids}});
 }
 

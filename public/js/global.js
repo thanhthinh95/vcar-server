@@ -549,12 +549,12 @@ function itemInfo(item, valueItem) {
                 '</div>';
             break;
         case 'Time':
-            console.log((valueItem ? moment(valueItem).format('HH:mm') : ''));
+            // console.log((valueItem ? moment(valueItem).format('HH:mm') : ''));
             
             html += '<div class="col col-md-6 col-sm-6 input-group p-0">' +
                 '<input type="text" autocomplete="off" class="form-control datetimepicker-input" id="info_time_' + item.path + '" ' +
                 'name="' + item.path + '" data-toggle="datetimepicker" data-target="#info_time_' + item.path + '" ' +
-                'value="' + (valueItem ? moment(valueItem).format('HH:mm') : '') + '" ' +
+                // 'value="' + (valueItem ? moment(valueItem).format('HH:mm') : '') + '" ' +
                 (item.isRequired ? 'required' : '') + ' />' +
                 '<div class="input-group-append">' +
                 '<span class="input-group-text"><i class="fa fa-clock-o"></i></span>' +

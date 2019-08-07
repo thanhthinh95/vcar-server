@@ -22,11 +22,16 @@ var eventPage = function ($) {
         $(document).on('click', '#edit_row_table', function (e) {
             var dataRow = _.find(dataTableRows, { _id: $(this).attr('data_id') });
             if (dataRow) {
+                
                 _bindModalInfo(dataRow, '#modal_info', _fields, ['carId', 'type', 'timeStart', 'status']);
 
                 $('#info_time_timeStart').datetimepicker({
-                    format: 'HH:mm'
+                    format: 'HH:mm',
                 });
+
+                $('#info_time_timeStart').datetimepicker('date', moment(dataRow.timeStart));
+
+                
             } else {
                 _DialogError('Không tìm thấy bản ghi');
             }
