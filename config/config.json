@@ -4,11 +4,11 @@
         "port": 4000
     },
     "database" : {
-        "name" : "v-car",
-        "ip": "localhost",
-        "port": 27017,
-        "username" : "",
-        "password" : ""
+        "name" : "heroku_jvdr7rh9",
+        "ip": "ds241133.mlab.com",
+        "port": 41133,
+        "username" : "admin",
+        "password" : "admin1"
     },
     "table" : {
         "sumRow" : 10
