@@ -52,11 +52,21 @@ function buildApp() {
     app.use(require("express-fileupload")());
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended: true}));
-    app.use(require('express-session')({
-        secret: 'pcar_secret',
-        resave: false,
-        saveUninitialized: true, 
-    }))
+
+    const session = require('express-session');
+    const MongoStore = require('connect-mongo')(session);
+
+
+    app.use(session({
+        secret: 'foo',
+        store: new MongoStore({ mongooseConnection: mongoose.connection })
+    }));
+
+    // app.use(require('express-session')({
+    //     secret: 'pcar_secret',
+    //     resave: false,
+    //     saveUninitialized: true, 
+    // }))
 
     
     app.use('/js', express.static('public/js'));
