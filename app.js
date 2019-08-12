@@ -8,7 +8,7 @@ global.server = require('http').createServer(app);
 global.io = require('socket.io')(server);
 global.mongoose = require('mongoose');
 global._ = require('lodash');
-global.bcrypt = require('bcrypt');
+global.bcrypt = require('bcryptjs');
 global.moment = require('moment');
 global.async = require('async');
 
