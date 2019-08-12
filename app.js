@@ -90,7 +90,7 @@ function buildApp() {
         res.render('404', {});
     })
 
-    server.listen(config.app.port);
+    server.listen(process.env.PORT || config.app.port);//fix listen port heroku
 
     io.on('connection',  require('./library/io.js'));    
 }
