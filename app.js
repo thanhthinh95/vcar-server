@@ -59,7 +59,11 @@ function buildApp() {
 
     app.use(session({
         secret: 'foo',
-        store: new MongoStore({ mongooseConnection: mongoose.connection })
+        name: "session_vcar",
+        store: new MongoStore({ mongooseConnection: mongoose.connection }),
+        proxy: true,
+        resave: true,
+        saveUninitialized: true
     }));
 
     // app.use(require('express-session')({
