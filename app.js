@@ -58,11 +58,10 @@ function buildApp() {
 
 
     app.use(session({
-        secret: 'foo',
+        secret: 'vcar_secret',
         name: "session_vcar",
         store: new MongoStore({ mongooseConnection: mongoose.connection }),
-        proxy: true,
-        resave: true,
+        resave: false,
         saveUninitialized: true
     }));
 
@@ -90,6 +89,8 @@ function buildApp() {
         res.render('404', {});
     })
 
+    console.log('Open PORT: ', (process.env.PORT || config.app.port));
+    
     server.listen(process.env.PORT || config.app.port);//fix listen port heroku
 
     io.on('connection',  require('./library/io.js'));    
