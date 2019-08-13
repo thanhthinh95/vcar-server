@@ -65,12 +65,6 @@ function buildApp() {
         saveUninitialized: true
     }));
 
-    // app.use(require('express-session')({
-    //     secret: 'pcar_secret',
-    //     resave: false,
-    //     saveUninitialized: true, 
-    // }))
-
     
     app.use('/js', express.static('public/js'));
     app.use('/img', express.static('public/img'));
@@ -89,9 +83,9 @@ function buildApp() {
         res.render('404', {});
     })
 
-    console.log('Open PORT: ', (process.env.PORT || config.app.port));
-    
     server.listen(process.env.PORT || config.app.port);//fix listen port heroku
+    console.log('Open PORT: ', (process.env.PORT || config.app.port));
+
 
     io.on('connection',  require('./library/io.js'));    
 }

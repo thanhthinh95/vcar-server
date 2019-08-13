@@ -62,19 +62,19 @@ global._stringRegex = function (e) {
 },
 
 
-    app.get('/', function (req, res, next) {
-        if (req.session.user) {
-            _render(req, res, 'home', 'Trang Chủ', {
-                roleIndex: req.session.roleIndex ? req.session.roleIndex : null,
-                user: req.session.user
-            }, ['jquery-ui', 'bootstrap-select', 'tempusdominus-bootstrap']);
-        } else {
-            res.render('login', {
-                title: 'Đăng nhập',
-                page: 'login'
-            });
-        }
-    })
+app.get('/', function (req, res, next) {
+    if (req.session.user) {
+        _render(req, res, 'home', 'Trang Chủ', {
+            roleIndex: req.session.roleIndex ? req.session.roleIndex : null,
+            user: req.session.user
+        }, ['jquery-ui', 'bootstrap-select', 'tempusdominus-bootstrap']);
+    } else {
+        res.render('login', {
+            title: 'Đăng nhập',
+            page: 'login'
+        });
+    }
+})
 
 app.get('/logout', function (req, res, next) {
     req.session.destroy();
@@ -85,6 +85,9 @@ app.get('/logout', function (req, res, next) {
     });
 })
 
+app.get('/api', function (req, res, next) {
+    res.send({a : 'gf'});
+})
 
 app.get('/password-recovery', function (req, res, next) {
     req.session.user = null;

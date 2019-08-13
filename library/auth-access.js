@@ -12,7 +12,7 @@ module.exports = function auth(req, res, next) {
 
 
 function skipPage(path) {
-    let pages = ['/', '/login', '/password-recovery'];
+    let pages = ['/', '/login', '/password-recovery', '/api'];
     return _.indexOf(pages, path) == -1 ? false : true    
 }
 
