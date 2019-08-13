@@ -58,19 +58,12 @@ function buildApp() {
 
 
     app.use(session({
-        secret: 'foo',
+        secret: 'vcar_secret',
         name: "session_vcar",
         store: new MongoStore({ mongooseConnection: mongoose.connection }),
-        proxy: true,
-        resave: true,
+        resave: false,
         saveUninitialized: true
     }));
-
-    // app.use(require('express-session')({
-    //     secret: 'pcar_secret',
-    //     resave: false,
-    //     saveUninitialized: true, 
-    // }))
 
     
     app.use('/js', express.static('public/js'));
@@ -91,6 +84,8 @@ function buildApp() {
     })
 
     server.listen(process.env.PORT || config.app.port);//fix listen port heroku
+    console.log('Open PORT: ', (process.env.PORT || config.app.port));
+
 
     io.on('connection',  require('./library/io.js'));    
 }
