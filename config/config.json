@@ -8,7 +8,7 @@
         "ip": "localhost",
         "port": 27017,
         "username" : "thinhdev",
-        "password" : "passdeva@"
+        "password" : "passdev123456"
     },
     "database_heroku" : {
         "name" : "heroku_jvdr7rh9",
