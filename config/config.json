@@ -7,8 +7,8 @@
         "name" : "v-car",
         "ip": "localhost",
         "port": 27017,
-        "username" : "",
-        "password" : ""
+        "username" : "thinhdev",
+        "password" : "passdeva@"
     },
     "database_heroku" : {
         "name" : "heroku_jvdr7rh9",
