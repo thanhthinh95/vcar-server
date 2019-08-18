@@ -12,8 +12,8 @@ exports.getAll = async function(req, res) {
         _objField('status', null, 1, true, true, [{_id: 0, name : 'Chưa kích hoạt'},{_id : 1, name : "Kích hoạt"}]),
     ];
     
-    _render(req, res, 'point', 'Quản lý điểm dừng', {
-        menu : await _menu._getMenuAndActivities('point', req.session.roleIndex._id),
+    _render(req, res, 'car_type', 'Quản lý loại xe', {
+        menu : await _menu._getMenuAndActivities('car_type', req.session.roleIndex._id),
         sumRow : config.table.sumRow,
         fields : _getFields(_car_type, fieldShows)
     })
@@ -22,6 +22,8 @@ exports.getAll = async function(req, res) {
 exports.getId = async function (req, res) {
     console.log(req.params._id);
 }
+
+
 
 exports.search = async function (req, res) {
     if(_.has(req.query, 'dataMatch')){
@@ -52,6 +54,18 @@ exports.search = async function (req, res) {
     res.send(_output(data ? 200 : 500, null, data));
 }
 
+
+exports.new = async function (req, res) {
+    _render(req, res, 'car_type_new', 'Tạo mới loại xe', {
+        status: [{
+            _id: 0,
+            name: 'Chưa kích hoạt'
+        }, {
+            _id: 1,
+            name: "Kích hoạt"
+        }],
+    })
+}
 
 exports.create = async function (req, res) {
     let obj = req.body;

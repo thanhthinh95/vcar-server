@@ -1,0 +1,134 @@
+<% if(page) {%>
+<link rel="stylesheet" href='<%- "pages/" + page + "/style.css"%>'>
+<%}%>
+
+<% if(plugins) {%>
+<% _.forEach(plugins, function(item){%>
+<link rel="stylesheet" href='<%- "plugins/" + item + "/style.css"%>'>
+<%})%>
+<%}%>
+
+<script>
+    // var carSupplier = JSON.parse('<%- JSON.stringify(data.carSupplier) %>');
+// var pointStop = JSON.parse('<%- JSON.stringify(data.pointStop) %>');
+</script>
+
+<div class='card'>
+    <div class="card-header col-lg-12 col-md-12 col-sm-12">
+        <b class=""> <i class='<%- (data.menu ? data.menu.icon : "fa fa-bandcam")%>'></i> <%- title%></b>
+    </div>
+
+    <div class='card-body'>
+        <form id='form_data'>
+            <div class="row">
+                <div class="col col-lg-4 col-md-4 col-sm-4">
+                    <div class="row pt-1">
+                        <b class="col col-md-4 col-sm-4 my-auto text-right">Tên Loại Xe</b>
+                        <input class="col col-md-8 col-sm-8 selectpicker form-control" name="controlSea"
+                            autocomplete="false" required placeholder="VD: Gường nằm"></input>
+                    </div>
+
+                    <div class="row pt-1">
+                        <b class="col col-md-4 col-sm-4 my-auto text-right">Số Lượng Ghế</b>
+                        <input class="col col-md-8 col-sm-8 form-control" name="numberSeat" type="number" min='2'
+                            max='80' required step='1' placeholder="VD: 16"></input>
+                    </div>
+
+                    <div class="row pt-1">
+                        <b class="col col-md-4 col-sm-4 my-auto text-right">Trạng Thái</b>
+                        <select class="col col-md-8 col-sm-8 selectpicker form-control" name="status" required
+                            title="Chọn Trạng Thái" name="status">
+                            <% _.forEach(data.status, function(item) {%>
+                            <option value="<%- item._id%>"><%- item.name%></option>
+                            <%})%>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col pl-5 pr-5 col-lg-8 col-md-8 col-sm-8 ">
+                    <div class="row ">
+                        <span class="align-middle my-auto">
+                            <span class="btn btn-primary w-100" data-toggle="tooltip" id='add_new_map'
+                                title="Thêm sơ đồ chỗ ngồi">
+                                <i class="fa fa-plus-circle text-white mx-auto" aria-hidden="true"></i> Thêm sơ đồ chỗ
+                                ngồi
+                            </span>
+                        </span>
+                    </div>
+
+
+
+                    <div class='row pl-2 pr-2 custom_overflow'>
+                        <table id="seatDiaGram" class="w-100">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>1</th>
+                                    <th>2</th>
+                                    <th>3</th>
+                                    <th>4</th>
+                                    <th>5</th>
+                                    <th>6</th>
+                                    <th>7</th>
+                                    <th>8</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                    <td class="first">A</td>
+                                    <td>A1</td>
+                                    <td>A2</td>
+                                    <td>A3</td>
+                                </tr>
+
+                                <tr>
+                                    <td class="first">B</td>
+                                    <td>B1</td>
+                                    <td>B2</td>
+                                    <td>B3</td>
+                                </tr>
+
+                                <tr>
+                                    <td class="first">C</td>  
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="row">
+                        <b id=end_point_name></b>
+                    </div>
+
+                    <div class="row pt-3">
+                        <span class="pl-2">
+                            <a class="btn btn-success btn-icon-text m-t-10 m-r-10 waves-effect waves-effect"
+                                data-toggle="tooltip" title="Trở về quản lý xe" href="/#car">
+                                <i class="fa fa-chevron-circle-left"></i> Quay lại</a>
+                        </span>
+
+                        <span class="pl-2">
+                            <button type='submit' class="btn btn-primary" data-toggle="tooltip" title="Thêm mới xe">
+                                <i class="fa fa-plus-circle text-white mx-auto" aria-hidden="true"></i> Thêm Mới
+                            </button>
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+
+</div>
+
+
+<% if(page) {%>
+<script src='<%- "pages/" + page + "/script.js"%>'></script>
+<%}%>
+
+<% if(plugins) {%>
+<% _.forEach(plugins, function(item){%>
+<script src='<%- "plugins/" + item + "/script.js"%>'></script>
+<%})%>
+<%}%>
