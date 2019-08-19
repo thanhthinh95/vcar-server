@@ -62,8 +62,6 @@ exports.create = async function (req, res) {
     obj.status = Number(obj.status);
     obj.createBy = req.session.user._id;
     obj.created = Date.now();
-
-    console.log(obj);
     
     var data = await _car_supplier._create(obj);
     res.send(_output(data ? 200 : 500, null, data));  

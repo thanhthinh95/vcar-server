@@ -105,7 +105,6 @@ exports.create = async function (req, res) {
     obj.status = Number(obj.status);
     obj.createBy = req.session.user._id;
     obj.created = Date.now();
-    console.log(obj);
     var data = await _car._create(obj);
     res.send(_output(data ? 200 : 500, null, data));
 }
@@ -169,7 +168,6 @@ async function deleteImage(req, res) {
         res.send(_output(500));
     } else {
         var url = require('url').parse(req.body.url);
-        console.log(url.pathname);
         fsx.remove('public' + url.pathname, function (error) {
             res.send(_output(error ? 500 : 200));
         })
