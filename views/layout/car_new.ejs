@@ -10,7 +10,7 @@
 
 <script>
     var carSupplier = JSON.parse('<%- JSON.stringify(data.carSupplier) %>');
-var pointStop = JSON.parse('<%- JSON.stringify(data.pointStop) %>');
+    var pointStop = JSON.parse('<%- JSON.stringify(data.pointStop) %>');
 </script>
 
 
@@ -48,10 +48,10 @@ var pointStop = JSON.parse('<%- JSON.stringify(data.pointStop) %>');
                     </div>
 
                     <div class="row pt-1">
-                        <b class="col col-md-3 col-sm-3 my-auto text-right">Thể Loại</b>
-                        <select class="col col-md-8 col-sm-8 selectpicker form-control" name="type" data-live-search="true" required
-                            title="Chọn Thể Loại" name="type">
-                            <% _.forEach(data.type, function(item) {%>
+                        <b class="col col-md-3 col-sm-3 my-auto text-right">Thể Loại Xe</b>
+                        <select class="col col-md-8 col-sm-8 selectpicker form-control" name="typeId" data-live-search="true" required
+                            title="Chọn Thể Loại Xe">
+                            <% _.forEach(data.typeId, function(item) {%>
                             <option value="<%- item._id%>"><%- item.name%></option>
                             <%})%>
                         </select>
@@ -63,11 +63,6 @@ var pointStop = JSON.parse('<%- JSON.stringify(data.pointStop) %>');
                             placeholder="VD: 35BG-23459"></input>
                     </div>
 
-                    <div class="row pt-1">
-                        <b class="col col-md-3 col-sm-3 my-auto text-right">Số Lượng Ghế</b>
-                        <input class="col col-md-8 col-sm-8 form-control" name="numberSeat" type="number" min='2' max='80' required
-                            step='1' placeholder="Số ghế VD: 16"></input>
-                    </div>
 
                     <div class="row pt-1">
                         <b class="col col-md-3 col-sm-3 my-auto text-right">Giá Vé (VNĐ)</b>

@@ -4,20 +4,7 @@ exports.getAll = async function (req, res) {
     var fieldShows = [
         _objField('carSupplierId', null, -1, true, true, await _car_supplier._getAll()),
         _objField('controlSea', null, 1, true, true),
-        _objField('type', null, 1, true, true, [{
-            _id: 0,
-            name: 'Xe Limousine'
-        }, {
-            _id: 1,
-            name: "Xe ngồi"
-        }, {
-            _id: 2,
-            name: 'Xe gường nằm'
-        }, {
-            _id: 3,
-            name: 'Xe ghế ngả'
-        }]),
-        _objField('numberSeat', null, 1, true, true),
+        _objField('typeId', null, 1, true, true, await _car_type._getAll()),
         _objField('fare', null, 1, true, true),
         _objField('pointStop', null, 0, true, true, await _point._getAll()),
         _objField('createBy', null, 0, false, true, await _user._getAll()),
@@ -80,19 +67,7 @@ exports.search = async function (req, res) {
 exports.new = async function (req, res) {
     _render(req, res, 'car_new', 'Tạo mới thông tin xe', {
         carSupplier: await _car_supplier._getAll(),
-        type: [{
-            _id: 0,
-            name: 'Xe Limousine'
-        }, {
-            _id: 1,
-            name: "Xe ngồi"
-        }, {
-            _id: 2,
-            name: 'Xe gường nằm'
-        }, {
-            _id: 3,
-            name: 'Xe ghế ngả'
-        }],
+        typeId: await _car_type._getAll(),
         status: [{
             _id: 0,
             name: 'Tạm dừng hoạt động'
@@ -108,20 +83,7 @@ exports.edit = async function (req, res) {
     _render(req, res, 'car_edit', 'Cập nhật thông tin xe', {
         car: await _car._getId(req.query._id),
         carSupplier: await _car_supplier._getAll(),
-
-        type: [{
-            _id: 0,
-            name: 'Xe Limousine'
-        }, {
-            _id: 1,
-            name: "Xe ngồi"
-        }, {
-            _id: 2,
-            name: 'Xe gường nằm'
-        }, {
-            _id: 3,
-            name: 'Xe ghế ngả'
-        }],
+        typeId: await _car_type._getAll(),
         status: [{
             _id: 0,
             name: 'Tạm dừng hoạt động'
@@ -139,10 +101,11 @@ exports.create = async function (req, res) {
         obj.imageUrl = [obj.image_files];
     if (_.has(obj, 'pointStop') && !_.isArray(obj.pointStop))
         obj.pointStop = [obj.pointStop];
-    obj.type = Number(obj.type);
+
     obj.status = Number(obj.status);
     obj.createBy = req.session.user._id;
     obj.created = Date.now();
+    console.log(obj);
     var data = await _car._create(obj);
     res.send(_output(data ? 200 : 500, null, data));
 }
@@ -153,7 +116,7 @@ exports.update = async function (req, res) {
         obj.imageUrl = [obj.image_files];
     if (_.has(obj, 'pointStop') && !_.isArray(obj.pointStop))
         obj.pointStop = [obj.pointStop];
-    obj.type = Number(obj.type);
+    
     obj.status = Number(obj.status);
     obj.updateBy = req.session.user._id;
     obj.updated = Date.now();

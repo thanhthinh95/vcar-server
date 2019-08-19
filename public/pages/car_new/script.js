@@ -6,8 +6,6 @@ var eventPage = function($) {
         })
 
         $(document).on('change', '#upload_image', function name(e) {
-            console.log('dang co su kien thay doi update image');
-            
             if(this.files){
                 let checkSize = true;
                 let sumSize = 0;
@@ -127,7 +125,6 @@ var eventPage = function($) {
         $(document).on('submit', '#form_data', function (e) {
             e.preventDefault();
             var objData = _createObjectInForm('#form_data');
-            console.log(objData);
 
             _AjaxObject('car', 'POST', objData, function (resp) {
                 if(resp.code == 200){

@@ -274,8 +274,8 @@ function setValueField(nameField) {
             return 'Xe';
         case 'timeStart':
             return 'Thời gian khởi hành';
-        case 'numberSeat':
-            return 'Số ghế';            
+        case 'typeId':
+            return 'Loại xe';            
         default:
             return '';
     }
