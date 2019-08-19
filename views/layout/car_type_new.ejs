@@ -9,8 +9,7 @@
 <%}%>
 
 <script>
-    // var carSupplier = JSON.parse('<%- JSON.stringify(data.carSupplier) %>');
-// var pointStop = JSON.parse('<%- JSON.stringify(data.pointStop) %>');
+
 </script>
 
 <div class='card'>
@@ -24,14 +23,14 @@
                 <div class="col col-lg-4 col-md-4 col-sm-4">
                     <div class="row pt-1">
                         <b class="col col-md-4 col-sm-4 my-auto text-right">Tên Loại Xe</b>
-                        <input class="col col-md-8 col-sm-8 selectpicker form-control" name="controlSea"
+                        <input class="col col-md-8 col-sm-8 selectpicker form-control" name="name"
                             autocomplete="false" required placeholder="VD: Gường nằm"></input>
                     </div>
 
                     <div class="row pt-1">
                         <b class="col col-md-4 col-sm-4 my-auto text-right">Số Lượng Ghế</b>
-                        <input class="col col-md-8 col-sm-8 form-control" name="numberSeat" type="number" min='2'
-                            max='80' required step='1' placeholder="VD: 16"></input>
+                        <input class="col col-md-8 col-sm-8 form-control" id="numberSeat" name="numberSeat" type="number" min='2'
+                            max='80' required step='1' placeholder="VD: 16" value="0" readonly></input>
                     </div>
 
                     <div class="row pt-1">
@@ -45,70 +44,38 @@
                     </div>
                 </div>
 
-                <div class="col pl-5 pr-5 col-lg-8 col-md-8 col-sm-8 ">
-                    <div class="row ">
-                        <span class="align-middle my-auto">
-                            <span class="btn btn-primary w-100" data-toggle="tooltip" id='add_new_map'
-                                title="Thêm sơ đồ chỗ ngồi">
-                                <i class="fa fa-plus-circle text-white mx-auto" aria-hidden="true"></i> Thêm sơ đồ chỗ
-                                ngồi
+                <div class="col pl-5 pr-3 col-lg-8 col-md-8 col-sm-8">
+                        <div class="row pt-1">
+                            <input class="col col-md-4 col-sm-4 form-control" id="numColumn" type="number" min='3'
+                                max='10' step='1' placeholder="Số cột VD: 4"></input>
+
+                            <input class="col col-md-4 col-sm-4 form-control " id="numRow" type="number" min='3'
+                                max='20' step='1' placeholder="Số hàng VD: 6"></input>
+
+                            <span class="col col-md-4 col-sm-4">
+                                <span class="btn btn-primary w-100" data-toggle="tooltip" id='new_floor'
+                                    title="Thêm Tầng">
+                                    <i class="fa fa-plus-circle text-white mx-auto" aria-hidden="true"></i> Thêm Tầng
+                                </span>
                             </span>
-                        </span>
-                    </div>
+                        </div>
+                    </form>
 
 
 
-                    <div class='row pl-2 pr-2 custom_overflow'>
-                        <table id="seatDiaGram" class="w-100">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>1</th>
-                                    <th>2</th>
-                                    <th>3</th>
-                                    <th>4</th>
-                                    <th>5</th>
-                                    <th>6</th>
-                                    <th>7</th>
-                                    <th>8</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                <tr>
-                                    <td class="first">A</td>
-                                    <td>A1</td>
-                                    <td>A2</td>
-                                    <td>A3</td>
-                                </tr>
-
-                                <tr>
-                                    <td class="first">B</td>
-                                    <td>B1</td>
-                                    <td>B2</td>
-                                    <td>B3</td>
-                                </tr>
-
-                                <tr>
-                                    <td class="first">C</td>  
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="row">
-                        <b id=end_point_name></b>
-                    </div>
+                    <div class="row" id="diagram_floor"></div>
+           
 
                     <div class="row pt-3">
                         <span class="pl-2">
                             <a class="btn btn-success btn-icon-text m-t-10 m-r-10 waves-effect waves-effect"
-                                data-toggle="tooltip" title="Trở về quản lý xe" href="/#car">
+                                data-toggle="tooltip" title="Trở về quản lý thể loại xe" href="/#car_type">
                                 <i class="fa fa-chevron-circle-left"></i> Quay lại</a>
                         </span>
 
                         <span class="pl-2">
-                            <button type='submit' class="btn btn-primary" data-toggle="tooltip" title="Thêm mới xe">
+                            <button type='submit' class="btn btn-primary" data-toggle="tooltip"
+                                title="Thêm mới thể loại xe">
                                 <i class="fa fa-plus-circle text-white mx-auto" aria-hidden="true"></i> Thêm Mới
                             </button>
                         </span>

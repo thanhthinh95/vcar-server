@@ -1,7 +1,7 @@
 var objSchame = new mongoose.Schema({
     name : {type : String, required: true},
     numberSeat : {type : Number, required: true}, //So luong ghe
-    seatDiaGram : {type : String, required: true}, //So do cho ngoi
+    seatDiaGram : {type : mongoose.Schema.Types.Mixed, required: true}, //So do cho ngoi
     createBy : {type : mongoose.Schema.Types.ObjectId, ref: 'user', default: null},
     created : {type : Date, default: Date.now},
     updateBy : {type : mongoose.Schema.Types.ObjectId, ref: 'user', default: null},

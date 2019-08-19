@@ -1,5 +1,34 @@
 
 var eventPage = function ($) {
+
+    function bindClick() {
+        $(document).on('click', '#button_sidebar', function (e) {
+            e.preventDefault();
+            var data = $(this).attr('data_action');
+            
+            if(data == 'close'){//Dang o trang thai dong
+                openSideBar();
+            }else if(data == 'open'){// Dang o trang thai mo
+                closeSideBar();
+            }
+        })
+
+        $(document).on('click', 'a', function (e) {
+            var hash = $(this).attr('href');
+            if (_.split(hash, '#').length == 2) {//duong dan co dau #
+                e.preventDefault();
+                _loadPageChild(_.split(hash, '#')[1]);
+            }
+
+
+            var data = $('#button_sidebar').attr('data_action');
+            if(data == 'open'){// Dang o trang thai mo
+                closeSideBar();
+            }
+        })
+
+    }
+
     function initSocket() {
         var socket = io(window.location.host);
 
@@ -60,37 +89,7 @@ var eventPage = function ($) {
         init: function () {
             initSocket();
             initRole(roleIndex);
-
-
-            $('#button_sidebar').on('click', function (e) {
-                var data = $(this).attr('data_action');
-                
-                if(data == 'close'){//Dang o trang thai dong
-                    openSideBar();
-                }else if(data == 'open'){// Dang o trang thai mo
-                    closeSideBar();
-                }
-            })
-
-         
-
-            $(document).on('click', 'a', function (e) {
-                var hash = $(this).attr('href');
-                if (_.split(hash, '#').length == 2) {//duong dan co dau #
-                    e.preventDefault();
-                    _loadPageChild(_.split(hash, '#')[1]);
-                }
-
-
-
-                var data = $('#button_sidebar').attr('data_action');
-                if(data == 'open'){// Dang o trang thai mo
-                    closeSideBar();
-                }
-            })
-
-           
-
+            bindClick();
         },
         uncut: function () {
 

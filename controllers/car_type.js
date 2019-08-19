@@ -4,7 +4,7 @@ exports.getAll = async function(req, res) {
     var fieldShows = [
         _objField('_id', null, 0, false, true),
         _objField('name', null, -1, true, true),
-        _objField('type', null, 1, true, true, [{_id: 0, name : 'Điểm dừng trong bến'},{_id : 1, name : "Điểm dừng ngoài bến"}]),
+        _objField('numberSeat', null, 1, true, true),
         _objField('createBy', null, 0, false, true, await _user._getAll()),
         _objField('created', null, 1, true, true),
         _objField('updateBy', null, 0, false, true, await _user._getAll()),
@@ -69,10 +69,13 @@ exports.new = async function (req, res) {
 
 exports.create = async function (req, res) {
     let obj = req.body;
-    obj.type = Number(obj.type);
+    obj.numberSeat = Number(obj.numberSeat);
     obj.status = Number(obj.status);
     obj.createBy = req.session.user._id;
     obj.created = Date.now();
+    
+    console.log(obj);
+    
     var data = await _car_type._create(obj);
     res.send(_output(data ? 200 : 500, null, data));  
 }

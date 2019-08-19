@@ -1,64 +1,35 @@
- /* tuy chinh thanh cuon */
-.custom_overflow::-webkit-scrollbar {
-    width: 5px;
-}
-  
-.custom_overflow::-webkit-scrollbar-track {
-    background: #f1f1f1; 
+
+.seatDiaGram{
+    table-layout: fixed;
+    width: 100%;
 }
 
-.custom_overflow::-webkit-scrollbar-thumb {
-    background: #888; 
-}
-  
-/* Handle on hover */
-.custom_overflow::-webkit-scrollbar-thumb:hover {
-    background: #555; 
-}
-
-#seatDiaGram > thead > tr > th {
+.seatDiaGram > thead > tr > th {
     text-align: center;
     height: 50px;
 }
 
-#seatDiaGram > tbody > tr > td {
+.seatDiaGram > tbody > tr > td{
     text-align: center;
-    background-color: darkmagenta;
-    height: 70px;
-
+    background-color: rgb(250, 230, 186);
+    height: 80px;
 }
 
-
-
-.first{
-    font-weight: 700;
-    width : 20px;
-
+td.last {
+    width: 1px;
+    white-space: nowrap;
 }
 
-
-
-
-/*tuy chinh grid*/
-.grid-container {
-    display: grid;
-    grid-template-columns: auto auto auto auto auto; 
-    grid-gap: 10px;
-    background-color: rgb(52, 158, 245);
-    padding: 10px;
+.non_active{
     width: 100%;
-}
-  
-.grid-container > div {
-    background-color: rgb(52, 158, 245);
-    text-align: center;
-    padding: 20px 0;
-    font-size: 30px;
-    cursor: pointer;
+    height: 100%;
+    padding-top: 25px;
 }
 
-.active_seat{
-    background-color: rgb(131, 23, 194) !important;
-    color: #f1f1f1;
+.ok_active{
+    width: 100%;
+    height: 100%;
+    padding-top: 25px;
+    background-color: blueviolet;
+    color: aliceblue;
 }
-  
