@@ -1,0 +1,35 @@
+
+.seatDiaGram{
+    table-layout: fixed;
+    width: 100%;
+}
+
+.seatDiaGram > thead > tr > th {
+    text-align: center;
+    height: 50px;
+}
+
+.seatDiaGram > tbody > tr > td{
+    text-align: center;
+    background-color: rgb(250, 230, 186);
+    height: 80px;
+}
+
+td.last {
+    width: 1px;
+    white-space: nowrap;
+}
+
+.non_active{
+    width: 100%;
+    height: 100%;
+    padding-top: 25px;
+}
+
+.ok_active{
+    width: 100%;
+    height: 100%;
+    padding-top: 25px;
+    background-color: blueviolet;
+    color: aliceblue;
+}

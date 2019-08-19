@@ -18,8 +18,6 @@ var eventPage = function($) {
 
         $(document).on('click', '#edit_row_table', function (e) {
             let url = 'car_type/edit?_id=' + $(this).attr('data_id');
-            console.log(url);
-            
             _loadPageChild(url);
         })
 
@@ -72,42 +70,14 @@ var eventPage = function($) {
 
 
 
-        $(document).on('submit', '#form_modal_info', function (e) {
-            e.preventDefault();
-            $('#modal_info').modal('hide');
-            var objData = _createObjectInForm('#form_modal_info');
 
-
-            if(_.isEqual($(this).attr('data_action'), 'create')){
-                _AjaxObject('/car_type', 'POST', objData, function(resp) {
-                    if(resp.code == 200){
-                        _DialogSuccess('Đã tạo mới thành công', function () {
-                            _loadPageChild('car_type');
-                        })
-                    }else{
-                        _DialogError(resp.message);
-                    }
-                })
-            }else if(_.isEqual($(this).attr('data_action'), 'update')) {
-                _AjaxObject('/car_type', 'PUT', objData, function(resp) {
-                    if(resp.code == 200){
-                        _DialogSuccess('Đã cập nhật thành công', function () {
-                            _loadPageChild('car_type');
-                        })
-                    }else{
-                        _DialogError(resp.message);
-                    }
-                })
-            }
-        })
 
         $(document).on('click', '#delete_row_table', function (e) {
             var _id = $(this).attr('data_id');
-            _DialogQuestion('Bạn đã chắc chắn ?', 'Xe và tất cả các chuyến đi của xe sẽ bị xóa bỏ vĩnh viễn', function () {
+            _DialogQuestion('Bạn đã chắc chắn ?', 'Các thể loại xe và sẽ bị xóa bỏ vĩnh viễn', function () {
                 _AjaxObject('/car_type', 'DELETE', {ids : [_id]}, function(resp) {
                     if(resp.code == 200){
-                        _DialogSuccess('Đã xóa bỏ thành công', function () {
-                            _bindMenuSideBar(roleIndex._id);                                                
+                        _DialogSuccess('Đã xóa bỏ thành công', function () {                                              
                             _loadPageChild('car_type');
                         })
                     }else{
@@ -133,11 +103,10 @@ var eventPage = function($) {
         $(document).on('click', '#delete_item_checked', function (e) {
             var dataIds = _createObjectInForm('.check_item_table')
             if(_.has(dataIds, 'checkBoxIds')){
-                _DialogQuestion('Bạn có chắc chắn?', 'Xe và tất cả các chuyến đi của xe sẽ bị xóa bỏ vĩnh viễn', function () {
+                _DialogQuestion('Bạn có chắc chắn?', 'Thể loại xe và sẽ bị xóa bỏ vĩnh viễn', function () {
                     _AjaxObject('/car_type', 'DELETE', {ids : dataIds.checkBoxIds}, function(resp) {
                         if(resp.code == 200){
-                            _DialogSuccess('Đã xóa bỏ thành công', function () {
-                                _bindMenuSideBar(roleIndex._id);                    
+                            _DialogSuccess('Đã xóa bỏ thành công', function () {                 
                                 _loadPageChild('car_type');
                             })
                         }else{

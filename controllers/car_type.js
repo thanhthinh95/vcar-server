@@ -67,22 +67,33 @@ exports.new = async function (req, res) {
     })
 }
 
+exports.edit = async function (req, res) {
+    _render(req, res, 'car_type_edit', 'Cập nhật thông tin loại xe', {
+        car_type: await _car_type._getId(req.query._id),
+        status: [{
+            _id: 0,
+            name: 'Chưa kích hoạt'
+        }, {
+            _id: 1,
+            name: "Kích hoạt"
+        }],
+    })
+}
+
+
 exports.create = async function (req, res) {
     let obj = req.body;
     obj.numberSeat = Number(obj.numberSeat);
     obj.status = Number(obj.status);
     obj.createBy = req.session.user._id;
-    obj.created = Date.now();
-    
-    console.log(obj);
-    
+    obj.created = Date.now();    
     var data = await _car_type._create(obj);
     res.send(_output(data ? 200 : 500, null, data));  
 }
 
 exports.update = async function (req, res) {
     let obj = req.body;
-    obj.type = Number(obj.type);
+    obj.numberSeat = Number(obj.numberSeat);
     obj.status = Number(obj.status);
     obj.updateBy = req.session.user._id;
     obj.updated = Date.now();

@@ -1,5 +1,5 @@
 var eventPage = function ($) {
-    var data_floor = [];
+    var data_floor = car_type.seatDiaGram;
 
     function bindEventClick() {
         $(document).on('click', '#new_floor', function (e) {
@@ -21,9 +21,10 @@ var eventPage = function ($) {
             }else{
                 var objData = _createObjectInForm('#form_data');
                 objData.seatDiaGram = data_floor;
-                _AjaxObject('car_type', 'POST', objData, function (resp) {
+    
+                _AjaxObject('car_type', 'PUT', objData, function (resp) {
                     if (resp.code == 200) {
-                        _DialogSuccess('Tạo mới thể loại xe thành công', function () {
+                        _DialogSuccess('Cập nhật thể loại xe thành công', function () {
                             _loadPageChild('car_type');
                         })
                     } else {
@@ -31,6 +32,7 @@ var eventPage = function ($) {
                     }
                 })
             }
+           
         })
 
         $(document).on('click', '.non_active', function (e) {
@@ -232,12 +234,14 @@ var eventPage = function ($) {
 
     return {
         init: function () {
-            console.log('dang thuc hien init su kien car_type_new');
+            console.log('dang thuc hien init su kien car_type_edit');
             $('select').selectpicker('refresh');
+
+            renderFloor();
             bindEventClick();
         },
         uncut: function () {
-            console.log('dang thuc hien uncut su kien car_type_new');
+            console.log('dang thuc hien uncut su kien car_type_edit');
             $(document).off('submit', '#form_data');
             $(document).off('click', '#new_floor');
             $(document).off('click', '.non_active');
