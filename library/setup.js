@@ -15,6 +15,16 @@ fsx.readdirSync('./controllers').forEach(filename => {
     }
 });
 
+fsx.readdirSync('./apis').forEach(filename => {
+    let _arrayFileName = _.split(filename, '.');
+    if (_arrayFileName[1] == 'js') {
+        let _arrayFunction = require('../apis/' + _arrayFileName[0]);
+        _.forIn(_arrayFunction, function (fn, key) {
+            setRouter('api/' + _arrayFileName[0], key, fn);
+        })
+    }
+});
+
 global._deleteFields = function (obj, fields) {
     _.forEach(fields, function (field) {
         delete obj[field];
@@ -83,10 +93,6 @@ app.get('/logout', function (req, res, next) {
         title: 'Đăng nhập',
         page: 'login'
     });
-})
-
-app.get('/api', function (req, res, next) {
-    res.send({a : 'gf'});
 })
 
 app.get('/password-recovery', function (req, res, next) {
@@ -182,11 +188,19 @@ function setRouter(namefile, key, fn) {
             method = 'get';
             url = '/' + namefile + '/search';
             break;
-
         case 'action': //cac chuc nang tuy chinh khac
             method = 'post';
             url = '/' + namefile + '/action/:_typeAction';
             break;
+        //Cac Noi dung danh cho API
+        case 'getAPI':
+            method = 'get';
+            url = '/' + namefile;
+            break;
+        case 'postAPI':
+            method = 'post';
+            url = '/' + namefile;
+            break;            
         default:
             break;
     }

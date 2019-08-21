@@ -3,6 +3,7 @@ module.exports = function auth(req, res, next) {
     console.log('dang check auth', req.method, req.path, req.xhr);
 
     if(skipPage(req.path) ||
+        skipAPI(req.path) ||
         checkLogin(req)){
         next();
     }else{
@@ -10,10 +11,15 @@ module.exports = function auth(req, res, next) {
     }
 }
 
-
 function skipPage(path) {
-    let pages = ['/', '/login', '/password-recovery', '/api'];
+    let pages = ['/', '/login', '/password-recovery'];
     return _.indexOf(pages, path) == -1 ? false : true    
+}
+
+function skipAPI(path) {
+    let array = path.split('/');
+    if(array.length >=3 && _.isEqual(array[1], 'api') && array[2].length != 0) return true;
+    return false;
 }
 
 function checkLogin(req) {
