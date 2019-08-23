@@ -48,10 +48,6 @@ exports.search = async function (req, res) {
     res.send(_output(data ? 200 : 500, null, data));
 }
 
-
-
-
-
 exports.create = async function (req, res) {
     let obj = req.body;
     obj.status = Number(obj.status);
