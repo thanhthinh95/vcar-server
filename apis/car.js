@@ -1,5 +1,7 @@
-module.exports.getAPI = function(req, res) {
-    res.send('dang thuc hien dang nhap');
+module.exports.getAPI = async function(req, res) {
+    var data = await _car._getAll();
+    res.send(_output(data ? 200 : 500, null, data));
+
 }
 
 module.exports.postAPI = async function (req, res) {
