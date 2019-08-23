@@ -164,13 +164,18 @@ async function uploadImage(req, res) {
 }
 
 async function deleteImage(req, res) {
-    if (!_.has(req.body, 'url')) {
-        res.send(_output(500));
-    } else {
-        var url = require('url').parse(req.body.url);
-        fsx.remove('public' + url.pathname, function (error) {
-            res.send(_output(error ? 500 : 200));
-        })
 
+
+    if (_.has(req.body, 'url')) {
+        
+
+        var url = require('url').parse(req.body.url);
+        if(!_.isEqual(url.pathname, '/')){
+            fsx.remove('public' + url.pathname, function (error) {
+                res.send(_output(error ? 500 : 200));
+                return;
+            })
+        }
     }
+    res.send(_output(500));
 }
