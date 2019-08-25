@@ -97,8 +97,6 @@ exports.edit = async function (req, res) {
 
 exports.create = async function (req, res) {
     let obj = req.body;
-    console.log(obj);
-
     if (_.has(obj, 'imageUrl') && !_.isArray(obj.imageUrl))
         obj.imageUrl = [obj.imageUrl];
     if (_.has(obj, 'pointStop') && !_.isArray(obj.pointStop))
@@ -113,9 +111,6 @@ exports.create = async function (req, res) {
 
 exports.update = async function (req, res) {
     let obj = req.body;
-    console.log(obj);
-    
-    
     if (_.has(obj, 'imageUrl') && !_.isArray(obj.imageUrl))
         obj.imageUrl = [obj.imageUrl];
     if (_.has(obj, 'pointStop') && !_.isArray(obj.pointStop))
@@ -173,10 +168,12 @@ async function deleteImage(req, res) {
         var url = require('url').parse(req.body.url);
         if(!_.isEqual(url.pathname, '/')){
             fsx.remove('public' + url.pathname, function (error) {
-                res.send(_output(error ? 500 : 200));
-                return;
+                res.send(_output(error ? 500 : 200));       
             })
+        }else{
+            res.send(_output(500));
         }
+    } else{
+        res.send(_output(500));
     }
-    res.send(_output(500));
 }

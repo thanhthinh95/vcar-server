@@ -22,9 +22,7 @@ module.exports.postAPI = async function (req, res) {
 
 
 async function searchCarSupplier(req, res) {
-    console.log("xin chao", req.body);
     let aggs = [
-    
         {$lookup:{
            from: 'points',
            localField: 'startPoint',
@@ -74,9 +72,7 @@ async function searchCarSupplier(req, res) {
             {startPoint : {'$regex' : new RegExp(_stringRegex(req.body.startPoint), 'i')}},
             {endPoint : {'$regex' : new RegExp(_stringRegex(req.body.startPoint), 'i')}},
         ]})
-        
     }
-
 
     if(_.has(req.body, 'endPoint')){
         dataMatch.push({$or : [
@@ -84,11 +80,9 @@ async function searchCarSupplier(req, res) {
             {startPoint : {'$regex' : new RegExp(_stringRegex(req.body.startPoint), 'i')}},
         ]})
     }
-    
 
     aggs.push({$match : {$and : dataMatch} });
     let data = await _car_supplier._searchCarSupplierAPI(aggs);
-
 
     if(data){//Tinh gia ve re nhat va dat nhat cho tung xe
         _.each(data, function (itemCarSupplier) {

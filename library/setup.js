@@ -95,6 +95,13 @@ app.get('/logout', function (req, res, next) {
     });
 })
 
+app.get('/api', function (req, res, next) {
+    res.send({
+        data: 'Welcome API project VCar',
+        createBy : 'thinhdev'
+    });
+})
+
 app.get('/password-recovery', function (req, res, next) {
     req.session.user = null;
     res.render('password-recovery', {
