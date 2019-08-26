@@ -41,6 +41,7 @@ objSchame.statics._getId = async function(_id) {
     return await _car.findById(_id);
 }
 
+
 objSchame.statics._search = async function (dataMatch, sort, page, sumRow) {
     let options  = {
         page : Number(page),
@@ -61,6 +62,11 @@ objSchame.statics._delete = async function (_ids) {
 objSchame.statics._deleteManyForCarSupplier = async function (carSupplierIds) {//Xoa tat ca cac xe trong nha xe
     let ids = await _car.distinct('_id', {carSupplierId : {$in : carSupplierIds}});
     return await _car._delete(ids);
+}
+
+objSchame.statics._getIdAPI = async function(aggs) {
+    return await _car.aggregate(aggs).allowDiskUse(true);
+                    
 }
 
 objSchame.set('toJSON', {getters: true});

@@ -4,7 +4,7 @@ module.exports.getAPI = async function(req, res) {
 }
 
 module.exports.postAPI = async function (req, res) {
-    console.log('data', req.body);
+    console.log('API', req.body);
     if(!_.has(req.body, 'action')){
         res.send(_output(501));
     }else {
