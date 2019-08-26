@@ -13,7 +13,7 @@ module.exports.postAPI = async function (req, res) {
         switch (action) {
             case 'getId'://Thuc hien lay thong tin xe tu info_home
                 await getId(req, res);
-                break;         
+                break; 
             default:
                 break;
         }
@@ -63,6 +63,7 @@ async function getId(req, res) {
            as: 'typeId'
         }},
         {$unwind: {path: '$typeId', preserveNullAndEmptyArrays: true}},
+
         
         {$group: {
             _id: '$_id',
@@ -71,6 +72,7 @@ async function getId(req, res) {
             imageUrl : {$first: '$imageUrl'},
             fare : {$first: '$fare'},
             type : {$first: '$typeId.name'},
+            seatDiagram : {$first: '$typeId.seatDiaGram'},
             numberSeat : {$first: '$typeId.numberSeat'},
             startPoint : {$first : '$startPoint.name'},
             pointStop : {$push: '$pointStop.name'},

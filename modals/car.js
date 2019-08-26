@@ -65,8 +65,7 @@ objSchame.statics._deleteManyForCarSupplier = async function (carSupplierIds) {/
 }
 
 objSchame.statics._getIdAPI = async function(aggs) {
-    return await _car.aggregate(aggs).allowDiskUse(true);
-                    
+    return await _car.aggregate(aggs).allowDiskUse(true);               
 }
 
 objSchame.set('toJSON', {getters: true});
