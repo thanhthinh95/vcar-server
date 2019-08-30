@@ -297,6 +297,22 @@ function setValueField(nameField) {
             return 'Thời gian khởi hành';
         case 'typeId':
             return 'Loại xe';            
+        case 'code':
+            return 'Mã khuyến mại';
+        case 'amount':
+            return 'Số lượng';    
+        case 'budget':
+            return 'Ngân sách';                       
+        case 'discount':
+            return 'Giảm giá';
+        case 'maxDiscount':                 
+            return 'Mức giảm tối đa';
+        case 'dateStart':                 
+            return 'Thời gian bắt đầu';
+        case 'dateEnd':                 
+            return 'Thời gian kết thúc';
+        case 'carSupplierId':                 
+            return 'Nhà xe';            
         default:
             return '';
     }

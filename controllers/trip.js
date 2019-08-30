@@ -64,7 +64,13 @@ exports.create = async function (req, res) {
     obj.status = Number(obj.status);
     obj.createBy = req.session.user._id;
     obj.created = Date.now();
-    obj.timeStart = moment('01/01/1970 ' + obj.timeStart, 'DD/MM/YYYY HH:mm')._d;
+    let time = '01/01/1970 ' + obj.timeStart;
+    console.log(time);
+    
+    obj.timeStart = moment(time, 'DD/MM/YYYY HH:mm')._d;
+    console.log(obj.timeStart);
+    
+    
     var data = await _trip._create(obj);
     res.send(_output(data ? 200 : 500, null, data));
 }

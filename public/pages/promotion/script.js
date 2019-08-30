@@ -13,13 +13,37 @@ var eventPage = function($) {
         })
 
         $(document).on('click', '#create_new', function (e) {
-            _bindModalInfo(null, '#modal_info', _fields, ['name', 'type', 'status']);
+            _bindModalInfo(null, '#modal_info', _fields, ['carSupplierId', 'name', 'code', 'dateStart', 'dateEnd', 'amount', 'budget','discount','maxDiscount', 'status']);
+
+            $('#info_date_dateStart').datetimepicker({
+                locale : 'vi',
+                format : 'DD/MM/YYYY HH:mm'
+            });
+
+            $('#info_date_dateEnd').datetimepicker({
+                locale : 'vi',
+                format : 'DD/MM/YYYY HH:mm'
+            });
+
         })
 
         $(document).on('click', '#edit_row_table', function (e) {
             var dataRow = _.find(dataTableRows, {_id : $(this).attr('data_id')});
             if(dataRow){
-                _bindModalInfo(dataRow, '#modal_info', _fields, ['name', 'type', 'status']);
+                _bindModalInfo(dataRow, '#modal_info', _fields, ['carSupplierId', 'name', 'dateStart', 'dateEnd', 'amount', 'budget','discount','maxDiscount', 'status']);
+
+            
+                $('#info_date_dateStart').datetimepicker({
+                    locale : 'vi',
+                    format : 'DD/MM/YYYY HH:mm',
+                    date : dataRow.dateStart,
+                });
+
+                $('#info_date_dateEnd').datetimepicker({
+                    locale : 'vi',
+                    format : 'DD/MM/YYYY HH:mm',
+                    date : dataRow.dateEnd,
+                });
             }else{
                 _DialogError('Không tìm thấy bản ghi');
             }
@@ -81,20 +105,20 @@ var eventPage = function($) {
 
 
             if(_.isEqual($(this).attr('data_action'), 'create')){
-                _AjaxObject('/point', 'POST', objData, function(resp) {
+                _AjaxObject('/promotion', 'POST', objData, function(resp) {
                     if(resp.code == 200){
                         _DialogSuccess('Đã tạo mới thành công', function () {
-                            _loadPageChild('point');
+                            _loadPageChild('promotion');
                         })
                     }else{
                         _DialogError(resp.message);
                     }
                 })
             }else if(_.isEqual($(this).attr('data_action'), 'update')) {
-                _AjaxObject('/point', 'PUT', objData, function(resp) {
+                _AjaxObject('/promotion', 'PUT', objData, function(resp) {
                     if(resp.code == 200){
                         _DialogSuccess('Đã cập nhật thành công', function () {
-                            _loadPageChild('point');
+                            _loadPageChild('promotion');
                         })
                     }else{
                         _DialogError(resp.message);
@@ -106,10 +130,11 @@ var eventPage = function($) {
         $(document).on('click', '#delete_row_table', function (e) {
             var _id = $(this).attr('data_id');
             _DialogQuestion('Bạn đã chắc chắn ?', 'Quyền truy cập người dùng sẽ không còn vai trò này nữa', function () {
-                _AjaxObject('/point', 'DELETE', {ids : [_id]}, function(resp) {
+                _AjaxObject('/promotion', 'DELETE', {ids : [_id]}, function(resp) {
                     if(resp.code == 200){
-                        _DialogSuccess('Đã xóa bỏ thành công', function () {                                             
-                            _loadPageChild('point');
+                        _DialogSuccess('Đã xóa bỏ thành công', function () {
+                            _bindMenuSideBar(roleIndex._id);                                                
+                            _loadPageChild('promotion');
                         })
                     }else{
                         _DialogError(resp.message);
@@ -135,10 +160,11 @@ var eventPage = function($) {
             var dataIds = _createObjectInForm('.check_item_table')
             if(_.has(dataIds, 'checkBoxIds')){
                 _DialogQuestion('Bạn có chắc chắn?', 'Dữ liệu bạn chọn sẽ bị xóa bỏ vĩnh viễn', function () {
-                    _AjaxObject('/point', 'DELETE', {ids : dataIds.checkBoxIds}, function(resp) {
+                    _AjaxObject('/promotion', 'DELETE', {ids : dataIds.checkBoxIds}, function(resp) {
                         if(resp.code == 200){
-                            _DialogSuccess('Đã xóa bỏ thành công', function () {              
-                                _loadPageChild('point');
+                            _DialogSuccess('Đã xóa bỏ thành công', function () {
+                                _bindMenuSideBar(roleIndex._id);                    
+                                _loadPageChild('promotion');
                             })
                         }else{
                             _DialogError(resp.message);
@@ -165,7 +191,7 @@ var eventPage = function($) {
     }
     
 
-    function bindBodyTable(page) {
+function bindBodyTable(page) {
         var objFilter = {
             dataMatch : _createObjectInForm('#form_table'),
             dataSort : _createObjectSort(), 
@@ -178,7 +204,7 @@ var eventPage = function($) {
         }
 
      
-        _AjaxObject('/point/search', 'GET', objFilter, function(resp) {
+        _AjaxObject('/promotion/search', 'GET', objFilter, function(resp) {
             dataTableRows = null;
             if(resp.code == 200){
                 dataTableRows = resp.data.docs;
@@ -195,14 +221,14 @@ var eventPage = function($) {
 
     return {
         init : function () {
-            console.log('dang thuc hien init su kien point');
+            console.log('dang thuc hien init su kien promotion');
             $('#table_modal tbody').sortable();
             bindHeadTable();
             bindBodyTable();
             bindEventClick();
         },
         uncut : function (){
-            console.log('dang thuc hien uncut su kien point');
+            console.log('dang thuc hien uncut su kien promotion');
             $(document).off('click', '#config')
             $(document).off('click', '#create_new')
             $(document).off('click', '.sort')

@@ -536,7 +536,8 @@ function itemInfo(item, valueItem) {
 
             break;
         case 'Number':
-            html += '<input class="col col-md-6 col-sm-6" type="number" autocomplete="off" name="' + item.path + '"></input>';
+            html += '<input class="col col-md-6 col-sm-6" type="number" autocomplete="off" name="' + item.path + '" ' +
+                    'value="' + (valueItem ? valueItem : '') + '"></input>';
             break;
         case 'Date':
             html += '<div class="col col-md-6 col-sm-6 input-group p-0">' +
