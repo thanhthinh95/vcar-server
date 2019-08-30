@@ -13,7 +13,7 @@ var eventPage = function($) {
         })
 
         $(document).on('click', '#create_new', function (e) {
-            _bindModalInfo(null, '#modal_info', _fields, ['carSupplierId', 'name', 'code', 'dateStart', 'dateEnd', 'amount', 'budget','discount','maxDiscount', 'status']);
+            _bindModalInfo(null, '#modal_info', _fields, ['carSupplierId', 'name', 'code', 'dateStart', 'dateEnd', 'amount', 'budget','discount', 'status']);
 
             $('#info_date_dateStart').datetimepicker({
                 locale : 'vi',
@@ -30,7 +30,7 @@ var eventPage = function($) {
         $(document).on('click', '#edit_row_table', function (e) {
             var dataRow = _.find(dataTableRows, {_id : $(this).attr('data_id')});
             if(dataRow){
-                _bindModalInfo(dataRow, '#modal_info', _fields, ['carSupplierId', 'name', 'dateStart', 'dateEnd', 'amount', 'budget','discount','maxDiscount', 'status']);
+                _bindModalInfo(dataRow, '#modal_info', _fields, ['carSupplierId', 'name', 'dateStart', 'dateEnd', 'amount', 'budget','discount', 'status']);
 
             
                 $('#info_date_dateStart').datetimepicker({

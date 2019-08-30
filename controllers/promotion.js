@@ -11,7 +11,6 @@ exports.getAll = async function(req, res) {
         _objField('amount', null, 0, true, true),
         _objField('budget', null, 1, true, true),
         _objField('discount', null, 1, true, true),
-        _objField('maxDiscount', null, 0, true, true),
         
         _objField('createBy', null, 0, false, true, await _user._getAll()),
         _objField('created', null, 1, true, true),
@@ -125,11 +124,7 @@ exports.update = async function (req, res) {
         obj.discount = null;
     }
 
-    if(_.has(obj, 'maxDiscount')){
-        obj.maxDiscount = Number(obj.maxDiscount);
-    }else{
-        obj.maxDiscount = null;
-    }
+
 
     let data = await _promotion._update(obj._id, obj);
     res.send(_output(data ? 200 : 500, null, data));

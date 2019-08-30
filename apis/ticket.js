@@ -17,84 +17,101 @@ module.exports.postAPI = async function (req, res) {
             case 'getMany'://Thuc hien lay chi tiét nhieu ticket
                 await getMany(req, res);
                 break;                 
+            case 'deleteMany'://Thuc hien xoa nhieu ticket, khi bam nut tro ve, chua thanh toan thanh cong
+                await deleteMany(req, res);
+                break;                     
             default:
                 break;
         }
     }
 }
 
+async function deleteMany(req, res) {
+    let inputIds = JSON.parse(req.body.ids);
+    var ids = [];
+    _.each(inputIds, function(id) {
+        ids.push(new mongoose.Types.ObjectId(id));
+    })
+
+    var data = await _ticket._delete(ids);
+    res.send(_output(data ? 200 : 500, null));
+}
 
 async function getMany(req, res) {    
     let inputIds = JSON.parse(req.body.ids);
     var ids = [];
 
     _.each(inputIds, function(id) {
-        inputIds.push(new mongoose.Types.ObjectId(id));
+        ids.push(new mongoose.Types.ObjectId(id));
     })
     
     let aggs = [
-        {$match : {_id : {$in : inputIds}}},
-        // {$lookup:{
-        //     from: 'car_suppliers',
-        //     localField: 'carSupplierId',
-        //     foreignField: '_id',
-        //     as: 'carSupplierId'
-        // }},
-        // {$unwind: {path: '$carSupplierId', preserveNullAndEmptyArrays: true}},
-
-        // {$lookup:{
-        //     from: 'points',
-        //     localField: 'carSupplierId.startPoint',
-        //     foreignField: '_id',
-        //     as: 'startPoint'
-        //  }},
-        //  {$unwind: {path: '$startPoint', preserveNullAndEmptyArrays: true}},
-
-        //  {$lookup:{
-        //     from: 'points',
-        //     localField: 'carSupplierId.endPoint',
-        //     foreignField: '_id',
-        //     as: 'endPoint'
-        //  }},
-        //  {$unwind: {path: '$endPoint', preserveNullAndEmptyArrays: true}},
-
-        // {$lookup:{
-        //    from: 'points',
-        //    localField: 'pointStop',
-        //    foreignField: '_id',
-        //    as: 'pointStop'
-        // }},
-        // {$unwind: {path: '$pointStop', preserveNullAndEmptyArrays: true}},
+        {$match : {_id : {$in : ids}}},
+        {$lookup:{
+            from: 'trips',
+            localField: 'tripId',
+            foreignField: '_id',
+            as: 'tripId'
+        }},
+        {$unwind: {path: '$tripId', preserveNullAndEmptyArrays: true}},
+        
+        {$lookup:{
+                from: 'cars',
+                localField: 'tripId.carId',
+                foreignField: '_id',
+                as: 'carId'
+            }},
+        {$unwind: {path: '$carId', preserveNullAndEmptyArrays: true}},
         
 
-        // {$lookup:{
-        //    from: 'car_types',
-        //    localField: 'typeId',
-        //    foreignField: '_id',
-        //    as: 'typeId'
-        // }},
-        // {$unwind: {path: '$typeId', preserveNullAndEmptyArrays: true}},
-
+        {$lookup:{
+                from: 'car_suppliers',
+                localField: 'carId.carSupplierId',
+                foreignField: '_id',
+                as: 'carSupplierId'
+            }},
+        {$unwind: {path: '$carSupplierId', preserveNullAndEmptyArrays: true}},
         
-        // {$group: {
-        //     _id: '$_id',
-        //     nameSupplier : {$first: '$carSupplierId.name'},
-        //     controlSea : {$first: '$controlSea'},
-        //     imageUrl : {$first: '$imageUrl'},
-        //     fare : {$first: '$fare'},
-        //     type : {$first: '$typeId.name'},
-        //     seatDiagram : {$first: '$typeId.seatDiaGram'},
-        //     numberSeat : {$first: '$typeId.numberSeat'},
-        //     startPoint : {$first : '$startPoint.name'},
-        //     pointStop : {$push: '$pointStop.name'},
-        //     endPoint : {$first : '$endPoint.name'},
-        // }}
+        {$lookup:{
+                from: 'points',
+                localField: 'carSupplierId.startPoint',
+                foreignField: '_id',
+                as: 'startPoint'
+            }},
+        {$unwind: {path: '$startPoint', preserveNullAndEmptyArrays: true}},
+        
+        
+        {$lookup:{
+                from: 'points',
+                localField: 'carSupplierId.endPoint',
+                foreignField: '_id',
+                as: 'endPoint'
+            }},
+        {$unwind: {path: '$endPoint', preserveNullAndEmptyArrays: true}},   
+    
+    
+        {$project: {
+            carSupplierId : "$carSupplierId._id",
+            carSupplierName : "$carSupplierId.name",
+            carSupplierPhone : "$carSupplierId.numberPhone",
+            carId : "$carId._id",
+            controlSea : "$carId.controlSea",
+            startPoint : "$startPoint.name",
+            endPoint : "$endPoint.name",
+            timeTrip : "$tripId.timeStart",
+            typeTrip : "$tripId.type",
+            dateTrip : "$dateStart",
+            position : 1,
+            fare : 1,
+            vote : 1,
+            status : 1,
+        }}
     ];
 
 
     var data = await _ticket._getManyAPI(aggs);
     console.log(data);
-    res.send(_output(data[0] ? 200 : 500, null, data[0]));
+    res.send(_output(data ? 200 : 500, null, data));
 }
 
 async function createNew(req, res) {    
