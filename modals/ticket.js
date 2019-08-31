@@ -7,7 +7,7 @@ var objSchame = new mongoose.Schema({
     vote : {type : Number, default : null},
     created : {type : Date, default: Date.now},
     updated : {type : Date, default: null},
-    status : {type : Number, required: true}, //0: Chua thanh toan, 1: Da thanh toan
+    status : {type : Number, required: true}, //0: Chua thanh toan, 1: Da thanh toan; 2: Da su dung
 },{id: false, versionKey: 'v'});
 
 objSchame.statics._getAll = async function() {
@@ -53,9 +53,16 @@ objSchame.statics._createManyAPI = async function(objs) {
     return await _ticket.insertMany(objs);
 }
 
+objSchame.statics._updateManyAPI = async function(query, data) {
+    return await _ticket.updateMany(query, data);
+}
 
 objSchame.statics._getManyAPI = async function(aggs) {
     return await _ticket.aggregate(aggs).allowDiskUse(true);               
+}
+
+objSchame.statics._getPositionSelectedAPI = async function(query) {
+    return await _ticket.find(query, {position : 1});               
 }
 
 objSchame.set('toJSON', {getters: true});

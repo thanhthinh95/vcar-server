@@ -3,7 +3,7 @@ var objSchame = new mongoose.Schema({
     password : {type : String, required: true},
     numberPhone : {type : String, required: true},
     email : {type : String, required: true},
-    gender : {type : Number, default: null},
+    gender : {type : Number, default: null}, //0: Nu | 1: Nam
     macAddress : {type : String, required: true},
     created : {type : Date, default: Date.now},
     updated : {type : Date, default: null},
@@ -57,6 +57,14 @@ objSchame.statics._search = async function (dataMatch, sort, page, sumRow) {
         sort : sort,
     }
     return await _customer.paginate(dataMatch, options)
+}
+
+
+objSchame.statics._checkPass = async function (_id, password) {
+    var customer = await _customer.findOne({_id : _id});
+    if (!customer) return null; //Khong ton tai customer
+    var kq = await bcrypt.compare(password, customer.password);
+    return (kq ? customer : null);
 }
 
 objSchame.statics._delete = async function (_ids) {

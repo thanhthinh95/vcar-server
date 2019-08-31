@@ -97,7 +97,8 @@ async function searchCarSupplier(req, res) {
                 if(itemCar.fare > expensive) expensive = itemCar.fare;
             })
 
-            itemCarSupplier.fare = cheapFare + " - " + expensive;
+            itemCarSupplier.maxFare = expensive;
+            itemCarSupplier.minFare = cheapFare;
         })
     }
     
