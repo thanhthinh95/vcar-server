@@ -72,6 +72,7 @@ async function useTicket(req, res) {
 
 async function getPositionSelected(req, res) {    
     var query = {}
+    query.status = {$in : [0, 1, 2]};
     query.tripId = new mongoose.Types.ObjectId(req.body.tripId);
     query.dateStart = moment(req.body.dateStart, 'DD/MM/YYYY')._d;
     var data = await _ticket._getPositionSelectedAPI(query);
@@ -91,7 +92,10 @@ async function deleteMany(req, res) {
 
 async function getManyForCusomer(req, res) {    
     let aggs = [
-        {$match : {customerId : new mongoose.Types.ObjectId(req.body.customerId)}},
+        {$match : {
+            customerId : new mongoose.Types.ObjectId(req.body.customerId),
+            status : {$in : [0, 1, 2]}
+        }},
         {$sort : {status : 1}},
         {$lookup:{
             from: 'trips',

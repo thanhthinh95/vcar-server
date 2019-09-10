@@ -126,6 +126,7 @@ global._getFields = function (schema, fieldShows) {
             field.statusSort = item.statusSort;
             field.statusSearch = item.statusSearch;
             field.valueSelect = item.valueSelect;
+            field.dateFormat = item.dateFormat;
 
             if (item.valueSelect) {
                 field.instance = 'Select';
@@ -147,7 +148,7 @@ global._getFields = function (schema, fieldShows) {
 //statusSort - Trang Thai sap xep : true - cho phep sap xep | false - khong sap xep
 //statusSearch - Trang Thai tim kiem : true - cho phep tim kiem | false - khong cho tim kiem
 //valueSelect - Gia tri trong selectpicker : [] or null
-global._objField = function (field, textShow, statusShow, statusSort, statusSearch, valueSelect) {
+global._objField = function (field, textShow, statusShow, statusSort, statusSearch, valueSelect, dateFormat) {
     return {
         field: field,
         textShow: textShow,
@@ -155,6 +156,7 @@ global._objField = function (field, textShow, statusShow, statusSort, statusSear
         statusSort: statusSort ? statusSort : false,
         statusSearch: statusSearch ? statusSearch : false,
         valueSelect: valueSelect ? valueSelect : null,
+        dateFormat: dateFormat ? dateFormat : null,
     }
 }
 

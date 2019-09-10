@@ -452,7 +452,13 @@ function itemBody(data, field) {
             html += '<span style="display:inline-table;">' + (data[field.path] ? data[field.path] : '') + '</span>';
             break;
         case 'Date':
-            html += '<span style="display:inline-table;">' + (data[field.path] ? moment(data[field.path]).format('HH:mm DD/MM/YY') : '') + '</span>';
+            console.log(field);
+            
+            if(field.dateFormat){
+                html += '<span style="display:inline-table;">' + (data[field.path] ? moment(data[field.path]).format(field.dateFormat) : '') + '</span>';
+            }else{
+                html += '<span style="display:inline-table;">' + (data[field.path] ? moment(data[field.path]).format('HH:mm DD/MM/YY') : '') + '</span>';
+            }
             break;
         case 'Time':
             html += '<span style="display:inline-table;">' + (data[field.path] ? moment(data[field.path]).format('HH:mm') : '') + '</span>';

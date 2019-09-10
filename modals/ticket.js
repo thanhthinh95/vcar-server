@@ -6,8 +6,9 @@ var objSchame = new mongoose.Schema({
     fare : {type : Number, require : true},
     vote : {type : Number, default : null},
     created : {type : Date, default: Date.now},
+    updateBy: { type: mongoose.Schema.Types.ObjectId, ref: 'user', default: null },
     updated : {type : Date, default: null},
-    status : {type : Number, required: true}, //0: Chua thanh toan, 1: Da thanh toan; 2: Da su dung
+    status : {type : Number, required: true}, //0: Chua thanh toan, 1: Da thanh toan; 2: Da su dung, 3: Da bi huy bo
 },{id: false, versionKey: 'v'});
 
 objSchame.statics._getAll = async function() {
