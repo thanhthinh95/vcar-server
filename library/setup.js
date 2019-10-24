@@ -25,16 +25,6 @@ fsx.readdirSync('./apis').forEach(filename => {
     }
 });
 
-fsx.readdirSync('./apis_for_app').forEach(filename => {
-    let _arrayFileName = _.split(filename, '.');
-    if (_arrayFileName[1] == 'js') {
-        let _arrayFunction = require('../apis_for_app/' + _arrayFileName[0]);
-        _.forIn(_arrayFunction, function (fn, key) {
-            setRouter('api_for_app/' + _arrayFileName[0], key, fn);
-        })
-    }
-});
-
 global._deleteFields = function (obj, fields) {
     _.forEach(fields, function (field) {
         delete obj[field];
@@ -108,13 +98,6 @@ app.get('/logout', function (req, res, next) {
 app.get('/api', function (req, res, next) {
     res.send({
         data: 'Welcome API project VCar',
-        createBy : 'Team Developer'
-    });
-})
-
-app.get('/api_for_app', function (req, res, next) {
-    res.send({
-        data: 'Welcome API for app android project VCar',
         createBy : 'thinhdev'
     });
 })
