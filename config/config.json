@@ -8,7 +8,7 @@
         "ip": "27.71.228.68",
         "port": 27017,
         "username" : "vcar_dev",
-        "password" : "passdev@123"
+        "password" : "passdev_123"
     },
     "database_heroku" : {
         "name" : "heroku_jvdr7rh9",
