@@ -18,6 +18,7 @@ function skipPage(path) {
 
 function skipAPI(path) {
     if(_.isEqual(path, '/api')) return true;
+    if(_.isEqual(path, '/api_for_app')) return true;
     let array = path.split('/');
     if(array.length >=3 && _.isEqual(array[1], 'api') && array[2].length != 0) return true;
     return false;
