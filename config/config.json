@@ -5,10 +5,10 @@
     },
     "database" : {
         "name" : "v-car",
-        "ip": "108.160.129.143",
+        "ip": "27.71.228.68",
         "port": 27017,
-        "username" : "thinhdev",
-        "password" : "passdev123456"
+        "username" : "vcar_dev",
+        "password" : "passdev@123"
     },
     "database_heroku" : {
         "name" : "heroku_jvdr7rh9",
