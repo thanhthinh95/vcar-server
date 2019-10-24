@@ -1,2 +1,2 @@
-108.160.129.143 vcar.devboo.com
-root S1@hCJvr4wSa+bVo
+27.71.228.68
+mongorestore -h localhost:27017 -u vcar_dev -p passdev@123 --authenticationDatabase admin -d "v-car" "/opt/vcar-server/v-car_backupDB/v-car/"
